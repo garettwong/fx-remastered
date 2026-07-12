@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NOCTA — Generative Design Studio</title>
+<meta name="description" content="NOCTA designs with living systems. A real curl-noise particle field, flowing in real time.">
+<meta name="theme-color" content="#06070c">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#eef2ff;--muted:rgba(238,242,255,.6);--line:rgba(238,242,255,.12);--accent:#6de3ff;--disp:'Space Grotesk',sans-serif;--body:'Inter',sans-serif}
+html,body{height:100%}
+body{background:#06070c;color:var(--ink);font-family:var(--body);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+#fx{position:fixed;inset:0;z-index:0;display:block}
+.scrim{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 90% at 50% 40%,rgba(6,7,12,0) 40%,rgba(6,7,12,.7) 100%)}
+.wrap{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+nav{display:flex;align-items:center;justify-content:space-between;height:84px}
+.brand{font-family:var(--disp);font-weight:700;font-size:20px;letter-spacing:.16em}
+.nl{display:flex;gap:30px}.nl a{color:var(--muted);text-decoration:none;font-size:14px;transition:color .3s}.nl a:hover{color:var(--ink)}
+.tag{font-size:12px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.hero{min-height:calc(100vh - 84px);display:flex;flex-direction:column;justify-content:center;padding:40px 0 80px}
+.eyebrow{font-family:var(--disp);font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:26px}
+h1{font-family:var(--disp);font-weight:500;font-size:clamp(44px,8vw,120px);line-height:.95;letter-spacing:-.03em}
+h1 em{font-style:normal;background:linear-gradient(120deg,var(--accent),#c98bff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sub{margin-top:26px;max-width:46ch;color:var(--muted);font-size:clamp(15px,1.5vw,18px);line-height:1.7}
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:34px;color:var(--ink);text-decoration:none;font-size:14px;border:1px solid var(--line);border-radius:100px;padding:14px 26px;transition:.3s;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.cta:hover{background:rgba(238,242,255,.08);border-color:rgba(238,242,255,.4)}
+.strip{display:flex;gap:clamp(24px,5vw,64px);margin-top:64px;flex-wrap:wrap}
+.stat .v{font-family:var(--disp);font-weight:600;font-size:clamp(22px,2.4vw,30px)}
+.stat .l{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.hint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:3;color:var(--muted);font-family:var(--disp);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
+@media(max-width:640px){.nl{display:none}}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div class="scrim"></div>
+<div class="wrap">
+  <nav><div class="brand">NOCTA</div><div class="nl"><a href="#">Studio</a><a href="#">Work</a><a href="#">Systems</a><a href="#">Contact</a></div><div class="tag">Live field</div></nav>
+  <header class="hero">
+    <div class="eyebrow">Generative design studio</div>
+    <h1>Order, from<br><em>living motion.</em></h1>
+    <p class="sub">NOCTA builds brand systems that move on their own. The field behind this page is not a video — it is thousands of particles reading a flow of noise, in real time. Move your cursor.</p>
+    <a class="cta" href="#">See the systems →</a>
+    <div class="strip">
+      <div class="stat"><div class="v" id="pc">1,800</div><div class="l">Particles</div></div>
+      <div class="stat"><div class="v">60 fps</div><div class="l">Real-time</div></div>
+      <div class="stat"><div class="v">Curl noise</div><div class="l">Flow field</div></div>
+    </div>
+  </header>
+</div>
+<div class="hint">Move the cursor</div>
+<script>
+const cv=document.getElementById('fx'), ctx=cv.getContext('2d',{alpha:false});
+let W,H,DPR;
+function resize(){ DPR=Math.min(devicePixelRatio||1,2); W=cv.width=innerWidth*DPR; H=cv.height=innerHeight*DPR; cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px'; ctx.fillStyle='#06070c'; ctx.fillRect(0,0,W,H); }
+addEventListener('resize',resize); resize();
+// value-noise flow field
+function hash(x,y){ let h=(x|0)*374761393+(y|0)*668265263; h=(h^(h>>13))*1274126177; return ((h^(h>>16))>>>0)/4294967295; }
+function vnoise(x,y){ const xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi,u=xf*xf*(3-2*xf),v=yf*yf*(3-2*yf);
+  const a=hash(xi,yi),b=hash(xi+1,yi),c=hash(xi,yi+1),d=hash(xi+1,yi+1); return a*(1-u)*(1-v)+b*u*(1-v)+c*(1-u)*v+d*u*v; }
+const N=innerWidth<720?900:1800, SC=0.0016*Math.min(1.6,innerWidth/900);
+const P=new Array(N).fill(0).map(()=>({x:Math.random()*W,y:Math.random()*H,px:0,py:0,h:190+Math.random()*140,life:Math.random()*300}));
+const mouse={x:-9999,y:-9999};
+addEventListener('pointermove',e=>{mouse.x=e.clientX*DPR;mouse.y=e.clientY*DPR;},{passive:true});
+addEventListener('pointerleave',()=>{mouse.x=mouse.y=-9999;});
+let t=0;
+function frame(){
+  requestAnimationFrame(frame);
+  ctx.fillStyle='rgba(6,7,12,0.09)'; ctx.fillRect(0,0,W,H);   // trail fade
+  ctx.globalCompositeOperation='lighter'; ctx.lineWidth=1.15*DPR;
+  t+=0.0016;
+  for(const p of P){
+    p.px=p.x; p.py=p.y;
+    const ang=(vnoise(p.x*SC, p.y*SC + t*40)+vnoise(p.x*SC*2.3+9, p.y*SC*2.3)-0.5)*Math.PI*3.0;
+    let vx=Math.cos(ang), vy=Math.sin(ang);
+    // mouse repel
+    const dx=p.x-mouse.x, dy=p.y-mouse.y, d2=dx*dx+dy*dy, R=150*DPR;
+    if(d2<R*R){ const d=Math.sqrt(d2)||1, f=(1-d/R)*4.2; vx+=dx/d*f; vy+=dy/d*f; }
+    const spd=1.5*DPR;
+    p.x+=vx*spd; p.y+=vy*spd; p.life--;
+    if(p.x<0||p.x>W||p.y<0||p.y>H||p.life<0){ p.x=Math.random()*W; p.y=Math.random()*H; p.px=p.x; p.py=p.y; p.life=120+Math.random()*260; }
+    ctx.strokeStyle='hsla('+p.h+',95%,62%,0.5)';
+    ctx.beginPath(); ctx.moveTo(p.px,p.py); ctx.lineTo(p.x,p.y); ctx.stroke();
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+requestAnimationFrame(frame);
+window.__nocta=()=>({particles:N, canvas:[cv.width,cv.height], ctx:!!ctx, sampleMoved:(P[0].x!==P[0].px)});
+</script>
+</body>
+</html>

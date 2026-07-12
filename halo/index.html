@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HALO — The Network Layer</title>
+<meta name="description" content="HALO connects every edge of a distributed world. A real Three.js network globe with live arcs.">
+<meta name="theme-color" content="#050810">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#eaf1ff;--muted:rgba(234,241,255,.6);--line:rgba(234,241,255,.12);--accent:#5fd0ff;--disp:'Sora',sans-serif;--body:'Inter',sans-serif}
+html,body{height:100%}
+body{background:#050810;color:var(--ink);font-family:var(--body);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+#gl{position:fixed;inset:0;z-index:0;display:block;cursor:grab}#gl.grab{cursor:grabbing}
+.scrim{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(70% 60% at 72% 50%,rgba(5,8,16,0) 40%,rgba(5,8,16,.55) 100%),linear-gradient(90deg,rgba(5,8,16,.7),rgba(5,8,16,0) 55%)}
+.wrap{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+nav{display:flex;align-items:center;justify-content:space-between;height:84px}
+.brand{font-family:var(--disp);font-weight:700;font-size:20px;letter-spacing:.14em}
+.nl{display:flex;gap:30px}.nl a{color:var(--muted);text-decoration:none;font-size:14px;transition:color .3s}.nl a:hover{color:var(--ink)}
+.tag{font-size:12px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.hero{min-height:calc(100vh - 84px);display:flex;flex-direction:column;justify-content:center;max-width:640px;padding:40px 0 80px}
+.eyebrow{font-family:var(--disp);font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:26px}
+h1{font-family:var(--disp);font-weight:600;font-size:clamp(44px,7.4vw,104px);line-height:.96;letter-spacing:-.03em}
+h1 em{font-style:normal;color:var(--accent)}
+.sub{margin-top:26px;max-width:44ch;color:var(--muted);font-size:clamp(15px,1.5vw,18px);line-height:1.7}
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:34px;color:#04101a;background:var(--accent);text-decoration:none;font-size:14px;font-family:var(--disp);font-weight:600;border-radius:100px;padding:14px 26px;transition:.3s}
+.cta:hover{transform:translateY(-2px);box-shadow:0 14px 40px -12px var(--accent)}
+.strip{display:flex;gap:clamp(24px,5vw,56px);margin-top:60px;flex-wrap:wrap}
+.stat .v{font-family:var(--disp);font-weight:600;font-size:clamp(22px,2.4vw,30px)}
+.stat .l{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.hint{position:fixed;right:clamp(20px,5vw,56px);bottom:26px;z-index:3;color:var(--muted);font-family:var(--disp);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
+@media(max-width:640px){.nl{display:none}.scrim{background:linear-gradient(180deg,rgba(5,8,16,.5),rgba(5,8,16,.8))}}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div class="scrim"></div>
+<div class="wrap">
+  <nav><div class="brand">HALO</div><div class="nl"><a href="#">Platform</a><a href="#">Network</a><a href="#">Docs</a><a href="#">Contact</a></div><div class="tag">Live mesh</div></nav>
+  <header class="hero">
+    <div class="eyebrow">The network layer</div>
+    <h1>One network.<br><em>Every edge.</em></h1>
+    <p class="sub">HALO routes traffic across a live mesh of points of presence. Every arc you see is a real connection, drawn in real time on a WebGL globe. Drag it.</p>
+    <a class="cta" href="#">Explore the mesh →</a>
+    <div class="strip">
+      <div class="stat"><div class="v" id="pop">280+</div><div class="l">Edge nodes</div></div>
+      <div class="stat"><div class="v">18ms</div><div class="l">Median hop</div></div>
+      <div class="stat"><div class="v">99.99%</div><div class="l">Uptime</div></div>
+    </div>
+  </header>
+</div>
+<div class="hint">Drag to spin</div>
+<script src="lib/three.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
