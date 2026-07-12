@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MIRAGE — Studio of Light in Motion</title>
+<meta name="description" content="MIRAGE — a living canvas of colour and light, morphing between worlds. Built with a real Three.js fragment shader.">
+<meta name="theme-color" content="#0b0a0d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#f4f1ea;--muted:rgba(244,241,234,.62);--line:rgba(244,241,234,.16);--disp:'Fraunces',Georgia,serif;--body:'Inter',system-ui,sans-serif}
+html,body{height:100%}
+body{background:#0b0a0d;color:var(--ink);font-family:var(--body);font-weight:300;overflow:hidden;-webkit-font-smoothing:antialiased}
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
+.scrim{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(8,7,10,.55) 0%,rgba(8,7,10,0) 22%,rgba(8,7,10,0) 52%,rgba(8,7,10,.72) 100%)}
+.ui{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:space-between;
+  padding:clamp(20px,3.2vw,44px) clamp(22px,4vw,64px)}
+/* top */
+nav{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{font-family:var(--disp);font-weight:400;font-size:clamp(19px,1.7vw,24px);letter-spacing:.24em}
+.nl{display:flex;gap:clamp(18px,2.4vw,36px)}
+.nl a{color:var(--muted);text-decoration:none;font-size:13px;letter-spacing:.03em;transition:color .3s}
+.nl a:hover{color:var(--ink)}
+.rtag{font-size:12px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.rtag::before{content:"";width:7px;height:7px;border-radius:50%;background:#d98b5a;box-shadow:0 0 10px #d98b5a}
+/* bottom */
+.bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:30px}
+.lead{max-width:min(560px,60vw)}
+.eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+h1{font-family:var(--disp);font-weight:300;font-size:clamp(40px,6vw,92px);line-height:.98;letter-spacing:-.02em}
+h1 em{font-style:italic;color:#e6b98f}
+.lead p{margin-top:20px;color:var(--muted);font-size:clamp(14px,1.3vw,17px);line-height:1.7;max-width:44ch}
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:26px;color:var(--ink);text-decoration:none;font-size:14px;
+  border:1px solid var(--line);border-radius:100px;padding:12px 24px;transition:background .3s,border-color .3s;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.cta:hover{background:rgba(244,241,234,.1);border-color:rgba(244,241,234,.4)}
+.meta{text-align:right;min-width:200px}
+.slidecap{font-family:var(--disp);font-size:clamp(15px,1.4vw,19px);letter-spacing:.02em}
+.slidesub{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.dots{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+.dot{width:22px;height:2px;background:var(--line);border:none;padding:0;cursor:pointer;transition:background .4s}
+.dot.on{background:#e6b98f}
+.mark{position:fixed;right:clamp(22px,4vw,64px);bottom:clamp(84px,14vh,150px);z-index:1;pointer-events:none;
+  font-family:var(--disp);font-weight:300;font-size:clamp(90px,20vw,300px);line-height:1;color:rgba(244,241,234,.05);letter-spacing:-.03em}
+/* intro fade */
+.intro{position:fixed;inset:0;z-index:5;background:#0b0a0d;display:flex;align-items:center;justify-content:center;transition:opacity 1s ease .3s}
+.intro.gone{opacity:0;pointer-events:none}
+.intro .il{font-family:var(--disp);letter-spacing:.3em;font-size:16px;color:var(--muted)}
+@media(max-width:720px){
+  .nl{display:none}
+  .bottom{flex-direction:column;align-items:flex-start;gap:22px}
+  .meta{text-align:left}.dots{justify-content:flex-start}
+  .mark{display:none}
+}
+@media(prefers-reduced-motion:reduce){.mark{display:none}}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div class="scrim"></div>
+<div class="mark">MIRAGE</div>
+<div class="ui">
+  <nav>
+    <div class="logo">MIRAGE</div>
+    <div class="nl"><a href="#">Work</a><a href="#">Studio</a><a href="#">Journal</a><a href="#">Contact</a></div>
+    <div class="rtag">Light in motion</div>
+  </nav>
+  <div class="bottom">
+    <div class="lead">
+      <div class="eyebrow">Studio of light in motion</div>
+      <h1>Where light<br>learns to <em>flow.</em></h1>
+      <p>A living canvas of colour — every frame liquifies and morphs into the next, rendered in real time on a single fragment shader.</p>
+      <a class="cta" href="#">See the work →</a>
+    </div>
+    <div class="meta">
+      <div class="slidecap" id="cap">01 / Dunes</div>
+      <div class="slidesub" id="sub">Golden Hour</div>
+      <div class="dots" id="dots"></div>
+    </div>
+  </div>
+</div>
+<div class="intro" id="intro"><div class="il">MIRAGE</div></div>
+<script src="lib/three.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
