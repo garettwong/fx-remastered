@@ -147,7 +147,7 @@ const CARDS=[
   {num:'04',k:'Snow above the tree line', d:'Past a threshold the rock turns to snowpack — the same simple rule the planet uses.'}
 ];
 const capEl=document.getElementById('cap'),capNum=document.getElementById('capNum'),capK=document.getElementById('capK'),
-      capD=document.getElementById('capD'),capBar=document.getElementById('capBar'),hintEl=document.getElementById('hint');
+      capD=document.getElementById('capD'),capBar=document.getElementById('capBar'),hintEl=document.getElementById('mhint');
 let activeCard=-1;
 function setCard(i,frac){
   if(i!==activeCard){ activeCard=i;
@@ -166,36 +166,36 @@ function camState(s){ const f=s*(KF.length-1); let i=Math.floor(f); if(i>=KF.len
 function onScroll(){
   const max=Math.max(1, document.documentElement.scrollHeight-innerHeight);
   scrollS=Math.min(1,Math.max(0, scrollY/max));
-  hintEl.style.opacity = scrollS>0.04 ? 0 : 1;
+  if(hintEl) hintEl.style.opacity = scrollS>0.04 ? 0 : 1;
   const ranges=[[0.10,0.30],[0.30,0.50],[0.50,0.70],[0.70,0.90]]; let set=false;
   for(let i=0;i<ranges.length;i++){ const[a,b]=ranges[i]; if(scrollS>=a&&scrollS<b){ setCard(i,(scrollS-a)/(b-a)); set=true; break; } }
   if(!set) setCard(-1,0);
 }
 addEventListener('scroll', onScroll, {passive:true});
 
-/* ---------- drag: orbit (left-drag) + move/pan (right-drag or shift-drag) ---------- */
+/* ---------- drag: orbit (drag) + move/pan (right-drag or shift-drag).
+   Listen on WINDOW, not the canvas — the overlay text/sections sit above the canvas and would swallow the drag. ---------- */
 let yaw=0, pitch=0.02, yawVel=0, dragging=false, mode='rotate', lastX=0, lastY=0, curR=172;
 const IDLE=0.055, clampP=v=>Math.max(-0.22,Math.min(0.58,v));
 const pan=new THREE.Vector3(), panMax=(half-clipHalf)*0.9, clampPan=v=>Math.max(-panMax,Math.min(panMax,v));
 const _r=new THREE.Vector3(), _u=new THREE.Vector3();
-canvas.addEventListener('contextmenu', e=>e.preventDefault());
-canvas.addEventListener('pointerdown', e=>{ if(e.pointerType==='touch') return;
+const isUI = t => !!(t && t.closest && t.closest('a,button'));
+const body = document.body;
+addEventListener('contextmenu', e=>{ if(!isUI(e.target)) e.preventDefault(); });
+addEventListener('pointerdown', e=>{ if(e.pointerType==='touch' || isUI(e.target)) return;
   dragging=true; mode=(e.button===2||e.shiftKey)?'pan':'rotate'; lastX=e.clientX; lastY=e.clientY;
-  canvas.classList.remove('grabbing','panning'); canvas.classList.add(mode==='pan'?'panning':'grabbing');
-  try{canvas.setPointerCapture(e.pointerId);}catch(_){}} );
+  body.classList.remove('grabbing','panning'); body.classList.add(mode==='pan'?'panning':'grabbing'); body.style.userSelect='none';
+});
 addEventListener('pointermove', e=>{ if(!dragging) return; const dx=e.clientX-lastX, dy=e.clientY-lastY; lastX=e.clientX; lastY=e.clientY;
   if(mode==='pan'){                                   // slide the whole diorama in the ground plane; the box clips it
     _r.setFromMatrixColumn(cam.matrixWorld,0); _r.y=0; _r.normalize();
     _u.setFromMatrixColumn(cam.matrixWorld,1); _u.y=0; _u.normalize();
-    const s=curR*0.0016;
-    pan.addScaledVector(_r, dx*s); pan.addScaledVector(_u, -dy*s);
+    const s=curR*0.0016; pan.addScaledVector(_r, dx*s); pan.addScaledVector(_u, -dy*s);
     pan.x=clampPan(pan.x); pan.z=clampPan(pan.z); pan.y=0;
-  } else {
-    yaw+=dx*0.007; yawVel=dx*0.007; pitch=clampP(pitch+dy*0.004);
-  }
+  } else { yaw+=dx*0.007; yawVel=dx*0.007; pitch=clampP(pitch+dy*0.004); }
 });
-addEventListener('pointerup', ()=>{ if(dragging){ dragging=false; canvas.classList.remove('grabbing','panning'); } });
-canvas.addEventListener('dblclick', ()=>{ pan.set(0,0,0); });   // double-click recentres the land
+addEventListener('pointerup', ()=>{ if(dragging){ dragging=false; body.classList.remove('grabbing','panning'); body.style.userSelect=''; } });
+addEventListener('dblclick', e=>{ if(!isUI(e.target)) pan.set(0,0,0); });   // double-click recentres the land
 
 /* ---------- resize / compile ---------- */
 function resize(){ renderer.setSize(innerWidth,innerHeight); cam.aspect=innerWidth/innerHeight; cam.updateProjectionMatrix(); }
