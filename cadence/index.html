@@ -3,132 +3,98 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>CADENCE — Revenue in Real Time</title>
-<meta name="description" content="CADENCE shows your revenue as it happens. Live dashboard motion.">
-<meta name="theme-color" content="#f6f6fb">
+<title>SOLARA — Renewable Power for Tomorrow</title>
+<meta name="description" content="SOLARA. See what the sun could save you, with a live savings calculator.">
+<meta name="theme-color" content="#f2f4ee">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#f6f6fb;--panel:#fff;--ink:#151428;--muted:#6a6880;--line:#e6e6f0;--accent:#5b5bf5;--green:#22b07d;--disp:'Sora',sans-serif;--body:'Inter',sans-serif}
+:root{--bg:#f2f4ee;--panel:#fff;--ink:#1c241b;--muted:#67715f;--line:#e0e4d8;--accent:#2f7d3f;--accent2:#e0a43b;--disp:'Sora',sans-serif;--body:'Inter',sans-serif}
 html,body{overflow-x:hidden}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
 nav{display:flex;align-items:center;justify-content:space-between;height:78px}
-.brand{font-family:var(--disp);font-weight:700;font-size:20px}.brand b{color:var(--accent)}
-.nl{display:flex;gap:28px}.nl a{color:var(--muted);text-decoration:none;font-size:14px}.nl a:hover{color:var(--ink)}
+.brand{display:flex;align-items:center;gap:9px;font-family:var(--disp);font-weight:700;font-size:20px}
+.brand .s{width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffd66b,var(--accent2));box-shadow:0 0 14px rgba(224,164,59,.6)}
+.nl{display:flex;gap:26px}.nl a{color:var(--muted);text-decoration:none;font-size:14px}.nl a:hover{color:var(--ink)}
 .pill{font-family:var(--disp);font-weight:600;font-size:13px;color:#fff;background:var(--accent);border-radius:100px;padding:10px 18px;text-decoration:none}
-.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center;min-height:calc(100vh - 78px);padding:30px 0 60px}
-.eyebrow{font-family:var(--disp);font-weight:600;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:22px}
-h1{font-family:var(--disp);font-weight:700;font-size:clamp(40px,5.6vw,74px);line-height:1;letter-spacing:-.03em}
-.sub{margin-top:22px;max-width:44ch;color:var(--muted);font-size:clamp(15px,1.4vw,18px);line-height:1.65}
-.row{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
-.btn{font-family:var(--disp);font-weight:600;font-size:14px;text-decoration:none;padding:14px 24px;border-radius:100px;transition:transform .3s}
-.btn.solid{background:var(--ink);color:#fff}.btn.solid:hover{transform:translateY(-2px)}
-.btn.ghost{border:1px solid var(--line);color:var(--ink)}.btn.ghost:hover{border-color:var(--ink)}
-/* dashboard card */
-.dash{background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:0 40px 90px -50px rgba(30,30,80,.4);padding:22px;will-change:transform;transition:transform .2s ease-out}
-.dhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.tabs{display:flex;gap:6px;background:var(--bg);border-radius:100px;padding:4px}
-.tab{font-family:var(--disp);font-weight:500;font-size:12.5px;color:var(--muted);border:none;background:none;padding:7px 14px;border-radius:100px;cursor:pointer;transition:.25s}
-.tab.on{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.live{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
-.live .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(34,176,125,.5);animation:pulse 1.8s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,176,125,.5)}70%{box-shadow:0 0 0 9px rgba(34,176,125,0)}100%{box-shadow:0 0 0 0 rgba(34,176,125,0)}}
-.kpi{display:flex;align-items:flex-end;gap:12px;margin-bottom:6px}
-.kpi .v{font-family:var(--disp);font-weight:700;font-size:clamp(30px,3.6vw,46px);letter-spacing:-.02em}
-.kpi .badge{font-family:var(--disp);font-weight:600;font-size:12.5px;color:var(--green);background:rgba(34,176,125,.1);border-radius:100px;padding:4px 9px;margin-bottom:10px}
-.klabel{font-size:12.5px;color:var(--muted);margin-bottom:14px}
-.chart{width:100%;height:150px}
-.chart path.line{fill:none;stroke:var(--accent);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-.chart .area{fill:url(#grad);opacity:.9}
-.enddot{fill:var(--accent)}
-.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
-.mcell{background:var(--bg);border-radius:12px;padding:12px}
-.mcell .mv{font-family:var(--disp);font-weight:600;font-size:18px}.mcell .ml{font-size:11px;color:var(--muted);margin-top:2px}
-.bars{display:flex;align-items:flex-end;gap:5px;height:34px;margin-top:12px}
-.bars i{flex:1;background:var(--accent);border-radius:3px 3px 0 0;height:0;transition:height 1s cubic-bezier(.16,1,.3,1);opacity:.85}
-@media(max-width:860px){.hero{grid-template-columns:1fr;gap:30px}.dash{order:2}}
-@media(max-width:640px){.nl{display:none}}
+.hero{padding:40px 0 20px;text-align:center}
+.eyebrow{font-family:var(--disp);font-weight:600;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:20px}
+h1{font-family:var(--disp);font-weight:700;font-size:clamp(38px,6vw,80px);line-height:1;letter-spacing:-.03em;max-width:16ch;margin:0 auto}
+h1 em{font-style:normal;color:var(--accent)}
+.sub{margin:22px auto 0;max-width:52ch;color:var(--muted);font-size:clamp(15px,1.4vw,18px)}
+/* calculator */
+.calc{background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:0 40px 90px -50px rgba(20,40,20,.4);margin:48px auto 0;max-width:920px;padding:clamp(24px,3.5vw,44px);text-align:left}
+.calc h2{font-family:var(--disp);font-weight:600;font-size:clamp(22px,2.6vw,32px);letter-spacing:-.02em}
+.calc .p{color:var(--muted);font-size:14px;margin-top:6px;margin-bottom:26px}
+.slabel{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--disp)}
+.slabel .k{font-size:13px;color:var(--muted);letter-spacing:.02em}
+.slabel .v{font-weight:700;font-size:26px}
+input[type=range]{-webkit-appearance:none;width:100%;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--accent) var(--f,45%),var(--line) var(--f,45%));margin:14px 0 30px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid var(--accent);box-shadow:0 3px 10px rgba(0,0,0,.18);cursor:grab}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tile{background:var(--bg);border-radius:16px;padding:18px}
+.tile .tv{font-family:var(--disp);font-weight:700;font-size:clamp(22px,2.4vw,30px);letter-spacing:-.02em}
+.tile .tv.g{color:var(--accent)}.tile .tv.o{color:var(--accent2)}
+.tile .tl{font-size:12px;color:var(--muted);margin-top:5px}
+.cta-row{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
+.btn{font-family:var(--disp);font-weight:600;font-size:14px;text-decoration:none;padding:13px 24px;border-radius:100px}
+.btn.solid{background:var(--ink);color:#fff}.btn.ghost{border:1px solid var(--line);color:var(--ink)}
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding:clamp(60px,10vh,120px) 0}
+.step .n{font-family:var(--disp);font-weight:600;color:var(--accent);font-size:13px}
+.step h3{font-family:var(--disp);font-weight:600;font-size:22px;margin:8px 0 6px}
+.step p{color:var(--muted);font-size:14px}
+footer{border-top:1px solid var(--line);padding:34px 0 54px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+@media(max-width:820px){.tiles{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:1fr}}
+@media(max-width:600px){.nl{display:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <nav><div class="brand">CA<b>DENCE</b></div><div class="nl"><a href="#">Product</a><a href="#">Pricing</a><a href="#">Docs</a></div><a class="pill" href="#">Start free</a></nav>
+  <nav><div class="brand"><span class="s"></span>SOLARA</div><div class="nl"><a href="#">Solar</a><a href="#">Storage</a><a href="#">Pricing</a><a href="#">Stories</a></div><a class="pill" href="#">Get power</a></nav>
   <header class="hero">
-    <div>
-      <div class="eyebrow">Revenue analytics</div>
-      <h1>Revenue,<br>in real time.</h1>
-      <p class="sub">CADENCE streams every sale, refund and renewal into one live view. No overnight batch, no stale numbers. Watch it move.</p>
-      <div class="row"><a class="btn solid" href="#">Start free</a><a class="btn ghost" href="#">Book a demo</a></div>
-    </div>
-    <div class="dash" id="dash">
-      <div class="dhead">
-        <div class="tabs"><button class="tab on">Overview</button><button class="tab">Revenue</button><button class="tab">Users</button></div>
-        <div class="live"><span class="dot"></span>Live</div>
+    <div class="eyebrow">Powering tomorrow</div>
+    <h1>Renewable power,<br><em>infinitely clean.</em></h1>
+    <p class="sub">Designing, deploying and servicing solar for homes and businesses worldwide. See what the sun could save you.</p>
+    <div class="calc">
+      <h2>See what the sun could save you</h2>
+      <div class="p">Drag to match your average monthly electricity bill. We size a system to your usage.</div>
+      <div class="slabel"><span class="k">Average monthly bill</span><span class="v" id="bill">$180</span></div>
+      <input type="range" id="slider" min="60" max="400" value="180" step="10">
+      <div class="tiles">
+        <div class="tile"><div class="tv g" id="t1">$0</div><div class="tl">Estimated savings / year</div></div>
+        <div class="tile"><div class="tv g" id="t2">$0</div><div class="tl">25-year savings</div></div>
+        <div class="tile"><div class="tv o" id="t3">0 yrs</div><div class="tl">Payback period</div></div>
+        <div class="tile"><div class="tv" id="t4">0 t</div><div class="tl">CO₂ offset / year</div></div>
       </div>
-      <div class="kpi"><span class="v" id="kpi" data-to="284120">$0</span><span class="badge" id="kbadge">+0%</span></div>
-      <div class="klabel">Net revenue · this month</div>
-      <svg class="chart" id="chart" viewBox="0 0 320 150" preserveAspectRatio="none">
-        <defs><linearGradient id="grad" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#5b5bf5" stop-opacity=".28"/><stop offset="1" stop-color="#5b5bf5" stop-opacity="0"/></linearGradient></defs>
-        <path class="area" id="area" d=""></path><path class="line" id="line" d=""></path>
-        <circle class="enddot" id="enddot" r="4" cx="0" cy="0"></circle>
-      </svg>
-      <div class="mini">
-        <div class="mcell"><div class="mv" id="m1" data-to="1284">0</div><div class="ml">New customers</div></div>
-        <div class="mcell"><div class="mv" id="m2" data-to="96">0%</div><div class="ml">Retention</div></div>
-        <div class="mcell"><div class="mv" id="m3" data-to="42">0s</div><div class="ml">Avg. response</div></div>
-      </div>
-      <div class="bars" id="bars"></div>
+      <div class="cta-row"><a class="btn solid" href="#">Start in minutes</a><a class="btn ghost" href="#">Talk to an expert</a></div>
     </div>
   </header>
+  <section class="steps">
+    <div class="step"><div class="n">01</div><h3>Free assessment</h3><p>Share your address and a recent bill. We model your roof, sun hours and savings, no visit required.</p></div>
+    <div class="step"><div class="n">02</div><h3>Pro install</h3><p>Certified crews handle permits, panels, storage and grid hookup. Most homes live within a day.</p></div>
+    <div class="step"><div class="n">03</div><h3>Earn &amp; save</h3><p>Watch your bill shrink and sell surplus back to the grid. SOLARA keeps optimizing automatically.</p></div>
+  </section>
 </div>
+<footer class="wrap"><div class="brand" style="font-size:16px"><span class="s"></span>SOLARA</div><div>Clean power for homes and business.</div><div>© 2026 · a concept brand</div></footer>
 <script>
-/* count-up */
-function countUp(el,to,pre,suf,dur){ const t0=performance.now(); pre=pre||''; suf=suf||''; dur=dur||1400;
-  function step(now){ let p=Math.min(1,(now-t0)/dur); p=1-Math.pow(1-p,3); const v=Math.round(to*p);
+const slider=document.getElementById('slider'), billEl=document.getElementById('bill');
+const t1=document.getElementById('t1'),t2=document.getElementById('t2'),t3=document.getElementById('t3'),t4=document.getElementById('t4');
+const anim={};
+function tween(el,to,pre,suf,dur){ const key=el.id; const from=anim[key]||0; anim[key]=to; const t0=performance.now(); dur=dur||500;
+  function step(now){ let p=Math.min(1,(now-t0)/dur); p=1-Math.pow(1-p,3); const v=Math.round(from+(to-from)*p);
     el.textContent=pre+v.toLocaleString()+suf; if(p<1) requestAnimationFrame(step); }
-  requestAnimationFrame(step);
-  setTimeout(()=>{ el.textContent=pre+to.toLocaleString()+suf; }, dur+60); }  // timer fallback if rAF throttled
-countUp(document.getElementById('kpi'),284120,'$','',1600);
-countUp(document.getElementById('m1'),1284,'','',1400);
-countUp(document.getElementById('m2'),96,'','%',1400);
-countUp(document.getElementById('m3'),42,'','s',1400);
-let bp=0; const kb=document.getElementById('kbadge');
-(function badge(){ const iv=setInterval(()=>{ bp+=1.4; kb.textContent='+'+bp.toFixed(1)+'%'; if(bp>=12.4){clearInterval(iv);kb.textContent='+12.4%';} },90); })();
-
-/* line chart (draws, then lives) */
-const W=320,H=150; let data=Array.from({length:16},(_,i)=>40+Math.sin(i*0.6)*18+Math.random()*22+i*2.2);
-const line=document.getElementById('line'), area=document.getElementById('area'), enddot=document.getElementById('enddot');
-function pts(){ const max=Math.max(...data), min=Math.min(...data), R=max-min||1;
-  return data.map((v,i)=>[ i/(data.length-1)*W, H-8-((v-min)/R)*(H-30) ]); }
-function draw(){ const p=pts();
-  const d='M'+p.map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' L ');
-  line.setAttribute('d',d); area.setAttribute('d',d+` L ${W} ${H} L 0 ${H} Z`);
-  const e=p[p.length-1]; enddot.setAttribute('cx',e[0]); enddot.setAttribute('cy',e[1]); }
-draw();
-const len=line.getTotalLength?line.getTotalLength():600;
-line.style.strokeDasharray=len; line.style.strokeDashoffset=len;
-line.style.transition='stroke-dashoffset 1.6s ease'; requestAnimationFrame(()=>line.style.strokeDashoffset=0);
-setTimeout(()=>{ line.style.strokeDashoffset=0; },1700);
-setInterval(()=>{ data.push(data[data.length-1]+(Math.random()*24-9)); data.shift(); if(data[data.length-1]<20)data[data.length-1]=20; draw(); }, 2100);
-
-/* bars grow */
-const bars=document.getElementById('bars');
-bars.innerHTML=Array.from({length:14},()=>'<i></i>').join('');
-setTimeout(()=>[...bars.children].forEach((b,i)=>{ b.style.transitionDelay=(i*0.05)+'s'; b.style.height=(28+Math.random()*72)+'%'; }),200);
-
-/* mouse parallax tilt */
-const dash=document.getElementById('dash');
-addEventListener('pointermove',e=>{ const rx=(e.clientY/innerHeight-0.5)*-5, ry=(e.clientX/innerWidth-0.5)*6;
-  dash.style.transform='perspective(900px) rotateX('+rx+'deg) rotateY('+ry+'deg)'; },{passive:true});
-
-/* tabs */
-document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on')); t.classList.add('on');
-  data=Array.from({length:16},(_,i)=>40+Math.random()*70+i*1.5); draw(); }));
-
-window.__cadence=()=>({kpi:document.getElementById('kpi').textContent, bars:bars.children.length, dataPts:data.length,
-  lineDrawn:line.getAttribute('d').length>10, tabs:document.querySelectorAll('.tab').length});
+  requestAnimationFrame(step); setTimeout(()=>{el.textContent=pre+Math.round(to).toLocaleString()+suf;},dur+40); }
+function update(){ const bill=+slider.value; billEl.textContent='$'+bill;
+  const f=((bill-60)/(400-60)*100).toFixed(0); slider.style.setProperty('--f',f+'%');
+  const yearly=Math.round(bill*12*0.72), y25=Math.round(yearly*25*1.35), pay=Math.max(4,Math.round(14000/Math.max(1,yearly)*10)), co2=(bill*0.052).toFixed(1);
+  tween(t1,yearly,'$',''); tween(t2,y25,'$',''); t3.textContent=(pay/10).toFixed(1)+' yrs'; t4.textContent=co2+' t';
+}
+slider.addEventListener('input',update);
+update();
+window.__solara=()=>({bill:+slider.value, yearly:t1.textContent, steps:document.querySelectorAll('.step').length, tiles:document.querySelectorAll('.tile').length});
 </script>
 </body>
 </html>
