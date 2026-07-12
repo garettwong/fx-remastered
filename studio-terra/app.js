@@ -15,40 +15,44 @@ document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click
 if (reduce) {
   gsap.set('.reveal,.hcenter>*,.prop,.fmark', { opacity: 1 });
 } else {
-  // HERO entrance
+  // HERO title entrance
   gsap.fromTo('.hcenter > *', { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out', stagger: 0.12, delay: 0.35 });
+
+  // HERO props — entrance, continuous idle float (always alive), and scroll drift
   const props = gsap.utils.toArray('.prop');
   props.forEach((p, i) => {
-    const r = getComputedStyle(p).transform;
-    gsap.fromTo(p, { opacity: 0, scale: 0.5, y: 70 }, { opacity: 1, scale: 1, y: 0, duration: 1.2, ease: 'power4.out', delay: 0.15 + i * 0.1 });
+    gsap.fromTo(p, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 1.2, ease: 'power4.out', delay: 0.12 + i * 0.07 });
+    // gentle forever-float, each prop with its own rhythm
+    gsap.to(p, {
+      y: gsap.utils.random(-18, -9), duration: gsap.utils.random(2.6, 4.4),
+      yoyo: true, repeat: -1, ease: 'sine.inOut', delay: gsap.utils.random(0, 1.4)
+    });
     // parallax drift as the hero scrolls away
     gsap.to(p, {
-      yPercent: -42 - i * 12, xPercent: (i % 2 ? 10 : -10), ease: 'none',
+      yPercent: -38 - i * 6, xPercent: (i % 2 ? 9 : -9), ease: 'none',
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
     });
   });
 
-  // generic reveals
+  // section reveals — reversible, so scrolling back up then down replays them
   gsap.utils.toArray('.reveal').forEach(el => gsap.fromTo(el, { opacity: 0, y: 46 }, {
     opacity: 1, y: 0, duration: 1, ease: 'power3.out',
-    scrollTrigger: { trigger: el, start: 'top 84%' }
+    scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none reverse' }
   }));
 
-  // making heading
-  gsap.from('.mhead > *', {
-    opacity: 0, y: 32, duration: 1, ease: 'power3.out', stagger: 0.12,
-    scrollTrigger: { trigger: '.making', start: 'top 72%' }
+  // making heading — reversible
+  gsap.fromTo('.mhead > *', { opacity: 0, y: 32 }, {
+    opacity: 1, y: 0, duration: 1, ease: 'power3.out', stagger: 0.12,
+    scrollTrigger: { trigger: '.making', start: 'top 74%', toggleActions: 'play none none reverse' }
   });
 
-  // THE GALLERY — process shots cascade into their scattered layout on scroll (GSAP ScrollTrigger)
-  const cards = gsap.utils.toArray('.gcard');
-  cards.forEach(c => {
-    // preserve each card's resting tilt (set on the element) while animating in
-    gsap.from(c, {
-      opacity: 0, yPercent: 26, scale: 0.9,
-      duration: 1.1, ease: 'power3.out',
-      scrollTrigger: { trigger: c, start: 'top 88%' }
-    });
+  // THE ZIG-ZAG GALLERY — cards slide in from alternating sides, scrubbed by scroll (reverses on scroll-up)
+  gsap.utils.toArray('.gcard').forEach(c => {
+    const dir = c.classList.contains('g-l') ? -1 : c.classList.contains('g-r') ? 1 : 0;
+    gsap.fromTo(c,
+      { opacity: 0, x: dir * 130, y: 70, scale: 0.9 },
+      { opacity: 1, x: 0, y: 0, scale: 1, ease: 'power2.out',
+        scrollTrigger: { trigger: c, start: 'top 94%', end: 'top 56%', scrub: 0.6 } });
     // subtle parallax inside each framed image
     gsap.to(c.querySelector('img'), {
       yPercent: -8, ease: 'none',
@@ -56,9 +60,9 @@ if (reduce) {
     });
   });
 
-  // footer wordmark
+  // footer wordmark — reversible
   gsap.fromTo('.fmark', { opacity: 0, y: 46 }, {
     opacity: 1, y: 0, duration: 1.2, ease: 'power3.out',
-    scrollTrigger: { trigger: '.fmark', start: 'top 90%' }
+    scrollTrigger: { trigger: '.fmark', start: 'top 92%', toggleActions: 'play none none reverse' }
   });
 }
