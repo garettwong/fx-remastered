@@ -67,7 +67,7 @@ h1,h2{font-family:var(--disp);font-weight:300;line-height:1.03;letter-spacing:-.
 .cascade{position:relative;max-width:1080px;margin:0 auto;padding:0 clamp(18px,4vw,40px)}
 .gcard{position:relative;width:clamp(230px,34vw,430px);margin-bottom:clamp(-40px,-4vw,-20px);
   background:#fff;padding:10px;border-radius:10px;box-shadow:0 40px 70px -34px rgba(44,30,20,.55);border:1px solid rgba(255,255,255,.7);will-change:transform}
-.gcard img{border-radius:4px;width:100%;aspect-ratio:4/3;object-fit:cover;cursor:zoom-in}
+.gcard img{border-radius:4px;width:100%;aspect-ratio:4/3;object-fit:cover;cursor:pointer}
 .gcard figcaption{font-family:var(--disp);font-style:italic;font-size:clamp(16px,1.35vw,20px);color:var(--ink);opacity:.72;padding:13px 4px 4px}
 .gcard.g-l{margin-right:auto;transform:rotate(-3deg)}
 .gcard.g-r{margin-left:auto;transform:rotate(3deg)}
@@ -106,10 +106,10 @@ h1,h2{font-family:var(--disp);font-weight:300;line-height:1.03;letter-spacing:-.
 /* click-to-enlarge lightbox */
 .lightbox{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:5vw;
   background:rgba(24,17,11,.93);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
-  opacity:0;visibility:hidden;transition:opacity .35s;cursor:zoom-out}
+  opacity:0;visibility:hidden;transition:opacity .35s;cursor:pointer}
 .lightbox.open{opacity:1;visibility:visible}
 .lightbox img{max-width:94vw;max-height:88vh;border-radius:8px;box-shadow:0 40px 90px rgba(0,0,0,.6);
-  transform:scale(.93);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+  transform:scale(.93);transition:transform .4s cubic-bezier(.16,1,.3,1);cursor:default}
 .lightbox.open img{transform:scale(1)}
 .lbx{position:absolute;top:20px;right:24px;width:46px;height:46px;border:none;border-radius:50%;cursor:pointer;
   background:rgba(255,255,255,.12);color:#fff;font-size:26px;line-height:1;display:flex;align-items:center;justify-content:center;transition:background .2s}

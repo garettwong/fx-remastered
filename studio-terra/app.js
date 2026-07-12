@@ -82,7 +82,6 @@ if (reduce) {
     document.documentElement.style.overflow = '';
   }
   document.querySelectorAll('.gcard img').forEach(function (img) {
-    img.style.cursor = 'zoom-in';
     img.addEventListener('click', function () { open(img.currentSrc || img.src, img.alt); });
   });
   lb.addEventListener('click', function (e) { if (e.target !== lbImg) close(); });
