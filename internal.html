@@ -1,127 +1,177 @@
 <!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FX Collection — internal (with sources)</title>
-<meta name="description" content="A collection of premium interactive web builds across fourteen effect families — original concepts, real motion.">
+<title>The Collection — internal (with sources)</title>
+<meta name="description" content="A working collection of premium interactive web builds across fourteen effect families — original concepts, real motion.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#141011;--panel:#1d1719;--ink:#efe7db;--muted:#9a8f86;--accent:#c07a58;--hair:rgba(239,231,219,.09)}
-body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;line-height:1.6}
-.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(22px,5vw,60px)}
-header{padding:clamp(60px,12vh,138px) 0 clamp(28px,5vh,56px)}
-.eyebrow{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.ibadge{font-size:10px;letter-spacing:.1em;color:var(--muted);border:1px solid var(--hair);border-radius:20px;padding:3px 10px}
-h1{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(40px,6.6vw,86px);line-height:1.01;letter-spacing:-.02em;max-width:17ch}
-.lead{margin-top:26px;color:var(--muted);font-size:clamp(16px,1.6vw,20px);max-width:58ch;line-height:1.7}
-.stats{display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,56px);margin-top:42px;padding-top:30px;border-top:1px solid var(--hair)}
-.stat .n{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(30px,3.2vw,46px);color:var(--ink)}
-.stat .l{font-size:12.5px;color:var(--muted);letter-spacing:.04em;margin-top:4px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:clamp(16px,2vw,26px);padding:clamp(30px,5vh,50px) 0 clamp(66px,12vh,128px)}
-.card{position:relative;display:block;text-decoration:none;color:inherit;background:var(--panel);border:1px solid var(--hair);border-radius:16px;overflow:hidden;transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s,border-color .5s}
-.card.live:hover{transform:translateY(-6px);box-shadow:0 34px 60px -30px rgba(0,0,0,.7);border-color:rgba(192,122,88,.45)}
-.thumb{aspect-ratio:16/10;position:relative;overflow:hidden}
+:root{--bg:#141011;--panel:#1e1719;--ink:#efe7db;--muted:#9a8f86;--accent:#c07a58;--hair:rgba(239,231,219,.09)}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased}
+.binding{position:fixed;top:0;bottom:0;left:0;width:46px;z-index:6;pointer-events:none;opacity:.72;
+  background-image:radial-gradient(circle at 23px 17px,transparent 6px,rgba(192,122,88,.5) 6.5px,rgba(192,122,88,.5) 8px,transparent 8.5px);
+  background-size:46px 34px;background-repeat:repeat-y}
+.wrap{max-width:1340px;margin:0 auto;padding:0 clamp(30px,4vw,66px) 0 clamp(58px,6vw,86px)}
+header{padding:clamp(48px,9vh,104px) 0 clamp(22px,4vh,42px)}
+.trow{display:flex;align-items:flex-end;gap:clamp(18px,3vw,40px);flex-wrap:wrap}
+.collection{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(46px,8.5vw,116px);line-height:.92;letter-spacing:-.025em}
+.metaline{flex:1;min-width:200px;color:var(--muted);font-size:13px;letter-spacing:.06em;text-transform:uppercase;border-top:1px solid var(--hair);padding-top:12px;margin-bottom:14px}
+.sub{margin-top:22px;color:var(--muted);font-size:clamp(15px,1.5vw,19px);max-width:60ch;line-height:1.7}
+main{display:grid;grid-template-columns:1fr clamp(190px,16vw,244px);gap:clamp(28px,4vw,60px);align-items:start;padding-bottom:clamp(56px,10vh,116px)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(15px,1.5vw,20px)}
+.card{position:relative;display:block;text-decoration:none;color:inherit;background:var(--panel);border:1px solid var(--hair);border-radius:14px;overflow:hidden;
+  transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s,border-color .5s}
+.card.feat{grid-column:span 2;grid-row:span 2}
+.card.live:hover{transform:translateY(-5px);box-shadow:0 30px 56px -28px rgba(0,0,0,.7);border-color:rgba(192,122,88,.5)}
+.card.flash{border-color:rgba(192,122,88,.75)}
+.thumb{position:relative;overflow:hidden;aspect-ratio:16/10}
+.card.feat .thumb{aspect-ratio:16/9}
 .thumb img{width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.16,1,.3,1)}
-.card.live:hover .thumb img{transform:scale(1.05)}
-.thumb.ph{display:flex;align-items:flex-end;padding:20px}
-.thumb.ph .phname{font-family:'Fraunces',serif;font-size:clamp(20px,2vw,26px);color:rgba(255,255,255,.86)}
-.status{position:absolute;top:14px;left:14px;z-index:2;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:5px 11px;border-radius:20px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-.status.live{background:rgba(120,200,120,.18);color:#c4e8c4;border:1px solid rgba(150,220,150,.3)}
-.status.soon{background:rgba(255,255,255,.08);color:var(--muted);border:1px solid var(--hair)}
-.cbody{padding:18px 20px 22px}
-.ctag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
-.ctitle{font-family:'Fraunces',serif;font-size:clamp(21px,1.7vw,25px);margin:8px 0 7px}
-.cdesc{color:var(--muted);font-size:13.5px;line-height:1.55}
-.cfoot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-size:12.5px}
-.ccount{color:var(--muted)}
-.cgo{color:var(--ink)}.cgo.soon{color:var(--muted)}
-.csrc{display:inline-block;margin-top:12px;color:#84b3df;text-decoration:none;font-size:12px}
-.csrc:hover{text-decoration:underline}
-footer{border-top:1px solid var(--hair);padding:34px 0 60px;color:var(--muted);font-size:12.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.card.live:hover .thumb img{transform:scale(1.04)}
+.thumb.ph{display:flex;align-items:flex-end;padding:18px}
+.thumb.ph .phn{font-family:'Fraunces',serif;font-size:clamp(18px,1.8vw,24px);color:rgba(255,255,255,.85)}
+.badge{position:absolute;top:12px;left:12px;z-index:2;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:20px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.badge.live{background:rgba(120,200,120,.18);color:#c4e8c4;border:1px solid rgba(150,220,150,.3)}
+.badge.soon{background:rgba(255,255,255,.08);color:var(--muted);border:1px solid var(--hair)}
+.badge.feat{left:auto;right:12px;background:rgba(192,122,88,.92);color:#1a1310;font-weight:500;border:none}
+.cb{padding:16px 18px 20px}
+.card.feat .cb{padding:24px clamp(24px,2.2vw,34px) 30px}
+.tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.tt{font-family:'Fraunces',serif;font-size:clamp(19px,1.5vw,23px);margin:7px 0 6px}
+.card.feat .tt{font-size:clamp(30px,3.4vw,52px);margin:10px 0 12px}
+.dd{color:var(--muted);font-size:13px;line-height:1.55}
+.card.feat .dd{font-size:clamp(14px,1.15vw,17px);max-width:48ch;line-height:1.65}
+.feats{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.feats span{font-size:11.5px;color:var(--ink);border:1px solid var(--hair);border-radius:20px;padding:6px 12px}
+.cf{display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-size:12.5px}
+.cf .ct{color:var(--muted)}.cf .go{color:var(--ink)}.cf .go.soon{color:var(--muted)}
+.src{display:inline-block;margin-top:12px;color:#84b3df;text-decoration:none;font-size:12px}
+.src:hover{text-decoration:underline}
+.rail{position:sticky;top:28px;align-self:start}
+.railh{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.ri{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--muted);padding:7px 0;font-size:13.5px;transition:color .25s}
+.ri:hover,.ri.active{color:var(--ink)}
+.ri .rn{font-family:'Fraunces',serif;font-size:12px;color:var(--accent);width:22px;flex:0 0 auto}
+.ri .rl{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ri .rk{width:16px;height:1px;background:var(--hair);flex:0 0 auto;transition:width .25s,background .25s}
+.ri:hover .rk,.ri.active .rk{width:28px;background:var(--accent)}
+.scrollcue{margin-top:24px;padding-top:18px;border-top:1px solid var(--hair);color:var(--muted);font-size:11px;letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;gap:9px}
+.scrollcue b{font-weight:300;font-size:15px;animation:bob 2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+footer{border-top:1px solid var(--hair);padding:30px 0 56px;color:var(--muted);font-size:12.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media(max-width:920px){
+  main{grid-template-columns:1fr}.rail{display:none}
+  .grid{grid-template-columns:1fr 1fr}.card.feat{grid-column:span 2;grid-row:auto}
+  .binding{width:28px;background-size:28px 30px;background-position:14px 0}
+  .wrap{padding-left:clamp(38px,9vw,54px)}
+}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.card.feat{grid-column:span 1}.card.feat .tt{font-size:34px}}
 </style></head><body>
+<div class="binding" aria-hidden="true"></div>
 <header class="wrap">
-  <div class="eyebrow">Interactive Web FX · Studio Builds <span class="ibadge">Internal · with sources</span></div>
-  <h1>A working collection of premium web motion.</h1>
-  <p class="lead">Fourteen families of interactive effect, each rebuilt as an original concept with real motion — GSAP, WebGL and generated media. The first is shipped; the rest are in production.</p>
-  <div class="stats">
-    <div class="stat"><div class="n">14</div><div class="l">Effect families</div></div>
-    <div class="stat"><div class="n">1</div><div class="l">Shipped</div></div>
-    <div class="stat"><div class="n">13</div><div class="l">In production</div></div>
-    <div class="stat"><div class="n">120</div><div class="l">Source references</div></div>
-  </div>
+  <div class="trow"><div class="collection">Collection</div>
+    <div class="metaline">Interactive Web FX · internal, with sources<br>14 families · 120 references · 1 shipped · 13 in production</div></div>
+  <p class="sub">Fourteen families of interactive effect, each rebuilt as an original concept with real motion — GSAP, WebGL and generated media. The first is shipped; the rest are in production.</p>
 </header>
-<main class="wrap"><div class="grid">
-<a class="card live" href="studio-terra/">
-        <div class="thumb"><span class="status live">Live</span><img src="studio-terra/img/shelf.jpg" alt="Studio Terra"></div>
-        <div class="cbody"><div class="ctag">01 · Scroll story · GSAP</div><div class="ctitle">Studio Terra</div>
-        <div class="cdesc">Handmade-ceramics long-scroll with a zig-zag GSAP gallery, idle-float hero and click-to-enlarge.</div>
-        <div class="cfoot"><span class="ccount">28 references</span><span class="cgo">Open →</span></div><a class="csrc" href="https://x.com/n_code99/status/2069080650196373583" target="_blank" rel="noopener">Reference ↗</a></div></a>
-<div class="card">
-      <div class="thumb ph" style="background:linear-gradient(135deg,#3a2a4a,#1c1330)"><span class="status soon">In production</span><span class="phname">3D &amp; WebGL</span></div>
-      <div class="cbody"><div class="ctag">02 · 3D · WebGL</div><div class="ctitle">3D &amp; WebGL</div>
-      <div class="cdesc">Draggable galleries, refractive glass objects and orbiting point clouds — real WebGL depth.</div>
-      <div class="cfoot"><span class="ccount">22 references</span><span class="cgo soon">Soon</span></div><a class="csrc" href="https://x.com/lokidotdev/status/2073872665140691345" target="_blank" rel="noopener">Reference ↗</a></div>
-<div class="card">
-      <div class="thumb ph" style="background:linear-gradient(135deg,#4a2a38,#2a1320)"><span class="status soon">In production</span><span class="phname">Cursor Reactive</span></div>
-      <div class="cbody"><div class="ctag">03 · Pointer FX</div><div class="ctitle">Cursor Reactive</div>
-      <div class="cdesc">The page answers the pointer — magnetic pulls, spotlights, light trails and reveal masks.</div>
-      <div class="cfoot"><span class="ccount">19 references</span><span class="cgo soon">Soon</span></div><a class="csrc" href="https://x.com/TusharSoni014/status/2074851980015726945" target="_blank" rel="noopener">Reference ↗</a></div>
-<div class="card">
-      <div class="thumb ph" style="background:linear-gradient(135deg,#26384a,#101f2c)"><span class="status soon">In production</span><span class="phname">Shader &amp; Liquid</span></div>
-      <div class="cbody"><div class="ctag">04 · GLSL · Canvas</div><div class="ctitle">Shader &amp; Liquid</div>
-      <div class="cdesc">Procedural liquid, blobs and mesh gradients rendered as real shaders, not CSS imitations.</div>
-      <div class="cfoot"><span class="ccount">17 references</span><span class="cgo soon">Soon</span></div><a class="csrc" href="https://x.com/roohbuilds/status/2071278672041185783" target="_blank" rel="noopener">Reference ↗</a></div>
-<div class="card">
-      <div class="thumb ph" style="background:linear-gradient(135deg,#2a2a40,#141420)"><span class="status soon">In production</span><span class="phname">Particle Fields</span></div>
-      <div class="cbody"><div class="ctag">05 · Particles</div><div class="ctitle">Particle Fields</div>
-      <div class="cdesc">Type and fields that gather, scatter and reform from thousands of points.</div>
-      <div class="cfoot"><span class="ccount">11 references</span><span class="cgo soon">Soon</span></div><a class="csrc" href="https://x.com/meridianfifteen/status/2074547791771078924" target="_blank" rel="noopener">Reference ↗</a></div>
-<div class="card">
-      <div class="thumb ph" style="background:linear-gradient(135deg,#2e2a40,#181624)"><span class="status soon">In production</span><span class="phname">Dashboard Motion</span></div>
-      <div class="cbody"><div class="ctag">06 · SaaS · UI</div><div class="ctitle">Dashboard Motion</div>
-      <div class="cdesc">Product heroes with coordinated UI motion — device mockups, live metrics, tool flows.</div>
-      <div class="cfoot"><span class="ccount">11 references</span><span class="cgo soon">Soon</span></div><a class="csrc" href="https://x.com/thijs_smudde/status/2075362861673586881" target="_blank" rel="noopener">Reference ↗</a></div>
-<div class="card">
-      <div class="thumb ph" style="background:linear-gradient(135deg,#24343c,#121d22)"><span class="status soon">In production</span><span class="phname">Networks &amp; Maps</span></div>
-      <div class="cbody"><div class="ctag">07 · Globe · Flow</div><div class="ctitle">Networks &amp; Maps</div>
-      <div class="cdesc">Interactive globes, connection networks and routed flow diagrams, asset-free.</div>
-      <div class="cfoot"><span class="ccount">10 references</span><span class="cgo soon">Soon</span></div><a class="csrc" href="https://x.com/LineCode_LC/status/2074103918339240172" target="_blank" rel="noopener">Reference ↗</a></div>
-<div class="card">
-      <div class="thumb ph" style="background:linear-gradient(135deg,#3a2f3c,#1e1722)"><span class="status soon">In production</span><span class="phname">Atmospheric Scenes</span></div>
-      <div class="cbody"><div class="ctag">08 · Illustration</div><div class="ctitle">Atmospheric Scenes</div>
-      <div class="cdesc">Living scenes — drifting petals, light, water and gardens that breathe with scroll.</div>
-      <div class="cfoot"><span class="ccount">10 references</span><span class="cgo soon">Soon</span></div><a class="csrc" href="https://x.com/jasonsturges/status/2075456969167528273" target="_blank" rel="noopener">Reference ↗</a></div>
-<div class="card">
-      <div class="thumb ph" style="background:linear-gradient(135deg,#332a3c,#1a1424)"><span class="status soon">In production</span><span class="phname">Loaders &amp; Transitions</span></div>
-      <div class="cbody"><div class="ctag">09 · Intro · Wipe</div><div class="ctitle">Loaders &amp; Transitions</div>
-      <div class="cdesc">Cinematic preloaders and page transitions that set the tone before the first scroll.</div>
-      <div class="cfoot"><span class="ccount">7 references</span><span class="cgo soon">Soon</span></div><a class="csrc" href="https://x.com/BhumanyuKamboj/status/2074742781558308904" target="_blank" rel="noopener">Reference ↗</a></div>
-<div class="card">
-      <div class="thumb ph" style="background:linear-gradient(135deg,#3a3126,#211a14)"><span class="status soon">In production</span><span class="phname">Product Reveals</span></div>
-      <div class="cbody"><div class="ctag">10 · Exploded</div><div class="ctitle">Product Reveals</div>
-      <div class="cdesc">Products that reveal, rotate and explode into their parts as the story scrolls.</div>
-      <div class="cfoot"><span class="ccount">4 references</span><span class="cgo soon">Soon</span></div><a class="csrc" href="https://x.com/Cloud9inepro/status/2065755307473592403" target="_blank" rel="noopener">Reference ↗</a></div>
-<div class="card">
-      <div class="thumb ph" style="background:linear-gradient(135deg,#26383a,#12201f)"><span class="status soon">In production</span><span class="phname">Glass &amp; Refraction</span></div>
-      <div class="cbody"><div class="ctag">11 · Glassmorphism</div><div class="ctitle">Glass &amp; Refraction</div>
-      <div class="cdesc">Refractive panes, frosted depth and holographic tilt.</div>
-      <div class="cfoot"><span class="ccount">3 references</span><span class="cgo soon">Soon</span></div><a class="csrc" href="https://x.com/wadadawadada/status/2073410734805922141" target="_blank" rel="noopener">Reference ↗</a></div>
-<div class="card">
-      <div class="thumb ph" style="background:linear-gradient(135deg,#3a2e28,#201713)"><span class="status soon">In production</span><span class="phname">Kinetic Type</span></div>
-      <div class="cbody"><div class="ctag">12 · Typography</div><div class="ctitle">Kinetic Type</div>
-      <div class="cdesc">Headlines that reveal, scramble and split into colour on cue.</div>
-      <div class="cfoot"><span class="ccount">3 references</span><span class="cgo soon">Soon</span></div><a class="csrc" href="https://x.com/ripplix_/status/2075490287699267682" target="_blank" rel="noopener">Reference ↗</a></div>
-<div class="card">
-      <div class="thumb ph" style="background:linear-gradient(135deg,#3a3a26,#201f14)"><span class="status soon">In production</span><span class="phname">Tactile Buttons</span></div>
-      <div class="cbody"><div class="ctag">13 · CTA</div><div class="ctitle">Tactile Buttons</div>
-      <div class="cdesc">Buttons with real feel — jelly stretch, liquid-glass and particle bursts.</div>
-      <div class="cfoot"><span class="ccount">3 references</span><span class="cgo soon">Soon</span></div><a class="csrc" href="https://x.com/kaolti/status/2075201702412915116" target="_blank" rel="noopener">Reference ↗</a></div>
-<div class="card">
-      <div class="thumb ph" style="background:linear-gradient(135deg,#2a3a30,#14201a)"><span class="status soon">In production</span><span class="phname">Character &amp; Mascot</span></div>
-      <div class="cbody"><div class="ctag">14 · Mascot</div><div class="ctitle">Character &amp; Mascot</div>
-      <div class="cdesc">Character-led navigation and mascots that watch, walk and react.</div>
-      <div class="cfoot"><span class="ccount">2 references</span><span class="cgo soon">Soon</span></div><a class="csrc" href="https://x.com/ripplix_/status/2075565872412786928" target="_blank" rel="noopener">Reference ↗</a></div>
-</div></main>
+<main class="wrap">
+  <div class="grid">
+<a class="card feat live" id="cat-1" href="studio-terra/">
+        <div class="thumb"><span class="badge live">Live</span><span class="badge feat">Featured</span><img src="studio-terra/img/highlight.jpg" alt="Studio Terra"></div>
+        <div class="cb"><div class="tag">01 · Scroll story · GSAP</div><div class="tt">Studio Terra</div>
+        <div class="dd">A handmade-ceramics long-scroll: floating hero props, a zig-zag gallery that assembles on scroll, and click-to-enlarge process shots.</div><div class="feats"><span>Zig-zag GSAP gallery</span><span>Idle-float hero</span><span>Click-to-enlarge</span></div>
+        <div class="cf"><span class="ct">28 references</span><span class="go">Open build →</span></div><a class="src" href="https://x.com/n_code99/status/2069080650196373583" target="_blank" rel="noopener">Reference ↗</a></div></a>
+<div class="card" id="cat-2">
+      <div class="thumb ph" style="background:linear-gradient(135deg,#3a2a4a,#1c1330)"><span class="badge soon">In production</span><span class="phn">3D &amp; WebGL</span></div>
+      <div class="cb"><div class="tag">02 · 3D · WebGL</div><div class="tt">3D &amp; WebGL</div>
+      <div class="dd">Draggable galleries, refractive glass objects and orbiting point clouds — real WebGL depth.</div>
+      <div class="cf"><span class="ct">22 references</span><span class="go soon">Soon</span></div><a class="src" href="https://x.com/lokidotdev/status/2073872665140691345" target="_blank" rel="noopener">Reference ↗</a></div>
+<div class="card" id="cat-3">
+      <div class="thumb ph" style="background:linear-gradient(135deg,#4a2a38,#2a1320)"><span class="badge soon">In production</span><span class="phn">Cursor Reactive</span></div>
+      <div class="cb"><div class="tag">03 · Pointer FX</div><div class="tt">Cursor Reactive</div>
+      <div class="dd">The page answers the pointer — magnetic pulls, spotlights, light trails and reveal masks.</div>
+      <div class="cf"><span class="ct">19 references</span><span class="go soon">Soon</span></div><a class="src" href="https://x.com/TusharSoni014/status/2074851980015726945" target="_blank" rel="noopener">Reference ↗</a></div>
+<div class="card" id="cat-4">
+      <div class="thumb ph" style="background:linear-gradient(135deg,#26384a,#101f2c)"><span class="badge soon">In production</span><span class="phn">Shader &amp; Liquid</span></div>
+      <div class="cb"><div class="tag">04 · GLSL · Canvas</div><div class="tt">Shader &amp; Liquid</div>
+      <div class="dd">Procedural liquid, blobs and mesh gradients as real shaders, not CSS imitations.</div>
+      <div class="cf"><span class="ct">17 references</span><span class="go soon">Soon</span></div><a class="src" href="https://x.com/roohbuilds/status/2071278672041185783" target="_blank" rel="noopener">Reference ↗</a></div>
+<div class="card" id="cat-5">
+      <div class="thumb ph" style="background:linear-gradient(135deg,#2a2a40,#141420)"><span class="badge soon">In production</span><span class="phn">Particle Fields</span></div>
+      <div class="cb"><div class="tag">05 · Particles</div><div class="tt">Particle Fields</div>
+      <div class="dd">Type and fields that gather, scatter and reform from thousands of points.</div>
+      <div class="cf"><span class="ct">11 references</span><span class="go soon">Soon</span></div><a class="src" href="https://x.com/meridianfifteen/status/2074547791771078924" target="_blank" rel="noopener">Reference ↗</a></div>
+<div class="card" id="cat-6">
+      <div class="thumb ph" style="background:linear-gradient(135deg,#2e2a40,#181624)"><span class="badge soon">In production</span><span class="phn">Dashboard Motion</span></div>
+      <div class="cb"><div class="tag">06 · SaaS · UI</div><div class="tt">Dashboard Motion</div>
+      <div class="dd">Product heroes with coordinated UI motion — device mockups, live metrics, tool flows.</div>
+      <div class="cf"><span class="ct">11 references</span><span class="go soon">Soon</span></div><a class="src" href="https://x.com/thijs_smudde/status/2075362861673586881" target="_blank" rel="noopener">Reference ↗</a></div>
+<div class="card" id="cat-7">
+      <div class="thumb ph" style="background:linear-gradient(135deg,#24343c,#121d22)"><span class="badge soon">In production</span><span class="phn">Networks &amp; Maps</span></div>
+      <div class="cb"><div class="tag">07 · Globe · Flow</div><div class="tt">Networks &amp; Maps</div>
+      <div class="dd">Interactive globes, connection networks and routed flow diagrams, asset-free.</div>
+      <div class="cf"><span class="ct">10 references</span><span class="go soon">Soon</span></div><a class="src" href="https://x.com/LineCode_LC/status/2074103918339240172" target="_blank" rel="noopener">Reference ↗</a></div>
+<div class="card" id="cat-8">
+      <div class="thumb ph" style="background:linear-gradient(135deg,#3a2f3c,#1e1722)"><span class="badge soon">In production</span><span class="phn">Atmospheric Scenes</span></div>
+      <div class="cb"><div class="tag">08 · Illustration</div><div class="tt">Atmospheric Scenes</div>
+      <div class="dd">Living scenes — drifting petals, light, water and gardens that breathe with scroll.</div>
+      <div class="cf"><span class="ct">10 references</span><span class="go soon">Soon</span></div><a class="src" href="https://x.com/jasonsturges/status/2075456969167528273" target="_blank" rel="noopener">Reference ↗</a></div>
+<div class="card" id="cat-9">
+      <div class="thumb ph" style="background:linear-gradient(135deg,#332a3c,#1a1424)"><span class="badge soon">In production</span><span class="phn">Loaders &amp; Transitions</span></div>
+      <div class="cb"><div class="tag">09 · Intro · Wipe</div><div class="tt">Loaders &amp; Transitions</div>
+      <div class="dd">Cinematic preloaders and page transitions that set the tone before the first scroll.</div>
+      <div class="cf"><span class="ct">7 references</span><span class="go soon">Soon</span></div><a class="src" href="https://x.com/BhumanyuKamboj/status/2074742781558308904" target="_blank" rel="noopener">Reference ↗</a></div>
+<div class="card" id="cat-10">
+      <div class="thumb ph" style="background:linear-gradient(135deg,#3a3126,#211a14)"><span class="badge soon">In production</span><span class="phn">Product Reveals</span></div>
+      <div class="cb"><div class="tag">10 · Exploded</div><div class="tt">Product Reveals</div>
+      <div class="dd">Products that reveal, rotate and explode into their parts as the story scrolls.</div>
+      <div class="cf"><span class="ct">4 references</span><span class="go soon">Soon</span></div><a class="src" href="https://x.com/Cloud9inepro/status/2065755307473592403" target="_blank" rel="noopener">Reference ↗</a></div>
+<div class="card" id="cat-11">
+      <div class="thumb ph" style="background:linear-gradient(135deg,#26383a,#12201f)"><span class="badge soon">In production</span><span class="phn">Glass &amp; Refraction</span></div>
+      <div class="cb"><div class="tag">11 · Glassmorphism</div><div class="tt">Glass &amp; Refraction</div>
+      <div class="dd">Refractive panes, frosted depth and holographic tilt.</div>
+      <div class="cf"><span class="ct">3 references</span><span class="go soon">Soon</span></div><a class="src" href="https://x.com/wadadawadada/status/2073410734805922141" target="_blank" rel="noopener">Reference ↗</a></div>
+<div class="card" id="cat-12">
+      <div class="thumb ph" style="background:linear-gradient(135deg,#3a2e28,#201713)"><span class="badge soon">In production</span><span class="phn">Kinetic Type</span></div>
+      <div class="cb"><div class="tag">12 · Typography</div><div class="tt">Kinetic Type</div>
+      <div class="dd">Headlines that reveal, scramble and split into colour on cue.</div>
+      <div class="cf"><span class="ct">3 references</span><span class="go soon">Soon</span></div><a class="src" href="https://x.com/ripplix_/status/2075490287699267682" target="_blank" rel="noopener">Reference ↗</a></div>
+<div class="card" id="cat-13">
+      <div class="thumb ph" style="background:linear-gradient(135deg,#3a3a26,#201f14)"><span class="badge soon">In production</span><span class="phn">Tactile Buttons</span></div>
+      <div class="cb"><div class="tag">13 · CTA</div><div class="tt">Tactile Buttons</div>
+      <div class="dd">Buttons with real feel — jelly stretch, liquid-glass and particle bursts.</div>
+      <div class="cf"><span class="ct">3 references</span><span class="go soon">Soon</span></div><a class="src" href="https://x.com/kaolti/status/2075201702412915116" target="_blank" rel="noopener">Reference ↗</a></div>
+<div class="card" id="cat-14">
+      <div class="thumb ph" style="background:linear-gradient(135deg,#2a3a30,#14201a)"><span class="badge soon">In production</span><span class="phn">Character &amp; Mascot</span></div>
+      <div class="cb"><div class="tag">14 · Mascot</div><div class="tt">Character &amp; Mascot</div>
+      <div class="dd">Character-led navigation and mascots that watch, walk and react.</div>
+      <div class="cf"><span class="ct">2 references</span><span class="go soon">Soon</span></div><a class="src" href="https://x.com/ripplix_/status/2075565872412786928" target="_blank" rel="noopener">Reference ↗</a></div>
+  </div>
+  <aside class="rail">
+    <div class="railh">Categories</div>
+    <a class="ri" href="#cat-1"><span class="rn">01</span><span class="rl">Studio Terra</span><span class="rk"></span></a>
+<a class="ri" href="#cat-2"><span class="rn">02</span><span class="rl">3D &amp; WebGL</span><span class="rk"></span></a>
+<a class="ri" href="#cat-3"><span class="rn">03</span><span class="rl">Cursor Reactive</span><span class="rk"></span></a>
+<a class="ri" href="#cat-4"><span class="rn">04</span><span class="rl">Shader &amp; Liquid</span><span class="rk"></span></a>
+<a class="ri" href="#cat-5"><span class="rn">05</span><span class="rl">Particle Fields</span><span class="rk"></span></a>
+<a class="ri" href="#cat-6"><span class="rn">06</span><span class="rl">Dashboard Motion</span><span class="rk"></span></a>
+<a class="ri" href="#cat-7"><span class="rn">07</span><span class="rl">Networks &amp; Maps</span><span class="rk"></span></a>
+<a class="ri" href="#cat-8"><span class="rn">08</span><span class="rl">Atmospheric Scenes</span><span class="rk"></span></a>
+<a class="ri" href="#cat-9"><span class="rn">09</span><span class="rl">Loaders &amp; Transitions</span><span class="rk"></span></a>
+<a class="ri" href="#cat-10"><span class="rn">10</span><span class="rl">Product Reveals</span><span class="rk"></span></a>
+<a class="ri" href="#cat-11"><span class="rn">11</span><span class="rl">Glass &amp; Refraction</span><span class="rk"></span></a>
+<a class="ri" href="#cat-12"><span class="rn">12</span><span class="rl">Kinetic Type</span><span class="rk"></span></a>
+<a class="ri" href="#cat-13"><span class="rn">13</span><span class="rl">Tactile Buttons</span><span class="rk"></span></a>
+<a class="ri" href="#cat-14"><span class="rn">14</span><span class="rl">Character &amp; Mascot</span><span class="rk"></span></a>
+    <div class="scrollcue">Scroll <b>↓</b></div>
+  </aside>
+</main>
 <footer class="wrap"><span>© 2026 · Studio builds · Original concepts, real motion.</span><span>Internal reference — do not share</span></footer>
+<script>
+(function(){var ris=[].slice.call(document.querySelectorAll('.ri'));var map={};ris.forEach(function(r){map[r.getAttribute('href').slice(1)]=r;});
+ris.forEach(function(r){r.addEventListener('click',function(e){var t=document.getElementById(r.getAttribute('href').slice(1));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'center'});t.classList.add('flash');setTimeout(function(){t.classList.remove('flash')},1400);}});});
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(en){var r=map[en.target.id];if(r&&en.isIntersecting){ris.forEach(function(x){x.classList.remove('active')});r.classList.add('active');}});},{rootMargin:'-42% 0px -50% 0px'});
+[].slice.call(document.querySelectorAll('.card[id]')).forEach(function(c){io.observe(c);});}
+})();
+</script>
 </body></html>
