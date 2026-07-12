@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PLEXUS — Systems That Respond</title>
+<meta name="description" content="PLEXUS builds systems that feel you. A live isometric grid that rises to your cursor.">
+<meta name="theme-color" content="#060608">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#eef1ff;--muted:rgba(238,241,255,.6);--line:rgba(238,241,255,.12);--accent:#4fe3ff;--disp:'Space Grotesk',sans-serif;--body:'Inter',sans-serif}
+html,body{height:100%}
+body{background:#060608;color:var(--ink);font-family:var(--body);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+#gl{position:fixed;inset:0;z-index:0;display:block}
+.scrim{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(90% 70% at 50% 30%,rgba(6,6,8,0) 40%,rgba(6,6,8,.72) 100%)}
+.wrap{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,56px);pointer-events:none}
+.wrap a{pointer-events:auto}
+nav{display:flex;align-items:center;justify-content:space-between;height:84px}
+.brand{font-family:var(--disp);font-weight:700;font-size:20px;letter-spacing:.14em}
+.nl{display:flex;gap:30px}.nl a{color:var(--muted);text-decoration:none;font-size:14px;transition:color .3s}.nl a:hover{color:var(--ink)}
+.tag{font-size:12px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.hero{min-height:calc(100vh - 84px);display:flex;flex-direction:column;justify-content:flex-start;padding:6vh 0 0;text-align:center;align-items:center}
+.eyebrow{font-family:var(--disp);font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:22px}
+h1{font-family:var(--disp);font-weight:600;font-size:clamp(42px,7.6vw,110px);line-height:.95;letter-spacing:-.03em}
+h1 em{font-style:normal;background:linear-gradient(120deg,var(--accent),#b06bff,#ff5db0);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sub{margin-top:22px;max-width:46ch;color:var(--muted);font-size:clamp(15px,1.5vw,18px);line-height:1.7}
+.hint{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:3;color:var(--muted);font-family:var(--disp);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
+@media(max-width:640px){.nl{display:none}}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div class="scrim"></div>
+<div class="wrap">
+  <nav><div class="brand">PLEXUS</div><div class="nl"><a href="#">Platform</a><a href="#">Systems</a><a href="#">Docs</a><a href="#">Contact</a></nav>
+  <header class="hero">
+    <div class="eyebrow">Responsive systems</div>
+    <h1>Systems that<br><em>feel</em> you.</h1>
+    <p class="sub">PLEXUS reacts in real time. This grid is not a video — every cell reads your cursor and rises to meet it. Move across it.</p>
+  </header>
+</div>
+<div class="hint">Move across the grid</div>
+<script>
+const cv=document.getElementById('gl'), ctx=cv.getContext('2d'); let W,H,DPR;
+function resize(){ DPR=Math.min(devicePixelRatio||1,2); W=cv.width=innerWidth*DPR; H=cv.height=innerHeight*DPR; cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px'; layout(); }
+const N=innerWidth<720?16:22;
+let TW,TH,ox,oy,maxH,R;
+function layout(){ TW=Math.min(W,H)*1.5/N; TH=TW*0.5; ox=W*0.5; oy=H*0.30; maxH=TW*1.6; R=Math.min(W,H)*0.26; }
+addEventListener('resize',resize);
+const mouse={x:-9999,y:-9999};
+addEventListener('pointermove',e=>{ mouse.x=e.clientX*DPR; mouse.y=e.clientY*DPR; },{passive:true});
+addEventListener('pointerleave',()=>{ mouse.x=mouse.y=-9999; });
+function lerp(a,b,t){return a+(b-a)*t;}
+function neon(t){ // 0..1 -> cyan->violet->magenta
+  t=Math.max(0,Math.min(1,t));
+  const c1=[79,227,255],c2=[168,107,255],c3=[255,93,176];
+  let r,g,b; if(t<0.5){const u=t/0.5; r=lerp(c1[0],c2[0],u);g=lerp(c1[1],c2[1],u);b=lerp(c1[2],c2[2],u);}
+  else{const u=(t-0.5)/0.5; r=lerp(c2[0],c3[0],u);g=lerp(c2[1],c3[1],u);b=lerp(c2[2],c3[2],u);}
+  return [r|0,g|0,b|0]; }
+resize();
+let t=0;
+function frame(){ requestAnimationFrame(frame); t+=0.02;
+  ctx.clearRect(0,0,W,H);
+  const half=(N-1)/2;
+  // draw back-to-front
+  for(let s=0;s<=2*(N-1);s++){
+    for(let i=Math.max(0,s-(N-1)); i<=Math.min(N-1,s); i++){ const j=s-i;
+      const sx=ox+(i-j)*TW/2, sy0=oy+(i+j)*TH/2;
+      const d=Math.hypot(sx-mouse.x, sy0-mouse.y);
+      const bump=maxH*Math.exp(-(d*d)/(2*R*R));
+      const ambient=maxH*0.06*(0.5+0.5*Math.sin(t - (i+j)*0.4));
+      const h=bump+ambient;
+      if(h<TH*0.14){ // flat cell: faint grid diamond
+        ctx.beginPath(); ctx.moveTo(sx,sy0); ctx.lineTo(sx+TW/2,sy0+TH/2); ctx.lineTo(sx,sy0+TH); ctx.lineTo(sx-TW/2,sy0+TH/2); ctx.closePath();
+        ctx.strokeStyle='rgba(238,241,255,0.06)'; ctx.lineWidth=1; ctx.stroke(); continue; }
+      const th=h/maxH; const col=neon(0.15+th*0.9);
+      const top=sy0-h;
+      // glow
+      const gg=ctx.createRadialGradient(sx,top+TH/2,0,sx,top+TH/2,TW*1.1*th+TW*0.2);
+      gg.addColorStop(0,'rgba('+col[0]+','+col[1]+','+col[2]+','+(0.28*th)+')'); gg.addColorStop(1,'rgba('+col[0]+','+col[1]+','+col[2]+',0)');
+      ctx.fillStyle=gg; ctx.beginPath(); ctx.arc(sx,top+TH/2,TW*1.1*th+TW*0.2,0,6.2832); ctx.fill();
+      // left face
+      ctx.fillStyle='rgba('+(col[0]*0.5|0)+','+(col[1]*0.5|0)+','+(col[2]*0.55|0)+',1)';
+      ctx.beginPath(); ctx.moveTo(sx-TW/2,top+TH/2); ctx.lineTo(sx,top+TH); ctx.lineTo(sx,sy0+TH); ctx.lineTo(sx-TW/2,sy0+TH/2); ctx.closePath(); ctx.fill();
+      // right face
+      ctx.fillStyle='rgba('+(col[0]*0.72|0)+','+(col[1]*0.72|0)+','+(col[2]*0.76|0)+',1)';
+      ctx.beginPath(); ctx.moveTo(sx+TW/2,top+TH/2); ctx.lineTo(sx,top+TH); ctx.lineTo(sx,sy0+TH); ctx.lineTo(sx+TW/2,sy0+TH/2); ctx.closePath(); ctx.fill();
+      // top diamond
+      ctx.fillStyle='rgba('+col[0]+','+col[1]+','+col[2]+',1)';
+      ctx.beginPath(); ctx.moveTo(sx,top); ctx.lineTo(sx+TW/2,top+TH/2); ctx.lineTo(sx,top+TH); ctx.lineTo(sx-TW/2,top+TH/2); ctx.closePath(); ctx.fill();
+    }
+  }
+}
+requestAnimationFrame(frame);
+window.__plexus=()=>({grid:N*N, tile:Math.round(TW), canvas:[cv.width,cv.height], ctx:!!ctx});
+</script>
+</body>
+</html>
