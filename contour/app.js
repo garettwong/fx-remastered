@@ -22,9 +22,9 @@ function vnoise(x,y){ const xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi;
 function fbm(x,y,oct){ let s=0,a=0.5,f=1,n=0; for(let i=0;i<(oct||5);i++){ s+=a*vnoise(x*f,y*f); n+=a; f*=2; a*=0.5; } return s/n; }
 
 /* ---------- terrain generation ---------- */
-const N = innerWidth<720 ? 116 : 150;
+const N = innerWidth<720 ? 132 : 180;      // terrain is larger than the box, so panning reveals hidden land
 const CELL=1, STEP=1, LEVELS=30, waterFrac=0.18, snowStart=0.88;
-const half=N/2, clipHalf=N*0.46;
+const half=N/2, clipHalf = innerWidth<720 ? 52 : 68;
 function riverX(nz){ return 0.52 + 0.15*Math.sin(nz*6.2831*1.15+0.6) + 0.07*Math.sin(nz*6.2831*2.7+1.9); }
 function riverX2(nz){ return 0.30 + 0.10*Math.sin(nz*6.2831*1.6+2.2); }
 
@@ -173,14 +173,29 @@ function onScroll(){
 }
 addEventListener('scroll', onScroll, {passive:true});
 
-/* ---------- drag to orbit (mouse / pen) ---------- */
-let yaw=0, pitch=0.02, yawVel=0, dragging=false, lastX=0, lastY=0;
+/* ---------- drag: orbit (left-drag) + move/pan (right-drag or shift-drag) ---------- */
+let yaw=0, pitch=0.02, yawVel=0, dragging=false, mode='rotate', lastX=0, lastY=0, curR=172;
 const IDLE=0.055, clampP=v=>Math.max(-0.22,Math.min(0.58,v));
-canvas.addEventListener('pointerdown', e=>{ if(e.pointerType==='touch') return; dragging=true; lastX=e.clientX; lastY=e.clientY;
-  canvas.classList.add('grabbing'); try{canvas.setPointerCapture(e.pointerId);}catch(_){}} );
+const pan=new THREE.Vector3(), panMax=(half-clipHalf)*0.9, clampPan=v=>Math.max(-panMax,Math.min(panMax,v));
+const _r=new THREE.Vector3(), _u=new THREE.Vector3();
+canvas.addEventListener('contextmenu', e=>e.preventDefault());
+canvas.addEventListener('pointerdown', e=>{ if(e.pointerType==='touch') return;
+  dragging=true; mode=(e.button===2||e.shiftKey)?'pan':'rotate'; lastX=e.clientX; lastY=e.clientY;
+  canvas.classList.remove('grabbing','panning'); canvas.classList.add(mode==='pan'?'panning':'grabbing');
+  try{canvas.setPointerCapture(e.pointerId);}catch(_){}} );
 addEventListener('pointermove', e=>{ if(!dragging) return; const dx=e.clientX-lastX, dy=e.clientY-lastY; lastX=e.clientX; lastY=e.clientY;
-  yaw+=dx*0.007; yawVel=dx*0.007; pitch=clampP(pitch+dy*0.004); });
-addEventListener('pointerup', ()=>{ if(dragging){ dragging=false; canvas.classList.remove('grabbing'); } });
+  if(mode==='pan'){                                   // slide the whole diorama in the ground plane; the box clips it
+    _r.setFromMatrixColumn(cam.matrixWorld,0); _r.y=0; _r.normalize();
+    _u.setFromMatrixColumn(cam.matrixWorld,1); _u.y=0; _u.normalize();
+    const s=curR*0.0016;
+    pan.addScaledVector(_r, dx*s); pan.addScaledVector(_u, -dy*s);
+    pan.x=clampPan(pan.x); pan.z=clampPan(pan.z); pan.y=0;
+  } else {
+    yaw+=dx*0.007; yawVel=dx*0.007; pitch=clampP(pitch+dy*0.004);
+  }
+});
+addEventListener('pointerup', ()=>{ if(dragging){ dragging=false; canvas.classList.remove('grabbing','panning'); } });
+canvas.addEventListener('dblclick', ()=>{ pan.set(0,0,0); });   // double-click recentres the land
 
 /* ---------- resize / compile ---------- */
 function resize(){ renderer.setSize(innerWidth,innerHeight); cam.aspect=innerWidth/innerHeight; cam.updateProjectionMatrix(); }
@@ -195,9 +210,9 @@ function frame(now){
   const dt=Math.min(0.05,(now-t0)/1000); t0=now; const t=now/1000;
   // orbit the diorama
   if(!dragging){ yaw += IDLE*dt + yawVel; yawVel*=0.92; }
-  world.rotation.set(pitch, yaw, 0); world.updateMatrixWorld();
+  world.rotation.set(pitch, yaw, 0); world.position.copy(pan); world.updateMatrixWorld();
   // camera dolly by scroll
-  const cs=camState(scrollS);
+  const cs=camState(scrollS); curR=cs.r;
   cam.position.set(Math.sin(AZ)*cs.r, cs.h, Math.cos(AZ)*cs.r); cam.lookAt(0, cs.ty, 0);
   if(Math.abs(curFov-cs.fov)>0.01){ curFov=cs.fov; cam.fov=cs.fov; cam.updateProjectionMatrix(); }
   // clouds + water
@@ -223,7 +238,7 @@ requestAnimationFrame(frame);
 /* ---------- verify hooks ---------- */
 window.__labelsNow = function(testYaw){
   if(testYaw!=null) yaw=testYaw;
-  world.rotation.set(pitch,yaw,0); world.updateMatrixWorld();
+  world.rotation.set(pitch,yaw,0); world.position.copy(pan); world.updateMatrixWorld();
   const cs=camState(scrollS); cam.position.set(Math.sin(AZ)*cs.r, cs.h, Math.cos(AZ)*cs.r); cam.lookAt(0,cs.ty,0); cam.updateMatrixWorld();
   const wm=world.matrixWorld; let vis=0, chopped=0; const sample=[];
   for(let k=0;k<TAGS.length;k++){ const a=TAGS[k], el=tagEls[k];
@@ -241,6 +256,7 @@ window.__labelsNow = function(testYaw){
 window.__contour = ()=>({
   three:THREE.REVISION, N, instances:mesh.count, tags:TAGS.length, clipHalf:Math.round(clipHalf),
   maxVox, waterVox, snowVox, biome:biomeCount, clouds:clouds.length,
-  clipping:renderer.localClippingEnabled, yaw:+yaw.toFixed(2), webgl:!!renderer.getContext()
+  clipping:renderer.localClippingEnabled, yaw:+yaw.toFixed(2),
+  pan:{x:+pan.x.toFixed(1), z:+pan.z.toFixed(1)}, panMax:+panMax.toFixed(1), webgl:!!renderer.getContext()
 });
 })();
