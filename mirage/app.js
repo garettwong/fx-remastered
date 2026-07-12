@@ -92,7 +92,17 @@ function buildDots(){
   NAMES.forEach((_,i)=>{ const b=document.createElement('button'); b.className='dot'; b.setAttribute('aria-label','Slide '+(i+1));
     b.addEventListener('click',()=>jumpTo(i)); wrap.appendChild(b); });
 }
-function jumpTo(i){ if(transStart>=0 || i===A || !texs[i]) return; B=i; setSlot(U.uA,U.uImgA,texs[A]); setSlot(U.uB,U.uImgB,texs[B]); transStart=performance.now(); updateCap(B); }
+function jumpTo(i){ if(transStart>=0 || i===A || !texs[i]) return; B=i; setSlot(U.uA,U.uImgA,texs[A]); setSlot(U.uB,U.uImgB,texs[B]); transStart=performance.now(); lastAdvance=performance.now(); updateCap(B); }
+function step(dir){ jumpTo((A+dir+NAMES.length)%NAMES.length); }
+addEventListener('keydown', e=>{
+  if(['ArrowRight','ArrowDown',' ','Spacebar'].includes(e.key)){ e.preventDefault(); step(1); }
+  else if(['ArrowLeft','ArrowUp'].includes(e.key)){ e.preventDefault(); step(-1); }
+});
+addEventListener('click', e=>{ if(e.target.closest('a,button')) return; step(1); });
+addEventListener('DOMContentLoaded', ()=>{
+  const cta=document.querySelector('.cta'); if(cta) cta.addEventListener('click', e=>{ e.preventDefault(); step(1); });
+  const hint=document.getElementById('hint'); if(hint) hint.textContent = matchMedia('(pointer:coarse)').matches ? 'Tap anywhere to shift the light' : 'Click or press ← → to shift the light';
+});
 
 function tick(ts){
   requestAnimationFrame(tick);
