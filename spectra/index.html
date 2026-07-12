@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SPECTRA — A Living Colour System</title>
+<meta name="description" content="SPECTRA, a living colour system. A real wide-gamut mesh gradient you can move.">
+<meta name="theme-color" content="#0e0e12">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#fff;--muted:rgba(255,255,255,.78);--line:rgba(255,255,255,.24);--disp:'Space Grotesk',sans-serif;--body:'Inter',sans-serif}
+html,body{height:100%}
+body{background:#0e0e12;color:var(--ink);font-family:var(--body);font-weight:300;overflow:hidden;-webkit-font-smoothing:antialiased}
+#gl{position:fixed;inset:0;z-index:0;display:block}
+.dots{position:fixed;inset:0;z-index:1;pointer-events:none}
+.dot{position:absolute;width:26px;height:26px;border-radius:50%;transform:translate(-50%,-50%);border:2px solid rgba(255,255,255,.85);box-shadow:0 2px 10px rgba(0,0,0,.35);pointer-events:auto;cursor:grab;transition:box-shadow .2s}
+.dot:active{cursor:grabbing;box-shadow:0 0 0 6px rgba(255,255,255,.2)}
+.dot::after{content:"";position:absolute;inset:5px;border-radius:50%;background:inherit}
+.wrap{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,56px);pointer-events:none;text-shadow:0 3px 30px rgba(0,0,0,.3)}
+.wrap a{pointer-events:auto}
+nav{display:flex;align-items:center;justify-content:space-between;height:84px}
+.brand{font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:.02em}
+.nl{display:flex;gap:30px}.nl a{color:var(--muted);text-decoration:none;font-size:14px}.nl a:hover{color:#fff}
+.hero{min-height:calc(100vh - 84px);display:flex;flex-direction:column;justify-content:center;max-width:600px;padding:40px 0 120px}
+.eyebrow{font-family:var(--disp);font-size:13px;letter-spacing:.28em;text-transform:uppercase;color:#fff;opacity:.9;margin-bottom:24px}
+h1{font-family:var(--disp);font-weight:600;font-size:clamp(46px,8vw,116px);line-height:.94;letter-spacing:-.03em}
+.sub{margin-top:24px;max-width:42ch;color:var(--muted);font-size:clamp(15px,1.5vw,19px);line-height:1.7}
+.hint{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:3;color:var(--muted);font-family:var(--disp);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
+@media(max-width:640px){.nl{display:none}}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div class="dots" id="dots"></div>
+<div class="wrap">
+  <nav><div class="brand">SPECTRA</div><div class="nl"><a href="#">System</a><a href="#">Tokens</a><a href="#">Docs</a></nav>
+  <header class="hero">
+    <div class="eyebrow">A living colour system</div>
+    <h1>Colour,<br>alive.</h1>
+    <p class="sub">Every brand colour, blended in a real wide-gamut mesh, drifting on its own. Grab a point and move it — the whole field re-blends in real time.</p>
+  </header>
+</div>
+<div class="hint">Drag the colour points</div>
+<script src="lib/three.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
