@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interactive Web FX — Studio Builds</title>
+<meta name="description" content="A growing set of reference-grade interactive web builds, one flagship per effect family. Built with real motion — GSAP, WebGL, generative media.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#14110e;--panel:#1c1815;--ink:#efe7db;--muted:#9a8f81;--clay:#c07a58;--hair:rgba(239,231,219,.1)}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding:0 clamp(22px,5vw,60px)}
+header{padding:clamp(70px,14vh,150px) 0 clamp(40px,7vh,80px)}
+.eye{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--clay);margin-bottom:22px}
+h1{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(40px,7vw,92px);line-height:1;letter-spacing:-.02em;max-width:15ch}
+.lead{margin-top:28px;color:var(--muted);font-size:clamp(15px,1.5vw,19px);max-width:56ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:clamp(18px,2.4vw,30px);padding-bottom:clamp(70px,12vh,140px)}
+.card{display:block;text-decoration:none;color:inherit;background:var(--panel);border:1px solid var(--hair);border-radius:16px;overflow:hidden;transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s}
+.card:hover{transform:translateY(-6px);box-shadow:0 34px 60px -30px rgba(0,0,0,.7)}
+.thumb{aspect-ratio:16/10;overflow:hidden;background:#000}
+.thumb img{width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.16,1,.3,1)}
+.card:hover .thumb img{transform:scale(1.05)}
+.cbody{padding:20px 22px 24px}
+.ctag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--clay)}
+.ctitle{font-family:'Fraunces',serif;font-size:24px;margin:8px 0 6px}
+.cdesc{color:var(--muted);font-size:14px}
+.cgo{margin-top:16px;font-size:13px;color:var(--ink)}
+.soon{background:transparent;border:1px dashed var(--hair)}
+.soon .thumb{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;letter-spacing:.1em}
+footer{border-top:1px solid var(--hair);padding:36px 0;color:var(--muted);font-size:12.5px}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div class="eye">Interactive Web FX · Studio Builds</div>
+  <h1>Reference-grade rebuilds, one flagship per effect.</h1>
+  <p class="lead">Premium interactive web patterns, rebuilt for real — genuine GSAP motion, WebGL, and generated media. Each build re-themes the effect into an original concept rather than copying the source.</p>
+</header>
+<main class="wrap">
+  <div class="grid">
+    <a class="card" href="studio-terra/">
+      <div class="thumb"><img src="studio-terra/img/shelf.jpg" alt="Studio Terra"></div>
+      <div class="cbody">
+        <div class="ctag">01 · Scroll story · GSAP Flip</div>
+        <div class="ctitle">Studio Terra</div>
+        <div class="cdesc">A handmade-ceramics long-scroll with a real GSAP Flip gallery — process shots assembling from a stack into a cascade.</div>
+        <div class="cgo">Open build →</div>
+      </div>
+    </a>
+    <div class="card soon">
+      <div class="thumb">Next: Shader / liquid &nbsp;·&nbsp; 3D / WebGL &nbsp;·&nbsp; Cursor</div>
+      <div class="cbody">
+        <div class="ctag">More coming</div>
+        <div class="ctitle">In progress</div>
+        <div class="cdesc">The remaining effect families rebuild here, one flagship at a time.</div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="wrap">© 2026 · Studio builds · Original concepts, real motion.</footer>
+</body>
+</html>
