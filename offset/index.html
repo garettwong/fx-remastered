@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OFFSET — A Print Studio</title>
+<meta name="description" content="OFFSET, a print studio. Ink in motion, rendered as a live halftone.">
+<meta name="theme-color" content="#efeadf">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#14110a;--muted:rgba(20,17,10,.6);--line:rgba(20,17,10,.16);--disp:'Fraunces',serif;--body:'Inter',sans-serif}
+html,body{height:100%}
+body{background:#efeadf;color:var(--ink);font-family:var(--body);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+#gl{position:fixed;inset:0;z-index:0;display:block}
+.wrap{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,56px);mix-blend-mode:normal}
+nav{display:flex;align-items:center;justify-content:space-between;height:84px}
+.brand{font-family:var(--disp);font-weight:600;font-size:22px;letter-spacing:.02em}
+.nl{display:flex;gap:30px}.nl a{color:var(--ink);opacity:.7;text-decoration:none;font-size:14px}.nl a:hover{opacity:1}
+.tag{font-size:12px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
+.hero{min-height:calc(100vh - 84px);display:flex;flex-direction:column;justify-content:center;max-width:640px;padding:40px 0 100px}
+.eyebrow{font-family:var(--disp);font-size:13px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink);opacity:.7;margin-bottom:24px}
+h1{font-family:var(--disp);font-weight:300;font-size:clamp(46px,8.4vw,124px);line-height:.94;letter-spacing:-.02em}
+h1 em{font-style:italic}
+.sub{margin-top:24px;max-width:44ch;color:var(--muted);font-size:clamp(15px,1.5vw,18px);line-height:1.7;background:rgba(239,234,223,.7);display:inline-block;padding:2px 0}
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:32px;color:#efeadf;background:var(--ink);text-decoration:none;font-family:var(--disp);font-size:15px;border-radius:2px;padding:15px 30px;transition:transform .3s}
+.cta:hover{transform:translateY(-2px)}
+.hint{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:3;color:var(--muted);font-family:var(--disp);font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+@media(max-width:640px){.nl{display:none}}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div class="wrap">
+  <nav><div class="brand">OFFSET</div><div class="nl"><a href="#">Work</a><a href="#">Press</a><a href="#">Studio</a></nav><div class="tag">Riso · Letterpress</div></nav>
+  <header class="hero">
+    <div class="eyebrow">A print studio</div>
+    <h1>Ink,<br>in <em>motion.</em></h1>
+    <p class="sub">We print with ink and pressure. The halftone behind this page is not an image, it is a live fluid, dithered dot by dot. Move your cursor through it.</p>
+    <a class="cta" href="#">See the press →</a>
+  </header>
+</div>
+<div class="hint">Move the cursor</div>
+<script src="lib/three.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
