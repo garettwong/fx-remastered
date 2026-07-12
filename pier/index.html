@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PIER — The Creative Dock</title>
+<meta name="description" content="PIER keeps your whole studio at the edge of the screen. Sweep across the dock, magnify, launch. A real spring-physics magnifying dock.">
+<meta name="theme-color" content="#08090c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#08090c; --ink:#eef1f6; --muted:rgba(238,241,246,.56); --faint:rgba(238,241,246,.32);
+  --line:rgba(238,241,246,.10); --accent:#8ab4ff; --accent2:#a0f0d8;
+  --disp:'Space Grotesk',system-ui,sans-serif; --body:'Inter',system-ui,sans-serif;
+}
+html,body{height:100%}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--body); font-weight:300;
+  min-height:100vh; overflow-x:hidden; -webkit-font-smoothing:antialiased;
+  display:flex; flex-direction:column;
+}
+/* ambient background */
+.bg{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden}
+.bg::before{content:""; position:absolute; left:50%; top:-10%; width:120vw; height:70vh; transform:translateX(-50%);
+  background:radial-gradient(60% 60% at 50% 0%, rgba(138,180,255,.16), rgba(138,180,255,0) 70%); filter:blur(10px)}
+.bg::after{content:""; position:absolute; left:50%; bottom:-30%; width:90vw; height:70vh; transform:translateX(-50%);
+  background:radial-gradient(55% 55% at 50% 100%, rgba(160,240,216,.10), rgba(160,240,216,0) 70%)}
+.grain{position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.05; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+.wrap{position:relative; z-index:2; display:flex; flex-direction:column; flex:1; min-height:100vh;
+  padding:clamp(20px,3vw,40px) clamp(20px,4vw,60px)}
+/* nav */
+nav{display:flex; align-items:center; justify-content:space-between; gap:20px}
+.brand{display:flex; align-items:center; gap:11px; font-family:var(--disp); font-weight:600; font-size:19px; letter-spacing:.02em}
+.brand .mk{width:22px; height:22px; border-radius:7px; background:linear-gradient(135deg,var(--accent),var(--accent2)); box-shadow:0 0 18px rgba(138,180,255,.5)}
+.nl{display:flex; gap:clamp(16px,2.2vw,32px)}
+.nl a{color:var(--muted); text-decoration:none; font-size:14px; letter-spacing:.01em; transition:color .3s}
+.nl a:hover{color:var(--ink)}
+.badge{font-family:var(--disp); font-size:12px; color:var(--faint); letter-spacing:.14em; border:1px solid var(--line); border-radius:100px; padding:6px 13px}
+
+/* hero */
+.hero{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:22px; padding:6vh 0 2vh}
+.eyebrow{font-family:var(--disp); font-size:12.5px; letter-spacing:.34em; text-transform:uppercase; color:var(--accent)}
+h1{font-family:var(--disp); font-weight:500; font-size:clamp(38px,6.4vw,82px); line-height:1.02; letter-spacing:-.025em; max-width:16ch}
+h1 em{font-style:normal; background:linear-gradient(120deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent}
+.sub{color:var(--muted); font-size:clamp(15px,1.5vw,18px); line-height:1.65; max-width:52ch}
+
+/* dock stage */
+.stage{position:relative; width:100%; max-width:760px; height:210px; margin:0 auto; z-index:2}
+#dock{position:absolute; inset:0}
+#bar{position:absolute; bottom:30px; left:50%; transform:translateX(-50%); height:76px; border-radius:24px;
+  background:rgba(238,241,246,.035); border:1px solid rgba(238,241,246,.08);
+  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+  box-shadow:0 20px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06)}
+#hl{position:absolute; bottom:38px; left:0; border-radius:17px; opacity:0;
+  background:linear-gradient(160deg, rgba(238,241,246,.17), rgba(238,241,246,.07));
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow:0 8px 30px rgba(138,180,255,.28), inset 0 1px 0 rgba(255,255,255,.22)}
+.item{position:absolute; bottom:38px; display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(238,241,246,.07); border-radius:17px; background:transparent; cursor:pointer;
+  color:#c7d0de; padding:0; will-change:width,height,left}
+.item svg{width:44%; height:44%; stroke:currentColor; stroke-width:1.6; fill:none; stroke-linecap:round; stroke-linejoin:round}
+.item.active{color:#fff}
+.item.active svg{filter:drop-shadow(0 0 8px rgba(138,180,255,.7))}
+#label{position:absolute; bottom:0; left:0; padding:6px 13px; border-radius:100px; opacity:0; white-space:nowrap;
+  font-family:var(--disp); font-size:12.5px; letter-spacing:.04em; color:var(--ink);
+  background:rgba(20,22,28,.9); border:1px solid rgba(255,255,255,.12); pointer-events:none;
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.hint{text-align:center; font-size:12.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); margin-top:6px}
+
+footer{display:flex; align-items:center; justify-content:space-between; gap:16px; color:var(--faint); font-size:12.5px; letter-spacing:.02em; padding-top:22px}
+footer .dot{width:5px; height:5px; border-radius:50%; background:var(--accent2); display:inline-block; margin:0 9px; vertical-align:middle}
+
+@media(max-width:680px){
+  .nl{display:none}
+  .stage{height:180px}
+  h1{font-size:clamp(34px,10vw,52px)}
+}
+@media(prefers-reduced-motion:reduce){ .grain{display:none} }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="grain"></div>
+<div class="wrap">
+  <nav>
+    <div class="brand"><span class="mk"></span>PIER</div>
+    <div class="nl"><a href="#">Overview</a><a href="#">Tools</a><a href="#">Pricing</a><a href="#">Download</a></div>
+    <div class="badge">v1.0</div>
+  </nav>
+
+  <section class="hero">
+    <div class="eyebrow">The creative dock</div>
+    <h1>Every tool,<br><em>one sweep</em> away.</h1>
+    <p class="sub">PIER keeps your whole studio at the edge of the screen. Glance across the dock and it magnifies to meet you — nothing buried, nothing in the way.</p>
+  </section>
+
+  <div class="stage" id="stage">
+    <div id="dock">
+      <div id="bar"></div>
+      <div id="hl"></div>
+      <div id="label"></div>
+    </div>
+  </div>
+  <div class="hint" id="hint">Sweep across the dock</div>
+
+  <footer>
+    <div>PIER — a concept dock</div>
+    <div><span>Spring physics</span><span class="dot"></span><span>Real-time magnification</span></div>
+  </footer>
+</div>
+
+<script>
+const ITEMS = [
+  {n:'Overview', s:'<svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>'},
+  {n:'Canvas',   s:'<svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="M3.5 15.5l4.5-4 3 2.6 4-4.6 5.5 6"/><circle cx="9" cy="9.5" r="1.4"/></svg>'},
+  {n:'Studio',   s:'<svg viewBox="0 0 24 24"><path d="M14.5 4.5l5 5-8.5 8.5-5 1 1-5z"/><path d="M12.5 6.5l5 5"/></svg>'},
+  {n:'Type',     s:'<svg viewBox="0 0 24 24"><path d="M5 6.5V5h14v1.5"/><path d="M12 5v14"/><path d="M8.5 19h7"/></svg>'},
+  {n:'Layers',   s:'<svg viewBox="0 0 24 24"><path d="M12 3.5l8.5 4.5-8.5 4.5-8.5-4.5z"/><path d="M4 12.5l8 4.3 8-4.3"/></svg>'},
+  {n:'Capture',  s:'<svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2.5"/><circle cx="12" cy="13.5" r="3.6"/><path d="M8.5 7l1.4-2.5h4.2L15.5 7"/></svg>'},
+  {n:'Sound',    s:'<svg viewBox="0 0 24 24"><path d="M4 12h1.5"/><path d="M8 8.5v7"/><path d="M12 5v14"/><path d="M16 8.5v7"/><path d="M20 11h-.5"/><path d="M20 11.5v1"/></svg>'},
+  {n:'Code',     s:'<svg viewBox="0 0 24 24"><path d="M9 8l-4.5 4L9 16"/><path d="M15 8l4.5 4L15 16"/></svg>'}
+];
+
+const dock  = document.getElementById('dock');
+const bar   = document.getElementById('bar');
+const hl     = document.getElementById('hl');
+const label = document.getElementById('label');
+const hintEl= document.getElementById('hint');
+
+const els = ITEMS.map(it=>{
+  const b=document.createElement('button'); b.className='item'; b.type='button';
+  b.innerHTML=it.s; b.setAttribute('aria-label', it.n); dock.appendChild(b); return b;
+});
+
+const AMP=0.9;                 // peak magnification (icon grows ~1.9x)
+let mouseX=null, hovering=false;
+const FRAMED = window.self!==window.top;
+const DEMO = /[?&]demo/.test(location.search) || FRAMED;   // auto-sweep for the hub preview / demo
+let realT=-9999;               // last real pointer time
+
+// spring state (position/width/opacity + velocities)
+let hlX=0,hlVx=0, hlW=0,hlVw=0, hlH=0,hlVh=0, hlO=0,hlVo=0;
+let lbX=0,lbVx=0, lbY=0,lbVy=0, lbO=0,lbVo=0, lbText='';
+let scales = ITEMS.map(()=>1);
+
+function metrics(){ const W=dock.clientWidth||600; const b=Math.max(34,Math.min(56,W/11)); const g=Math.max(7,b*0.26); return {W,b,g,sigma:b*1.05}; }
+function rect(){ return dock.getBoundingClientRect(); }
+
+addEventListener('pointermove', e=>{
+  const r=rect(); mouseX=e.clientX-r.left; realT=performance.now();
+  hovering = e.clientY > r.top-140 && e.clientY < r.bottom+70;
+}, {passive:true});
+addEventListener('pointerdown', e=>{ const r=rect(); mouseX=e.clientX-r.left; realT=performance.now(); hovering = e.clientY > r.top-140 && e.clientY < r.bottom+70; }, {passive:true});
+dock.addEventListener('pointerleave', ()=>{ hovering=false; });
+addEventListener('blur', ()=>{ hovering=false; });
+
+function spr(x,v,t,k,d,dt){ const a=k*(t-x)-d*v; v+=a*dt; x+=v*dt; return [x,v]; }
+
+let last=performance.now();
+function frame(now){
+  requestAnimationFrame(frame);
+  let dt=(now-last)/1000; last=now; if(!(dt>0)) dt=0.016; if(dt>0.033) dt=0.033;
+  const {W,b,g,sigma}=metrics();
+  if(DEMO && now-realT>1000){            // no real cursor → sweep a virtual one across the dock
+    const span=(ITEMS.length*b+(ITEMS.length-1)*g)/2 - b*0.15;
+    mouseX = W/2 + Math.sin(now*0.00072)*span; hovering=true;
+  }
+  const active = hovering && mouseX!=null;
+
+  // base (unmagnified) centers — used to measure cursor distance
+  const baseTotal=ITEMS.length*b+(ITEMS.length-1)*g;
+  let bx=(W-baseTotal)/2;
+  // target scale per icon
+  for(let i=0;i<ITEMS.length;i++){
+    const c=bx+i*(b+g)+b/2;
+    let t=1;
+    if(active){ const dd=mouseX-c; t=1+AMP*Math.exp(-(dd*dd)/(2*sigma*sigma)); }
+    scales[i]+= (t-scales[i])*Math.min(1,dt*15);
+  }
+  // scaled layout (reflows + recenters → neighbours push apart)
+  const widths=scales.map(s=>b*s);
+  const total=widths.reduce((a,c)=>a+c,0)+(ITEMS.length-1)*g;
+  let x=(W-total)/2; const centers=[];
+  for(let i=0;i<ITEMS.length;i++){
+    const w=widths[i];
+    els[i].style.left=x+'px'; els[i].style.width=w+'px'; els[i].style.height=w+'px';
+    els[i].style.bottom=(38-(w-b)*0.0)+'px';
+    centers[i]=x+w/2; x+=w+g;
+  }
+  bar.style.width=(total+26)+'px'; bar.style.height=(b+18)+'px';
+
+  // active = nearest icon
+  let ai=-1,best=1e9;
+  if(active){ for(let i=0;i<centers.length;i++){ const d=Math.abs(mouseX-centers[i]); if(d<best){best=d;ai=i;} } }
+
+  if(ai>=0){
+    const w=widths[ai];
+    [hlX,hlVx]=spr(hlX,hlVx,centers[ai]-w/2,230,26,dt);
+    [hlW,hlVw]=spr(hlW,hlVw,w,230,26,dt);
+    [hlH,hlVh]=spr(hlH,hlVh,w,230,26,dt);
+    [hlO,hlVo]=spr(hlO,hlVo,1,200,28,dt);
+    [lbX,lbVx]=spr(lbX,lbVx,centers[ai],250,28,dt);
+    [lbY,lbVy]=spr(lbY,lbVy,38+w+14,230,28,dt);
+    [lbO,lbVo]=spr(lbO,lbVo,1,200,28,dt);
+    if(ITEMS[ai].n!==lbText){ lbText=ITEMS[ai].n; label.textContent=lbText; }
+    els.forEach((e,i)=>e.classList.toggle('active',i===ai));
+  } else {
+    [hlO,hlVo]=spr(hlO,hlVo,0,170,28,dt);
+    [lbO,lbVo]=spr(lbO,lbVo,0,170,28,dt);
+    els.forEach(e=>e.classList.remove('active'));
+  }
+  hl.style.transform=`translateX(${hlX}px)`; hl.style.width=Math.max(0,hlW)+'px'; hl.style.height=Math.max(0,hlH)+'px'; hl.style.opacity=hlO.toFixed(3);
+  label.style.transform=`translateX(${lbX}px) translateX(-50%)`; label.style.bottom=lbY+'px'; label.style.opacity=lbO.toFixed(3);
+}
+requestAnimationFrame(frame);
+
+// touch hint
+if(matchMedia('(pointer:coarse)').matches){ hintEl.textContent='Drag across the dock'; }
+
+// verification hook (harmless): step the sim to convergence for a given cursor x
+window.__pier=(mx,steps)=>{ mouseX=mx; hovering=true; let t=performance.now();
+  for(let i=0;i<(steps||45);i++){ t+=16; frame(t); }
+  return { widths: els.map(e=>Math.round(parseFloat(e.style.width||'0'))),
+           active: els.findIndex(e=>e.classList.contains('active')),
+           hlW: Math.round(hlW), hlO:+hlO.toFixed(2), label: label.textContent }; };
+</script>
+</body>
+</html>
