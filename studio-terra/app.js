@@ -66,3 +66,26 @@ if (reduce) {
     scrollTrigger: { trigger: '.fmark', start: 'top 92%', toggleActions: 'play none none reverse' }
   });
 }
+
+// click-to-enlarge gallery lightbox (works with or without motion)
+(function () {
+  var lb = document.getElementById('lightbox');
+  if (!lb) return;
+  var lbImg = lb.querySelector('img'), lbx = lb.querySelector('.lbx');
+  function open(src, alt) {
+    lbImg.src = src; lbImg.alt = alt || '';
+    lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false');
+    document.documentElement.style.overflow = 'hidden';
+  }
+  function close() {
+    lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true');
+    document.documentElement.style.overflow = '';
+  }
+  document.querySelectorAll('.gcard img').forEach(function (img) {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', function () { open(img.currentSrc || img.src, img.alt); });
+  });
+  lb.addEventListener('click', function (e) { if (e.target !== lbImg) close(); });
+  lbx.addEventListener('click', function (e) { e.stopPropagation(); close(); });
+  addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
