@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>OBSCURA — Film & Photography Studio</title>
-<meta name="description" content="OBSCURA, a film and photography studio. Kinetic preloader and panel-wipe transitions.">
+<meta name="description" content="OBSCURA, a film and photography studio. Kinetic preloader, real cinematic stills.">
 <meta name="theme-color" content="#0b0b0d">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -24,25 +24,42 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:3
 .lbar{width:min(280px,60vw);height:2px;background:rgba(239,233,223,.16);overflow:hidden}
 .lbar i{display:block;height:100%;width:0;background:var(--accent)}
 .lcount{position:absolute;right:clamp(20px,5vw,56px);bottom:clamp(18px,4vh,40px);z-index:2;font-family:var(--disp);font-size:clamp(48px,10vw,128px);line-height:1;transition:opacity .4s}
-/* page */
+/* nav */
 nav{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;height:82px;padding:0 clamp(20px,5vw,56px);opacity:0;transition:opacity .6s .3s}
 body.ready nav{opacity:1}
 .brand{font-family:var(--disp);font-size:22px;letter-spacing:.04em}
 .nl{display:flex;gap:28px}.nl a{color:var(--muted);text-decoration:none;font-size:14px}.nl a:hover{color:var(--ink)}
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:110px 0 60px}
+/* hero */
+.hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;overflow:hidden}
+.hero .bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+.hero .bg img{width:100%;height:100%;object-fit:cover;transform:scale(1.12);opacity:0;transition:opacity 1.4s,transform 8s ease-out}
+body.ready .hero .bg img{opacity:.86;transform:scale(1)}
+.hero .scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(11,11,13,.5) 0%,rgba(11,11,13,0) 34%,rgba(11,11,13,.2) 60%,rgba(11,11,13,.92) 100%)}
+.hero .inner{position:relative;z-index:2;width:100%;padding-bottom:clamp(48px,9vh,110px)}
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
 body.ready .reveal{opacity:1;transform:none}
-body.ready .reveal.d1{transition-delay:.15s}body.ready .reveal.d2{transition-delay:.3s}body.ready .reveal.d3{transition-delay:.45s}
-.eyebrow{font-family:var(--body);font-weight:500;font-size:13px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);margin-bottom:24px}
-h1{font-family:var(--disp);font-weight:300;font-size:clamp(48px,9vw,132px);line-height:.98;letter-spacing:-.02em}
+body.ready .reveal.d1{transition-delay:.5s}body.ready .reveal.d2{transition-delay:.66s}body.ready .reveal.d3{transition-delay:.82s}
+.eyebrow{font-family:var(--body);font-weight:500;font-size:13px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);margin-bottom:22px}
+h1{font-family:var(--disp);font-weight:300;font-size:clamp(48px,9vw,140px);line-height:.96;letter-spacing:-.02em}
 h1 em{font-style:italic;color:var(--accent)}
-.sub{margin-top:26px;max-width:46ch;color:var(--muted);font-size:clamp(15px,1.5vw,18px);line-height:1.7}
-.replay{display:inline-flex;align-items:center;gap:10px;margin-top:34px;background:none;border:1px solid var(--line);color:var(--ink);font-family:var(--body);font-size:14px;border-radius:100px;padding:13px 24px;cursor:pointer;transition:.3s}
-.replay:hover{border-color:var(--ink);background:rgba(239,233,223,.06)}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;padding:clamp(50px,9vh,110px) 0}
-.svc h3{font-family:var(--disp);font-size:24px;margin-bottom:8px}.svc p{color:var(--muted);font-size:14px}
+.sub{margin-top:22px;max-width:44ch;color:var(--ink);opacity:.85;font-size:clamp(15px,1.5vw,18px);line-height:1.7}
+.replay{display:inline-flex;align-items:center;gap:10px;margin-top:28px;background:none;border:1px solid var(--line);color:var(--ink);font-family:var(--body);font-size:14px;border-radius:100px;padding:12px 22px;cursor:pointer;transition:.3s}
+.replay:hover{border-color:var(--ink);background:rgba(239,233,223,.08)}
+/* films band */
+.films{padding:clamp(60px,10vh,120px) 0}
+.films .head{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:36px}
+.films h2{font-family:var(--disp);font-weight:300;font-size:clamp(28px,4vw,52px)}
+.films .k{font-family:var(--disp);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:20px}
+.film{position:relative;overflow:hidden;border-radius:4px;aspect-ratio:4/5;background:#151417}
+.film img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.16,1,.3,1);filter:saturate(.92)}
+.film:hover img{transform:scale(1.05);filter:saturate(1)}
+.film .cap{position:absolute;left:16px;bottom:14px;z-index:2}
+.film .cap .t{font-family:var(--disp);font-size:19px}.film .cap .c{font-size:12px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.film::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(11,11,13,.7),transparent 45%)}
 footer{border-top:1px solid var(--line);padding:38px 0 54px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:13px}
-@media(max-width:640px){.nl{display:none}.grid3{grid-template-columns:1fr}}
+@media(max-width:820px){.grid{grid-template-columns:1fr 1fr}.film:first-child{grid-column:1/-1;aspect-ratio:16/10}}
+@media(max-width:560px){.nl{display:none}.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -54,27 +71,34 @@ footer{border-top:1px solid var(--line);padding:38px 0 54px;display:flex;justify
 
 <nav><div class="brand">OBSCURA</div><div class="nl"><a href="#">Films</a><a href="#">Stills</a><a href="#">Studio</a><a href="#">Contact</a></div></nav>
 
-<div class="wrap">
-  <header class="hero">
+<header class="hero">
+  <div class="bg"><img src="img/obs_hero.jpg" alt="Studio in light"></div>
+  <div class="scrim"></div>
+  <div class="inner wrap">
     <div class="eyebrow reveal d1">Film &amp; photography studio</div>
     <h1 class="reveal d2">We shoot the<br><em>quiet</em> moments.</h1>
-    <p class="sub reveal d3">A small studio making films and stills for people who care about light. Every visit here opens the same way it did just now, frame by frame.</p>
+    <p class="sub reveal d3">A small studio making films and stills for people who care about light. Every visit opens frame by frame.</p>
     <button class="replay reveal d3" id="replay">↻ Replay the intro</button>
-  </header>
-  <section class="grid3">
-    <div class="svc reveal"><h3>Films</h3><p>Brand films, documentary, and title sequences shot on location.</p></div>
-    <div class="svc reveal"><h3>Stills</h3><p>Editorial and product photography, lit by hand.</p></div>
-    <div class="svc reveal"><h3>Studio</h3><p>A daylight stage in the old quarter, available to hire.</p></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="films">
+    <div class="head"><h2>Selected work</h2><div class="k">2019 — 2026</div></div>
+    <div class="grid">
+      <div class="film"><img src="img/obs_hero.jpg" alt=""><div class="cap"><div class="t">Daylight Study</div><div class="c">Short film</div></div></div>
+      <div class="film"><img src="img/obs_cam.jpg" alt=""><div class="cap"><div class="t">The Apparatus</div><div class="c">Stills</div></div></div>
+      <div class="film"><img src="img/obs_rain.jpg" alt=""><div class="cap"><div class="t">After Rain</div><div class="c">Title sequence</div></div></div>
+    </div>
   </section>
 </div>
-<footer class="wrap"><div>OBSCURA</div><div>The Old Quarter · Hong Kong</div><div>hello@obscura.film</div><div>© 2026</div></footer>
+<footer class="wrap"><div style="font-family:var(--disp);font-size:18px">OBSCURA</div><div>The Old Quarter · Hong Kong</div><div>hello@obscura.film</div><div>© 2026</div></footer>
 <script>
 const panels=document.getElementById('panels'), loader=document.getElementById('loader'),
       lfill=document.getElementById('lfill'), lcount=document.getElementById('lcount'), lcenter=document.getElementById('lcenter');
 const NCOL=6;
 panels.innerHTML=Array.from({length:NCOL},()=>'<div class="col"></div>').join('');
-const cols=[...panels.children];
-let running=false;
+const cols=[...panels.children]; let running=false;
 function runLoader(){ if(running) return; running=true;
   document.body.classList.remove('ready'); loader.style.display='block';
   cols.forEach(c=>{ c.style.transition='none'; c.style.transform='translateY(0)'; c.style.transitionDelay='0s'; });
@@ -84,15 +108,13 @@ function runLoader(){ if(running) return; running=true;
   const iv=setInterval(()=>{ n+=Math.random()*7+3.5; if(n>=100){ n=100; clearInterval(iv); finish(); }
     lcount.textContent=Math.floor(n); lfill.style.width=n+'%'; }, 55);
 }
-function finish(){
-  setTimeout(()=>{ lcenter.style.opacity=0; lcount.style.opacity=0;
+function finish(){ setTimeout(()=>{ lcenter.style.opacity=0; lcount.style.opacity=0;
     cols.forEach((c,i)=>{ c.style.transitionDelay=(i*0.07)+'s'; c.style.transform='translateY(-100%)'; });
     setTimeout(()=>{ loader.style.display='none'; document.body.classList.add('ready'); running=false; }, 800+NCOL*70);
-  }, 380);
-}
+  }, 380); }
 document.getElementById('replay').addEventListener('click', runLoader);
 runLoader();
-window.__obscura=()=>({panels:cols.length, ready:document.body.classList.contains('ready'), count:lcount.textContent, running});
+window.__obscura=()=>({panels:cols.length, ready:document.body.classList.contains('ready'), count:lcount.textContent, films:document.querySelectorAll('.film').length});
 window.__skip=()=>{ document.body.classList.add('ready'); loader.style.display='none'; running=false; return 'skipped'; };
 </script>
 </body>
