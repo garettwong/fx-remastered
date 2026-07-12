@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OBSCURA — Film & Photography Studio</title>
+<meta name="description" content="OBSCURA, a film and photography studio. Kinetic preloader and panel-wipe transitions.">
+<meta name="theme-color" content="#0b0b0d">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0b0b0d;--ink:#efe9df;--muted:#8d867a;--line:rgba(239,233,223,.14);--accent:#d98a4e;--disp:'Fraunces',serif;--body:'Inter',sans-serif}
+html,body{height:100%;overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+/* loader */
+.loader{position:fixed;inset:0;z-index:100}
+.panels{position:absolute;inset:0;display:flex}
+.panels .col{flex:1;background:#111013;transform:translateY(0);transition:transform .8s cubic-bezier(.76,0,.24,1)}
+.lcenter{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .4s}
+.lname{font-family:var(--disp);font-weight:300;font-size:clamp(38px,7vw,84px);letter-spacing:.04em}
+.lname em{font-style:italic;color:var(--accent)}
+.lbar{width:min(280px,60vw);height:2px;background:rgba(239,233,223,.16);overflow:hidden}
+.lbar i{display:block;height:100%;width:0;background:var(--accent)}
+.lcount{position:absolute;right:clamp(20px,5vw,56px);bottom:clamp(18px,4vh,40px);z-index:2;font-family:var(--disp);font-size:clamp(48px,10vw,128px);line-height:1;transition:opacity .4s}
+/* page */
+nav{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;height:82px;padding:0 clamp(20px,5vw,56px);opacity:0;transition:opacity .6s .3s}
+body.ready nav{opacity:1}
+.brand{font-family:var(--disp);font-size:22px;letter-spacing:.04em}
+.nl{display:flex;gap:28px}.nl a{color:var(--muted);text-decoration:none;font-size:14px}.nl a:hover{color:var(--ink)}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:110px 0 60px}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+body.ready .reveal{opacity:1;transform:none}
+body.ready .reveal.d1{transition-delay:.15s}body.ready .reveal.d2{transition-delay:.3s}body.ready .reveal.d3{transition-delay:.45s}
+.eyebrow{font-family:var(--body);font-weight:500;font-size:13px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);margin-bottom:24px}
+h1{font-family:var(--disp);font-weight:300;font-size:clamp(48px,9vw,132px);line-height:.98;letter-spacing:-.02em}
+h1 em{font-style:italic;color:var(--accent)}
+.sub{margin-top:26px;max-width:46ch;color:var(--muted);font-size:clamp(15px,1.5vw,18px);line-height:1.7}
+.replay{display:inline-flex;align-items:center;gap:10px;margin-top:34px;background:none;border:1px solid var(--line);color:var(--ink);font-family:var(--body);font-size:14px;border-radius:100px;padding:13px 24px;cursor:pointer;transition:.3s}
+.replay:hover{border-color:var(--ink);background:rgba(239,233,223,.06)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;padding:clamp(50px,9vh,110px) 0}
+.svc h3{font-family:var(--disp);font-size:24px;margin-bottom:8px}.svc p{color:var(--muted);font-size:14px}
+footer{border-top:1px solid var(--line);padding:38px 0 54px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:13px}
+@media(max-width:640px){.nl{display:none}.grid3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="loader" id="loader">
+  <div class="panels" id="panels"></div>
+  <div class="lcenter" id="lcenter"><div class="lname">OBS<em>C</em>URA</div><div class="lbar"><i id="lfill"></i></div></div>
+  <div class="lcount" id="lcount">0</div>
+</div>
+
+<nav><div class="brand">OBSCURA</div><div class="nl"><a href="#">Films</a><a href="#">Stills</a><a href="#">Studio</a><a href="#">Contact</a></div></nav>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow reveal d1">Film &amp; photography studio</div>
+    <h1 class="reveal d2">We shoot the<br><em>quiet</em> moments.</h1>
+    <p class="sub reveal d3">A small studio making films and stills for people who care about light. Every visit here opens the same way it did just now, frame by frame.</p>
+    <button class="replay reveal d3" id="replay">↻ Replay the intro</button>
+  </header>
+  <section class="grid3">
+    <div class="svc reveal"><h3>Films</h3><p>Brand films, documentary, and title sequences shot on location.</p></div>
+    <div class="svc reveal"><h3>Stills</h3><p>Editorial and product photography, lit by hand.</p></div>
+    <div class="svc reveal"><h3>Studio</h3><p>A daylight stage in the old quarter, available to hire.</p></div>
+  </section>
+</div>
+<footer class="wrap"><div>OBSCURA</div><div>The Old Quarter · Hong Kong</div><div>hello@obscura.film</div><div>© 2026</div></footer>
+<script>
+const panels=document.getElementById('panels'), loader=document.getElementById('loader'),
+      lfill=document.getElementById('lfill'), lcount=document.getElementById('lcount'), lcenter=document.getElementById('lcenter');
+const NCOL=6;
+panels.innerHTML=Array.from({length:NCOL},()=>'<div class="col"></div>').join('');
+const cols=[...panels.children];
+let running=false;
+function runLoader(){ if(running) return; running=true;
+  document.body.classList.remove('ready'); loader.style.display='block';
+  cols.forEach(c=>{ c.style.transition='none'; c.style.transform='translateY(0)'; c.style.transitionDelay='0s'; });
+  void panels.offsetWidth; cols.forEach(c=>c.style.transition='');
+  lcenter.style.opacity=1; lcount.style.opacity=1; lfill.style.width='0%'; lcount.textContent='0';
+  let n=0;
+  const iv=setInterval(()=>{ n+=Math.random()*7+3.5; if(n>=100){ n=100; clearInterval(iv); finish(); }
+    lcount.textContent=Math.floor(n); lfill.style.width=n+'%'; }, 55);
+}
+function finish(){
+  setTimeout(()=>{ lcenter.style.opacity=0; lcount.style.opacity=0;
+    cols.forEach((c,i)=>{ c.style.transitionDelay=(i*0.07)+'s'; c.style.transform='translateY(-100%)'; });
+    setTimeout(()=>{ loader.style.display='none'; document.body.classList.add('ready'); running=false; }, 800+NCOL*70);
+  }, 380);
+}
+document.getElementById('replay').addEventListener('click', runLoader);
+runLoader();
+window.__obscura=()=>({panels:cols.length, ready:document.body.classList.contains('ready'), count:lcount.textContent, running});
+window.__skip=()=>{ document.body.classList.add('ready'); loader.style.display='none'; running=false; return 'skipped'; };
+</script>
+</body>
+</html>

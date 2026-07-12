@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VOLTA — Brand & Motion Studio</title>
+<meta name="description" content="VOLTA makes brands impossible to ignore. Kinetic type, in motion.">
+<meta name="theme-color" content="#0d0d0d">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0d0d0d;--ink:#f3f1ea;--muted:#8b887f;--line:rgba(243,241,234,.14);--accent:#d4ff3f;--disp:'Anton',sans-serif;--body:'Inter',sans-serif}
+html,body{overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1320px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+nav{display:flex;align-items:center;justify-content:space-between;height:82px;position:fixed;top:0;left:0;right:0;z-index:20;mix-blend-mode:difference}
+.nav-in{max-width:1320px;margin:0 auto;padding:0 clamp(20px,5vw,56px);width:100%;display:flex;align-items:center;justify-content:space-between}
+.brand{font-family:var(--disp);font-size:26px;letter-spacing:.02em;color:#fff}
+.nl{display:flex;gap:28px}.nl a{color:#fff;text-decoration:none;font-size:14px;opacity:.8}.nl a:hover{opacity:1}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:110px 0 60px}
+.eyebrow{font-family:var(--body);font-weight:500;font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);margin-bottom:24px}
+.htitle{font-family:var(--disp);font-size:clamp(52px,12.5vw,190px);line-height:.86;letter-spacing:-.01em;text-transform:uppercase}
+.htitle .ln{overflow:hidden;display:block}
+.htitle .ch{display:inline-block;transform:translateY(105%);transition:transform .9s cubic-bezier(.16,1,.3,1)}
+.htitle.in .ch{transform:translateY(0)}
+.cyc{color:var(--accent)}
+.sub{margin-top:32px;max-width:46ch;color:var(--muted);font-size:clamp(15px,1.5vw,18px);line-height:1.7}
+.hero .cta{display:inline-flex;align-items:center;gap:10px;margin-top:32px;color:var(--bg);background:var(--accent);text-decoration:none;font-family:var(--disp);font-size:15px;letter-spacing:.04em;text-transform:uppercase;border-radius:100px;padding:15px 30px;transition:transform .3s}
+.hero .cta:hover{transform:translateY(-2px)}
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;padding:22px 0;margin:20px 0}
+.mtrack{display:inline-block;will-change:transform}
+.mtrack span{font-family:var(--disp);font-size:clamp(30px,5vw,64px);text-transform:uppercase;letter-spacing:.01em;color:var(--ink)}
+.mtrack span i{color:var(--accent);font-style:normal;margin:0 .5em}
+.work{padding:clamp(60px,10vh,120px) 0}
+.work h2{font-family:var(--disp);font-size:clamp(28px,4vw,52px);text-transform:uppercase;letter-spacing:.01em;margin-bottom:30px}
+.wrow{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:26px 0;border-top:1px solid var(--line);cursor:pointer;transition:padding-left .4s,color .4s}
+.wrow:hover{padding-left:18px;color:var(--accent)}
+.wrow .n{font-family:var(--body);font-size:13px;color:var(--muted);width:44px}
+.wrow .t{font-family:var(--disp);font-size:clamp(22px,3vw,40px);text-transform:uppercase;flex:1}
+.wrow .c{font-size:13px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+footer{border-top:1px solid var(--line);padding:40px 0 56px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:13px}
+footer .brand{font-size:20px}
+@media(max-width:640px){.nl{display:none}.wrow .c{display:none}}
+</style>
+</head>
+<body>
+<nav><div class="nav-in"><div class="brand">VOLTA</div><div class="nl"><a href="#">Work</a><a href="#">Studio</a><a href="#">Contact</a></div></div></nav>
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Brand &amp; motion studio</div>
+    <h1 class="htitle" id="ht"><span class="ln" id="l1">We make</span><span class="ln" id="l2">brands</span><span class="ln"><span class="cyc" id="cyc">louder</span>.</span></h1>
+    <p class="sub">We build identities that move, sound and speak. Strategy, type, motion and film for brands that would rather be impossible to ignore than easy to forget.</p>
+    <a class="cta" href="#work">See the work →</a>
+  </header>
+</div>
+<div class="marquee"><div class="mtrack" id="mt"></div></div>
+<div class="wrap">
+  <section class="work" id="work">
+    <h2>Selected work</h2>
+    <div class="wrow"><span class="n">01</span><span class="t">Helios Rebrand</span><span class="c">Identity · Motion</span></div>
+    <div class="wrow"><span class="n">02</span><span class="t">Nova Launch Film</span><span class="c">Film · Sound</span></div>
+    <div class="wrow"><span class="n">03</span><span class="t">Atlas Type System</span><span class="c">Typeface</span></div>
+    <div class="wrow"><span class="n">04</span><span class="t">Pulse Campaign</span><span class="c">Campaign</span></div>
+    <div class="wrow"><span class="n">05</span><span class="t">Onyx Packaging</span><span class="c">Packaging</span></div>
+  </section>
+</div>
+<footer class="wrap"><div class="brand" style="font-family:var(--disp)">VOLTA</div><div>Studio 9, Sheung Wan · Hong Kong</div><div>hello@volta.studio</div><div>© 2026</div></footer>
+<script>
+/* headline char reveal */
+function splitLine(el){ const t=el.textContent; el.innerHTML=''; [...t].forEach((c,i)=>{ const s=document.createElement('span'); s.className='ch'; s.textContent=c===' '?' ':c; s.style.transitionDelay=(0.03*i)+'s'; el.appendChild(s); }); }
+splitLine(document.getElementById('l1')); splitLine(document.getElementById('l2'));
+setTimeout(()=>document.getElementById('ht').classList.add('in'),70);
+
+/* scramble word-cycler */
+const WORDS=['louder','bolder','sharper','stranger','faster'];
+const cyc=document.getElementById('cyc'); let wi=0;
+const GL='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+function scrambleTo(word){ const from=cyc.textContent, len=Math.max(from.length,word.length); let f=0;
+  const iv=setInterval(()=>{ f++; let out=''; for(let i=0;i<word.length;i++){ out += (i< (f-2)) ? word[i] : GL[(Math.random()*26)|0].toLowerCase(); }
+    cyc.textContent=out; if(f>len+2){ clearInterval(iv); cyc.textContent=word; } }, 40); }
+setInterval(()=>{ wi=(wi+1)%WORDS.length; scrambleTo(WORDS[wi]); }, 2200);
+
+/* velocity-reactive marquee */
+const seg='<span>Branding<i>/</i>Motion<i>/</i>Type<i>/</i>Identity<i>/</i>Film<i>/</i>Sound<i>/</i></span>';
+const mt=document.getElementById('mt'); mt.innerHTML=seg.repeat(6);
+let mx=0, base=0.6, vel=0, lastY=scrollY||0;
+addEventListener('scroll',()=>{ const y=scrollY||document.documentElement.scrollTop; vel=y-lastY; lastY=y; },{passive:true});
+const half=()=>mt.scrollWidth/2;
+function loop(){ requestAnimationFrame(loop);
+  const spd=base+Math.min(6,Math.abs(vel)*0.25); mx-=spd; if(-mx>half()) mx+=half();
+  const skew=Math.max(-10,Math.min(10,vel*0.5));
+  mt.style.transform='translateX('+mx+'px) skewX('+skew+'deg)';
+  vel*=0.85;
+}
+loop();
+window.__volta=()=>({chars:document.querySelectorAll('.htitle .ch').length, revealed:document.getElementById('ht').classList.contains('in'),
+  marqueeW:Math.round(mt.scrollWidth), cycWord:cyc.textContent, words:WORDS.length});
+</script>
+</body>
+</html>
