@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>THRESHOLD — Cross Into Something New</title>
+<meta name="description" content="THRESHOLD. A monolith at the water's edge, reflected in real time.">
+<meta name="theme-color" content="#040405">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#eef0f2;--muted:rgba(238,240,242,.62);--line:rgba(238,240,242,.18);--disp:'Cormorant Garamond',serif;--body:'Inter',sans-serif}
+html,body{height:100%}
+body{background:#040405;color:var(--ink);font-family:var(--body);font-weight:300;overflow:hidden;-webkit-font-smoothing:antialiased}
+#gl{position:fixed;inset:0;z-index:0;display:block}
+.vig{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 80% at 50% 42%,rgba(4,4,5,0) 40%,rgba(4,4,5,.7) 100%)}
+.wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+nav{display:flex;align-items:center;justify-content:space-between;height:84px}
+.brand{font-family:var(--disp);font-weight:500;font-size:22px;letter-spacing:.34em}
+.nl{display:flex;gap:30px}.nl a{color:var(--muted);text-decoration:none;font-size:13px;letter-spacing:.06em}.nl a:hover{color:var(--ink)}
+.hero{min-height:calc(100vh - 84px);display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;padding:7vh 0 0}
+.eyebrow{font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--muted);margin-bottom:24px}
+h1{font-family:var(--disp);font-weight:300;font-size:clamp(44px,8vw,116px);line-height:1;letter-spacing:.01em}
+h1 em{font-style:italic}
+.sub{margin-top:22px;max-width:40ch;color:var(--muted);font-size:clamp(14px,1.4vw,17px);line-height:1.8}
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:30px;color:var(--ink);text-decoration:none;font-size:13px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--line);border-radius:100px;padding:13px 28px;transition:.3s}
+.cta:hover{background:rgba(238,240,242,.08);border-color:rgba(238,240,242,.45)}
+.hint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:3;color:var(--muted);font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+@media(max-width:640px){.nl{display:none}}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div class="vig"></div>
+<div class="wrap">
+  <nav><div class="brand">THRESHOLD</div><div class="nl"><a href="#">Manifesto</a><a href="#">The Work</a><a href="#">Enter</a></nav></nav>
+  <header class="hero">
+    <div class="eyebrow">An invitation</div>
+    <h1>Cross the<br><em>threshold.</em></h1>
+    <p class="sub">Some doors only open once. The monolith below is real geometry, mirrored in water that answers your cursor. Disturb the surface.</p>
+    <a class="cta" href="#">Step through →</a>
+  </header>
+</div>
+<div class="hint">Move across the water</div>
+<script src="lib/three.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
