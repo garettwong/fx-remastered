@@ -3,81 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SOLACE — A Mountain Retreat</title>
-<meta name="description" content="SOLACE, a mountain retreat above the cloud line.">
-<meta name="theme-color" content="#dcc4b4">
+<title>NOCTURNE — The City After Midnight</title>
+<meta name="description" content="NOCTURNE. A living noir city, procedurally generated in Three.js. Fly through it.">
+<meta name="theme-color" content="#05060a">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--ink:#fff;--muted:rgba(255,255,255,.78);--line:rgba(255,255,255,.28);--accent:#f2b98a;--disp:'Fraunces',serif;--body:'Inter',sans-serif}
+:root{--ink:#eaecf5;--muted:rgba(234,236,245,.6);--line:rgba(234,236,245,.12);--accent:#e8a04a;--disp:'Space Grotesk',sans-serif;--body:'Inter',sans-serif}
 html,body{height:100%}
-body{background:#c9b1a4;color:var(--ink);font-family:var(--body);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-.bg{position:fixed;inset:0;z-index:0;overflow:hidden}
-.layer{position:absolute;inset:-7%;width:114%;height:114%;will-change:transform}
-.layer img{width:100%;height:100%;object-fit:cover;display:block}
-.near img{animation:ken 26s ease-in-out infinite alternate}
-.far{filter:blur(4px) saturate(.9);opacity:.9}
-@keyframes ken{to{transform:scale(1.09)}}
-#atmos{position:absolute;inset:0;z-index:2}
-.grad{position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(180deg,rgba(40,28,34,.28) 0%,rgba(40,28,34,0) 26%,rgba(40,28,34,0) 52%,rgba(40,28,34,.5) 100%)}
-.wrap{position:relative;z-index:4;max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,56px);text-shadow:0 2px 30px rgba(30,18,24,.4)}
+body{background:#05060a;color:var(--ink);font-family:var(--body);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+#gl{position:fixed;inset:0;z-index:0;display:block;cursor:grab}#gl.grab{cursor:grabbing}
+.scrim{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(90% 80% at 50% 20%,rgba(5,6,10,0) 45%,rgba(5,6,10,.7) 100%),linear-gradient(180deg,rgba(5,6,10,.5),rgba(5,6,10,0) 30%,rgba(5,6,10,0) 60%,rgba(5,6,10,.85) 100%)}
+.wrap{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
 nav{display:flex;align-items:center;justify-content:space-between;height:84px}
-.brand{font-family:var(--disp);font-weight:400;font-size:22px;letter-spacing:.16em}
-.nl{display:flex;gap:30px}.nl a{color:var(--ink);opacity:.85;text-decoration:none;font-size:14px}.nl a:hover{opacity:1}
-.tag{font-size:12px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
-.hero{min-height:calc(100vh - 84px);display:flex;flex-direction:column;justify-content:center;text-align:center;align-items:center;padding:20px 0 120px}
-.eyebrow{font-family:var(--body);font-weight:400;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:26px}
-h1{font-family:var(--disp);font-weight:300;font-size:clamp(46px,9vw,132px);line-height:.98;letter-spacing:-.02em}
-h1 em{font-style:italic;color:var(--accent)}
-.sub{margin-top:26px;max-width:42ch;color:var(--ink);opacity:.85;font-size:clamp(15px,1.5vw,18px);line-height:1.75}
-.cta{display:inline-flex;align-items:center;gap:10px;margin-top:34px;color:#2b201c;background:rgba(255,255,255,.94);text-decoration:none;font-size:14px;border-radius:100px;padding:15px 30px;transition:transform .3s;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.brand{font-family:var(--disp);font-weight:700;font-size:20px;letter-spacing:.18em}
+.nl{display:flex;gap:30px}.nl a{color:var(--muted);text-decoration:none;font-size:14px}.nl a:hover{color:var(--ink)}
+.tag{font-size:12px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.hero{min-height:calc(100vh - 84px);display:flex;flex-direction:column;justify-content:center;max-width:600px;padding:40px 0 120px}
+.eyebrow{font-family:var(--disp);font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:24px}
+h1{font-family:var(--disp);font-weight:500;font-size:clamp(46px,8vw,120px);line-height:.94;letter-spacing:-.03em}
+h1 em{font-style:normal;color:var(--accent)}
+.sub{margin-top:24px;max-width:44ch;color:var(--muted);font-size:clamp(15px,1.5vw,18px);line-height:1.7}
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:32px;color:#100a04;background:var(--accent);text-decoration:none;font-family:var(--disp);font-weight:600;font-size:14px;border-radius:100px;padding:14px 28px;transition:transform .3s}
 .cta:hover{transform:translateY(-2px)}
+.hint{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:3;color:var(--muted);font-family:var(--disp);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
 @media(max-width:640px){.nl{display:none}}
 </style>
 </head>
 <body>
-<div class="bg">
-  <div class="layer far" id="lfar"><img src="img/solace_far.jpg" alt=""></div>
-  <div class="layer near" id="lnear"><img src="img/solace_hero.jpg" alt="Mountain dawn"></div>
-  <canvas id="atmos"></canvas>
-  <div class="grad"></div>
-</div>
+<canvas id="gl"></canvas>
+<div class="scrim"></div>
 <div class="wrap">
-  <nav><div class="brand">SOLACE</div><div class="nl"><a href="#">Stay</a><a href="#">Rooms</a><a href="#">Journal</a></div><div class="tag">4:52 AM · Dawn</div></nav>
+  <nav><div class="brand">NOCTURNE</div><div class="nl"><a href="#">Places</a><a href="#">Nights</a><a href="#">Guide</a></nav><div class="tag">01:14 · Downtown</div></nav>
   <header class="hero">
-    <div class="eyebrow">A mountain retreat</div>
-    <h1>Breathe<br>it all <em>out.</em></h1>
-    <p class="sub">Above the cloud line, where the day begins slowly. Move your cursor and let the light drift with you.</p>
-    <a class="cta" href="#">Reserve your quiet →</a>
+    <div class="eyebrow">The city after midnight</div>
+    <h1>The city that<br><em>never sleeps.</em></h1>
+    <p class="sub">A living skyline, every window generated in real time. Drag to bank over downtown, scroll to fly out to the edge of the lights.</p>
+    <a class="cta" href="#">Enter the night →</a>
   </header>
 </div>
-<script>
-/* depth parallax on the photo layers */
-const lfar=document.getElementById('lfar'), lnear=document.getElementById('lnear');
-let mx=0,my=0,tx=0,ty=0;
-addEventListener('pointermove',e=>{ tx=(e.clientX/innerWidth-0.5); ty=(e.clientY/innerHeight-0.5); },{passive:true});
-/* atmospheric canvas: drifting light motes + soft fog */
-const cv=document.getElementById('atmos'), ctx=cv.getContext('2d'); let W,H,DPR;
-function resize(){ DPR=Math.min(devicePixelRatio||1,2); W=cv.width=innerWidth*DPR; H=cv.height=innerHeight*DPR; cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px'; }
-addEventListener('resize',resize); resize();
-const motes=Array.from({length:70},()=>({x:Math.random()*W,y:Math.random()*H,r:(0.6+Math.random()*2.2)*DPR,vx:(-0.2-Math.random()*0.5)*DPR,ph:Math.random()*6.28,a:0.2+Math.random()*0.5}));
-let t=0;
-function frame(){ requestAnimationFrame(frame); t+=0.006;
-  mx+=(tx-mx)*0.05; my+=(ty-my)*0.05;
-  lfar.style.transform='translate('+(-mx*14)+'px,'+(-my*10)+'px)';
-  lnear.style.transform='translate('+(-mx*34)+'px,'+(-my*22)+'px)';
-  ctx.clearRect(0,0,W,H);
-  // soft fog bands
-  for(let i=0;i<3;i++){ const y=H*(0.5+i*0.16)+Math.sin(t+i)*12*DPR;
-    const g=ctx.createLinearGradient(0,y-70*DPR,0,y+70*DPR); g.addColorStop(0,'rgba(247,232,220,0)'); g.addColorStop(.5,'rgba(247,232,220,'+(0.08-i*0.02)+')'); g.addColorStop(1,'rgba(247,232,220,0)');
-    ctx.fillStyle=g; ctx.fillRect(0,y-70*DPR,W,140*DPR); }
-  // light motes
-  for(const m of motes){ m.x+=m.vx; m.y+=Math.sin(t*1.5+m.ph)*0.25*DPR; if(m.x<-6){m.x=W+6;m.y=Math.random()*H;}
-    ctx.beginPath(); ctx.arc(m.x,m.y,m.r,0,6.2832); ctx.fillStyle='rgba(255,246,232,'+(m.a*(0.6+0.4*Math.sin(t*2+m.ph)))+')'; ctx.fill(); }
-}
-requestAnimationFrame(frame);
-window.__solace=()=>({motes:motes.length, layers:2, canvas:[cv.width,cv.height], imgLoaded:document.querySelector('.near img').complete});
-</script>
+<div class="hint">Drag to bank · scroll to fly</div>
+<script src="lib/three.min.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
