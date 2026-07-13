@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CURRENT — Images in Motion</title>
+<meta name="description" content="CURRENT, a photography studio. A stream of images flowing along a path.">
+<meta name="theme-color" content="#f6f5f2">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#1a1814;--muted:#7a746a;--disp:'Fraunces',serif;--body:'Inter',sans-serif}
+html,body{height:100%}
+body{background:#f6f5f2;color:var(--ink);font-family:var(--body);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+#gl{position:fixed;inset:0;z-index:0;display:block}
+.spacer{height:400vh}
+.ui{position:fixed;inset:0;z-index:2;pointer-events:none;padding:clamp(22px,3vw,40px) clamp(20px,5vw,56px);display:flex;flex-direction:column;justify-content:space-between;mix-blend-mode:multiply}
+.top{display:flex;align-items:center;justify-content:space-between}
+.brand{font-family:var(--disp);font-weight:400;font-size:22px;letter-spacing:.22em}
+.nl{display:flex;gap:28px}.nl a{color:var(--muted);text-decoration:none;font-size:14px;pointer-events:auto}
+.lead{max-width:44ch}.lead h1{font-family:var(--disp);font-weight:300;font-size:clamp(30px,4.4vw,58px);line-height:1;letter-spacing:-.01em}
+.lead p{margin-top:14px;color:var(--muted);font-size:14px;line-height:1.6}
+.hint{font-family:var(--disp);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:center}
+@media(max-width:640px){.nl{display:none}}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div class="ui">
+  <div class="top"><div class="brand">CURRENT</div><div class="nl"><a href="#">Work</a><a href="#">Studio</a><a href="#">Contact</a></div></div>
+  <div class="lead"><h1>Every frame,<br>in the current.</h1><p>A photography studio. Our work doesn't sit in a grid, it streams past you along a single line. Scroll to move down the current.</p></div>
+  <div class="hint">Scroll to flow ↓</div>
+</div>
+<div class="spacer"></div>
+<script src="lib/three.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
