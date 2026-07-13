@@ -39,23 +39,27 @@ body{background:#08060a;color:var(--ink);font-family:var(--body);font-weight:300
   </div>
 </div>
 <script>
-const cv=document.getElementById('fx'), ctx=cv.getContext('2d'); let W,H,DPR;
+const cv=document.getElementById('fx'), ctx=cv.getContext('2d'); let W=0,H=0,DPR=Math.min(devicePixelRatio||1,2);
 const mouse={x:-9999,y:-9999};
-let parts=[];
-function build(){ DPR=Math.min(devicePixelRatio||1,2); W=cv.width=cv.clientWidth*DPR; H=cv.height=cv.clientHeight*DPR;
+let parts=[], built=false;
+function build(){ const cw=cv.clientWidth, ch=cv.clientHeight; if(cw<4||ch<4) return;   // wait for layout, never getImageData a 0-size canvas
+  DPR=Math.min(devicePixelRatio||1,2); W=cv.width=Math.round(cw*DPR); H=cv.height=Math.round(ch*DPR);
   const oc=document.createElement('canvas'); oc.width=W; oc.height=H; const o=oc.getContext('2d');
-  const fs=Math.min(W*0.24, H*0.5); o.fillStyle='#fff'; o.font='700 '+fs+'px Space Grotesk, sans-serif'; o.textAlign='center'; o.textBaseline='middle';
+  const fs=Math.min(W*0.24, H*0.5); o.fillStyle='#fff'; o.font='700 '+fs+'px "Space Grotesk", sans-serif'; o.textAlign='center'; o.textBaseline='middle';
   o.fillText('EMBER', W/2, H*0.5);
   const d=o.getImageData(0,0,W,H).data; const step=Math.max(3,Math.round(4*DPR)); const targets=[];
   for(let y=0;y<H;y+=step)for(let x=0;x<W;x+=step){ if(d[(y*W+x)*4+3]>128) targets.push([x,y]); }
   parts=targets.map(t=>({x:Math.random()*W,y:Math.random()*H,tx:t[0],ty:t[1],h:20+Math.random()*30,ph:Math.random()*6.28,sp:0.05+Math.random()*0.05}));
+  built=true;
 }
-function resize(){ build(); } addEventListener('resize',resize);
+addEventListener('resize',()=>{ built=false; });
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{ built=false; });
 cv.addEventListener('pointermove',e=>{ const r=cv.getBoundingClientRect(); mouse.x=(e.clientX-r.left)*DPR; mouse.y=(e.clientY-r.top)*DPR; },{passive:true});
 cv.addEventListener('pointerleave',()=>{mouse.x=mouse.y=-9999;});
-addEventListener('load',build); build();
 let t=0;
-function frame(){ requestAnimationFrame(frame); if(!parts.length)build(); t+=0.05;
+function frame(){ requestAnimationFrame(frame);
+  if(!built){ build(); if(!built) return; }
+  t+=0.05;
   ctx.fillStyle='rgba(8,6,10,0.22)'; ctx.fillRect(0,0,W,H); ctx.globalCompositeOperation='lighter';
   for(const p of parts){ let dx=p.tx-p.x, dy=p.ty-p.y;
     const mdx=p.x-mouse.x, mdy=p.y-mouse.y, md2=mdx*mdx+mdy*mdy, R=90*DPR;
