@@ -26,6 +26,15 @@ body{background:#060a08;color:var(--ink);font-family:var(--disp);overflow:hidden
 .chip{font-family:var(--mono);font-size:11px;color:var(--ink);border:1px solid rgba(220,243,228,.2);border-radius:100px;padding:6px 12px;cursor:pointer;transition:.2s}
 .chip:hover{border-color:var(--accent)}.chip.on{background:var(--accent);color:#062012;border-color:var(--accent)}
 .hint{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.1em}
+.panel{position:fixed;top:0;right:0;height:100%;width:min(360px,82vw);z-index:5;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(6,12,9,.94) 24%);padding:0 clamp(20px,3vw,44px);
+  display:flex;flex-direction:column;justify-content:center;opacity:0;transform:translateX(24px);transition:opacity .4s,transform .4s}
+.panel.on{opacity:1;transform:none;pointer-events:auto}
+.panel .grp{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+.panel h2{font-weight:600;font-size:clamp(26px,3.4vw,46px);margin:8px 0 14px;line-height:.98}
+.panel p{color:var(--muted);font-size:14px;line-height:1.65;max-width:34ch}
+.panel .x{margin-top:22px;font-family:var(--mono);font-size:11px;color:var(--muted);cursor:pointer;border:1px solid rgba(220,243,228,.2);border-radius:100px;padding:7px 14px;align-self:flex-start}
+.panel .x:hover{border-color:var(--accent);color:var(--ink)}
 </style>
 </head>
 <body>
@@ -35,72 +44,84 @@ body{background:#060a08;color:var(--ink);font-family:var(--disp);overflow:hidden
   <div>
     <div class="lead"><h1>A portfolio, drawn as a constellation.</h1><p>Every skill, project and link is a star. Pull the sky around, hover a node to light its connections.</p>
     <div class="chips" id="chips"></div></div>
-    <div class="hint" style="margin-top:18px">◍ drag to pan · hover a node</div>
+    <div class="hint" style="margin-top:18px">◍ drag to rotate · click a node</div>
   </div>
 </div>
+<div class="panel" id="panel"><div class="grp" id="pgrp"></div><h2 id="ptitle"></h2><p id="pbody"></p><div class="x" id="pclose">◍ close</div></div>
 <script>
 const cv=document.getElementById('gl'), ctx=cv.getContext('2d'); let W,H,DPR;
 function resize(){ DPR=Math.min(devicePixelRatio||1,2); W=cv.width=innerWidth*DPR; H=cv.height=innerHeight*DPR; cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px'; }
 addEventListener('resize',resize); resize();
-/* graph data */
+const TAU=6.28318;
+/* graph data — now positioned in real 3D space */
 const GROUPS={Skills:['Design','Code','Motion','3D','Photo','Type','Sound','Writing'],
   Work:['Aurora','Vessel','Mirage','Pier','Contour','Ember','Drift','Halo'],
   Notes:['Essays','Reading','Sketches','Archive'],
   Links:['GitHub','X','Are.na','Contact','Email']};
 const COL={Skills:'#6ee787',Work:'#5fd0ff',Notes:'#c9a0ff',Links:'#ffcf6e'};
-const nodes=[], edges=[];
-nodes.push({label:'NEBULA',x:0,y:0,r:15,group:'core',col:'#ffffff',ph:0});
-let gi=0; const gk=Object.keys(GROUPS);
-gk.forEach((g,k)=>{ const a=(k/gk.length)*6.283-0.6, R=200; const hub={label:g,x:Math.cos(a)*R,y:Math.sin(a)*R,r:10,group:g,col:COL[g],ph:Math.random()*6.28}; const hi=nodes.length; nodes.push(hub); edges.push([0,hi]);
-  GROUPS[g].forEach((L,j)=>{ const aa=a+(j-(GROUPS[g].length-1)/2)*0.4, RR=R+120+Math.random()*70; const ni=nodes.length;
-    nodes.push({label:L,x:Math.cos(aa)*RR,y:Math.sin(aa)*RR,r:5+Math.random()*3,group:g,col:COL[g],ph:Math.random()*6.28}); edges.push([hi,ni]);
-    if(j>0 && Math.random()<0.4) edges.push([ni,ni-1]); }); });
-/* cross links */
-for(let i=0;i<6;i++){ const a=1+((Math.random()*nodes.length)|0), b=1+((Math.random()*nodes.length)|0); if(a!==b) edges.push([a,b]); }
-/* interaction */
-let ox=0,oy=0, drag=false, lx=0,ly=0, mx=-9999,my=-9999, hoverI=-1, filter='All';
-cv.addEventListener('pointerdown',e=>{ drag=true; lx=e.clientX; ly=e.clientY; cv.classList.add('grab'); });
-addEventListener('pointermove',e=>{ mx=e.clientX*DPR; my=e.clientY*DPR; if(drag){ ox+=(e.clientX-lx)*DPR; oy+=(e.clientY-ly)*DPR; lx=e.clientX; ly=e.clientY; } },{passive:true});
-addEventListener('pointerup',()=>{ drag=false; cv.classList.remove('grab'); });
+const BLURB={Skills:'A discipline I work in daily.',Work:'A project — case study inside.',Notes:'Writing and sketches.',Links:'Find me here.'};
+const nodes=[], edges=[]; const gk=Object.keys(GROUPS);
+let R1=0; const rnd=()=>{R1=(R1*9301+49297)%233280;return R1/233280;}; R1=7;
+nodes.push({label:'NEBULA',group:'core',col:'#ffffff',r:15,x:0,y:0,z:0,blurb:'The index of everything I make. Rotate the sky, click any star.'});
+gk.forEach((g,k)=>{ const a=(k/gk.length)*TAU; const R=210;
+  const hub={label:g,group:g,col:COL[g],r:10,x:Math.cos(a)*R,y:(k%2?1:-1)*(60+rnd()*40),z:Math.sin(a)*R,blurb:g+' — a cluster of '+GROUPS[g].length+' nodes.'};
+  const hi=nodes.length; nodes.push(hub); edges.push([0,hi]);
+  GROUPS[g].forEach((L,j)=>{ const t2=(j/GROUPS[g].length)*TAU, rr=95+rnd()*55;
+    nodes.push({label:L,group:g,col:COL[g],r:4.5+rnd()*3,
+      x:hub.x+Math.cos(t2)*rr, y:hub.y+(rnd()-0.5)*130, z:hub.z+Math.sin(t2)*rr, blurb:L+' — '+BLURB[g]});
+    const ni=nodes.length-1; edges.push([hi,ni]); if(j>0&&rnd()<0.4)edges.push([ni,ni-1]); }); });
+for(let i=0;i<6;i++){ const a=1+((rnd()*nodes.length)|0), b=1+((rnd()*nodes.length)|0); if(a!==b) edges.push([a,b]); }
+
+/* interaction: rotate the cloud (yaw/pitch), click a node for its panel */
+let yaw=0, pitch=0.12, drag=false, lx=0,ly=0, moved=0, mx=-9999,my=-9999, hoverI=-1, filter='All', selected=-1;
+const CAMZ=620, FOV=620;
+cv.addEventListener('pointerdown',e=>{ drag=true; moved=0; lx=e.clientX; ly=e.clientY; cv.classList.add('grab'); });
+addEventListener('pointermove',e=>{ mx=e.clientX*DPR; my=e.clientY*DPR;
+  if(drag){ const dx=e.clientX-lx, dy=e.clientY-ly; yaw+=dx*0.006; pitch=Math.max(-1.2,Math.min(1.2,pitch+dy*0.006)); moved+=Math.abs(dx)+Math.abs(dy); lx=e.clientX; ly=e.clientY; } },{passive:true});
+addEventListener('pointerup',e=>{ drag=false; cv.classList.remove('grab');
+  if(moved<6){ if(hoverI>0) openPanel(hoverI); else closePanel(); } });
+const panel=document.getElementById('panel');
+function openPanel(i){ selected=i; const n=nodes[i]; document.getElementById('pgrp').textContent=n.group==='core'?'INDEX':n.group; document.getElementById('pgrp').style.color=n.col;
+  document.getElementById('ptitle').textContent=n.label; document.getElementById('pbody').textContent=n.blurb; panel.classList.add('on'); }
+function closePanel(){ selected=-1; panel.classList.remove('on'); }
+document.getElementById('pclose').onclick=closePanel;
 const chips=document.getElementById('chips'); ['All',...gk].forEach((g,i)=>{ const b=document.createElement('button'); b.className='chip'+(i===0?' on':''); b.textContent=g; b.onclick=()=>{ filter=g; [...chips.children].forEach(x=>x.classList.toggle('on',x===b)); }; chips.appendChild(b); });
+
 let t=0;
-function sx(n){ return W/2+ox+n.x*DPR; } function sy(n){ return H/2+oy+n.y*DPR; }
-function frame(){ requestAnimationFrame(frame); t+=0.01;
+function project(n){ const cy=Math.cos(yaw),sy=Math.sin(yaw); let X=n.x*cy-n.z*sy, Z=n.x*sy+n.z*cy, Y=n.y;
+  const cp=Math.cos(pitch),sp=Math.sin(pitch); const Y2=Y*cp-Z*sp, Z2=Y*sp+Z*cp;
+  const d=Z2+CAMZ, s=FOV/Math.max(60,d);
+  return {x:W/2+X*s*DPR, y:H/2+Y2*s*DPR, s, d}; }
+function frame(){ requestAnimationFrame(frame); t+=0.01; if(!drag && selected<0) yaw+=0.0016;   // gentle auto-orbit
   ctx.fillStyle='#060a08'; ctx.fillRect(0,0,W,H);
-  // drift
-  nodes.forEach(n=>{ n.dx=Math.sin(t+n.ph)*6*DPR; n.dy=Math.cos(t*0.9+n.ph)*6*DPR; });
-  // hover pick
-  hoverI=-1; let best=22*DPR;
-  nodes.forEach((n,i)=>{ const d=Math.hypot(sx(n)+n.dx-mx, sy(n)+n.dy-my); if(d<best){best=d;hoverI=i;} });
-  const active=i=> filter==='All'|| nodes[i].group===filter || nodes[i].group==='core' || (nodes[i].group===filter);
-  // edges
+  const P=nodes.map(project);
+  hoverI=-1; let best=24*DPR; P.forEach((p,i)=>{ if(i===0)return; const dd=Math.hypot(p.x-mx,p.y-my); if(dd<best){best=dd;hoverI=i;} });
+  const dimN=i=> (filter!=='All' && nodes[i].group!==filter && nodes[i].group!=='core');
   ctx.lineWidth=1*DPR;
-  edges.forEach(e=>{ const a=nodes[e[0]],b=nodes[e[1]]; const hot=(hoverI===e[0]||hoverI===e[1]);
-    const dim = (filter!=='All' && a.group!==filter && b.group!==filter && a.group!=='core' && b.group!=='core');
-    ctx.strokeStyle=hot?'rgba(150,240,180,0.55)':(dim?'rgba(120,160,140,0.05)':'rgba(120,200,150,0.14)');
-    ctx.beginPath(); ctx.moveTo(sx(a)+a.dx,sy(a)+a.dy); ctx.lineTo(sx(b)+b.dx,sy(b)+b.dy); ctx.stroke(); });
-  // nodes
+  edges.forEach(e=>{ const a=P[e[0]],b=P[e[1]]; const hot=(hoverI===e[0]||hoverI===e[1]||selected===e[0]||selected===e[1]);
+    const dim=(dimN(e[0])&&dimN(e[1]));
+    ctx.strokeStyle=hot?'rgba(150,240,180,0.6)':(dim?'rgba(120,160,140,0.04)':'rgba(120,200,150,0.13)');
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); });
+  const order=P.map((p,i)=>i).sort((i,j)=>P[j].d-P[i].d);            // far → near
   ctx.globalCompositeOperation='lighter';
-  nodes.forEach((n,i)=>{ const x=sx(n)+n.dx,y=sy(n)+n.dy; const hot=(i===hoverI);
-    const dim=(filter!=='All' && n.group!==filter && n.group!=='core');
-    const r=(n.r+(hot?4:0))*DPR, glow=r*(hot?5:3.2);
-    const g=ctx.createRadialGradient(x,y,0,x,y,glow); const al=dim?0.1:(hot?0.6:0.32);
-    g.addColorStop(0,n.col+''); ctx.globalAlpha=al; g.addColorStop(0,hexA(n.col,0.7)); g.addColorStop(1,hexA(n.col,0));
-    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,glow,0,6.283); ctx.fill(); ctx.globalAlpha=1;
-    ctx.fillStyle=dim?hexA(n.col,0.25):n.col; ctx.beginPath(); ctx.arc(x,y,r,0,6.283); ctx.fill(); });
+  order.forEach(i=>{ const p=P[i], n=nodes[i]; const hot=(i===hoverI||i===selected), dim=dimN(i);
+    const r=(n.r*p.s+(hot?4:0))*DPR, glow=r*(hot?5:3.2);
+    const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,glow); const al=dim?0.08:(hot?0.6:0.3);
+    ctx.globalAlpha=al; g.addColorStop(0,hexA(n.col,0.75)); g.addColorStop(1,hexA(n.col,0));
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,glow,0,TAU); ctx.fill(); ctx.globalAlpha=1;
+    ctx.fillStyle=dim?hexA(n.col,0.25):n.col; ctx.beginPath(); ctx.arc(p.x,p.y,Math.max(1,r),0,TAU); ctx.fill(); });
   ctx.globalCompositeOperation='source-over';
-  // labels
-  ctx.font=(12*DPR)+'px Space Grotesk, sans-serif'; ctx.textBaseline='middle';
-  nodes.forEach((n,i)=>{ const x=sx(n)+n.dx,y=sy(n)+n.dy; const hot=(i===hoverI||n.group==='core'||n.r>=10);
-    const dim=(filter!=='All' && n.group!==filter && n.group!=='core');
-    if(!hot && !dim && n.r<6 && i!==hoverI) { ctx.globalAlpha=0.5; } else ctx.globalAlpha=dim?0.2:1;
-    ctx.fillStyle= i===hoverI? '#ffffff' : hexA('#dcf3e4',0.9);
-    ctx.font=((n.group==='core'?16:n.r>=10?13:11)*DPR)+'px Space Grotesk, sans-serif';
-    ctx.fillText(n.label, x+(n.r+6)*DPR, y); ctx.globalAlpha=1; });
+  ctx.textBaseline='middle';
+  order.forEach(i=>{ const p=P[i], n=nodes[i]; const big=(n.group==='core'||n.r>=10); const hot=(i===hoverI||i===selected), dim=dimN(i);
+    if(!big && !hot && p.s<0.9) return;                              // hide far small labels — declutter
+    ctx.globalAlpha=dim?0.18:(big||hot?1:0.62);
+    ctx.fillStyle=hot?'#ffffff':hexA('#dcf3e4',0.92);
+    ctx.font=((n.group==='core'?16:big?13:11)*p.s*DPR)+'px Space Grotesk, sans-serif';
+    ctx.fillText(n.label, p.x+(n.r*p.s+6)*DPR, p.y); ctx.globalAlpha=1; });
 }
 function hexA(h,a){ const n=parseInt(h.slice(1),16); return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')'; }
 requestAnimationFrame(frame);
-window.__nebula=()=>({nodes:nodes.length, edges:edges.length, canvas:[cv.width,cv.height], ctx:!!ctx});
+window.__nebula=()=>({nodes:nodes.length, edges:edges.length, canvas:[cv.width,cv.height], ctx:!!ctx, is3D:true, selected});
 </script>
 </body>
 </html>
