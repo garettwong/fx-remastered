@@ -39,17 +39,22 @@ body{background:#08060a;color:var(--ink);font-family:var(--body);font-weight:300
   </div>
 </div>
 <script>
-const cv=document.getElementById('fx'), ctx=cv.getContext('2d'); let W=0,H=0,DPR=Math.min(devicePixelRatio||1,2);
+const cv=document.getElementById('fx'), ctx=cv.getContext('2d'); let W=0,H=0,DPR=Math.min(devicePixelRatio||1,1.5);
 const mouse={x:-9999,y:-9999};
 let parts=[], built=false;
+/* pre-render ember glow sprites ONCE — drawImage is far cheaper than a per-particle gradient */
+function sprite(hue){ const s=document.createElement('canvas'); s.width=s.height=26; const c=s.getContext('2d');
+  const g=c.createRadialGradient(13,13,0,13,13,13); g.addColorStop(0,'hsla('+hue+',100%,72%,1)'); g.addColorStop(.4,'hsla('+hue+',100%,55%,.55)'); g.addColorStop(1,'hsla('+hue+',100%,50%,0)');
+  c.fillStyle=g; c.fillRect(0,0,26,26); return s; }
+const SPR=[sprite(18),sprite(26),sprite(34),sprite(42)];
 function build(){ const cw=cv.clientWidth, ch=cv.clientHeight; if(cw<4||ch<4) return;   // wait for layout, never getImageData a 0-size canvas
-  DPR=Math.min(devicePixelRatio||1,2); W=cv.width=Math.round(cw*DPR); H=cv.height=Math.round(ch*DPR);
+  DPR=Math.min(devicePixelRatio||1,1.5); W=cv.width=Math.round(cw*DPR); H=cv.height=Math.round(ch*DPR);
   const oc=document.createElement('canvas'); oc.width=W; oc.height=H; const o=oc.getContext('2d');
   const fs=Math.min(W*0.24, H*0.5); o.fillStyle='#fff'; o.font='700 '+fs+'px "Space Grotesk", sans-serif'; o.textAlign='center'; o.textBaseline='middle';
   o.fillText('EMBER', W/2, H*0.5);
-  const d=o.getImageData(0,0,W,H).data; const step=Math.max(3,Math.round(4*DPR)); const targets=[];
+  const d=o.getImageData(0,0,W,H).data; const step=Math.max(9,Math.round(9*DPR)); const targets=[];   // sparser: ~1500 particles not 7600
   for(let y=0;y<H;y+=step)for(let x=0;x<W;x+=step){ if(d[(y*W+x)*4+3]>128) targets.push([x,y]); }
-  parts=targets.map(t=>({x:Math.random()*W,y:Math.random()*H,tx:t[0],ty:t[1],h:20+Math.random()*30,ph:Math.random()*6.28,sp:0.05+Math.random()*0.05}));
+  parts=targets.map(t=>({x:Math.random()*W,y:Math.random()*H,tx:t[0],ty:t[1],spr:(Math.random()*4)|0,ph:Math.random()*6.28,sp:0.05+Math.random()*0.05}));
   built=true;
 }
 addEventListener('resize',()=>{ built=false; });
@@ -60,17 +65,16 @@ let t=0;
 function frame(){ requestAnimationFrame(frame);
   if(!built){ build(); if(!built) return; }
   t+=0.05;
-  ctx.fillStyle='rgba(8,6,10,0.22)'; ctx.fillRect(0,0,W,H); ctx.globalCompositeOperation='lighter';
+  ctx.globalCompositeOperation='source-over'; ctx.fillStyle='rgba(8,6,10,0.30)'; ctx.fillRect(0,0,W,H);
+  ctx.globalCompositeOperation='lighter'; const r=6*DPR;
   for(const p of parts){ let dx=p.tx-p.x, dy=p.ty-p.y;
-    const mdx=p.x-mouse.x, mdy=p.y-mouse.y, md2=mdx*mdx+mdy*mdy, R=90*DPR;
+    const mdx=p.x-mouse.x, mdy=p.y-mouse.y, md2=mdx*mdx+mdy*mdy, R=110*DPR;
     if(md2<R*R){ const md=Math.sqrt(md2)||1, f=(1-md/R)*7; p.x+=mdx/md*f; p.y+=mdy/md*f; }
     p.x+=dx*p.sp+Math.sin(t+p.ph)*0.4*DPR; p.y+=dy*p.sp+Math.cos(t*1.1+p.ph)*0.4*DPR - 0.2*DPR;
-    const fl=0.55+0.45*Math.sin(t*3+p.ph); const r=1.6*DPR;
-    const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r*3);
-    g.addColorStop(0,'hsla('+p.h+',100%,'+(60+fl*15)+'%,'+(0.6*fl)+')'); g.addColorStop(1,'hsla('+p.h+',100%,50%,0)');
-    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,r*3,0,6.28); ctx.fill();
+    ctx.globalAlpha=0.5+0.4*Math.sin(t*3+p.ph);
+    ctx.drawImage(SPR[p.spr], p.x-r, p.y-r, r*2, r*2);
   }
-  ctx.globalCompositeOperation='source-over';
+  ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
 }
 frame();
 window.__ember=()=>({particles:parts.length, canvas:[cv.width,cv.height], ctx:!!ctx});
