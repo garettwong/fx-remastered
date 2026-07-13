@@ -13,9 +13,21 @@
 :root{--ink:#f2ede6;--muted:rgba(242,237,230,.6);--disp:'Space Grotesk',sans-serif;--body:'Inter',sans-serif}
 html,body{height:100%}
 body{background:#08060a;color:var(--ink);font-family:var(--body);font-weight:300;overflow:hidden;-webkit-font-smoothing:antialiased}
-.frame{position:fixed;inset:clamp(10px,1.6vw,22px);z-index:1;border-radius:16px;padding:2px;
-  background:linear-gradient(130deg,#ff2d6b,#7a1030 20%,#0b0b12 40%,#0b0b12 60%,#1a5a6a 80%,#2fd6d6);pointer-events:none}
-.frame .in{position:absolute;inset:2px;border-radius:14px;background:#08060a}
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+.frame{position:fixed;inset:clamp(10px,1.6vw,22px);z-index:1;border-radius:16px;padding:1.5px;pointer-events:none;
+  /* warm ember glow travelling all the way around — every edge stays lit */
+  background:
+    conic-gradient(from var(--a) at 50% 50%,
+      #ff2d6b 0deg, #ff5a2c 55deg, #ffb43c 110deg, #ff7a1e 165deg,
+      #5a0f1e 210deg, #2a0a12 250deg, #5a0f1e 290deg, #ff8a2e 330deg, #ff2d6b 360deg);
+  filter:drop-shadow(0 0 14px rgba(255,96,40,.22)) drop-shadow(0 0 3px rgba(255,150,60,.35));
+  animation:emberSpin 14s linear infinite}
+@keyframes emberSpin{to{--a:360deg}}
+@media(prefers-reduced-motion:reduce){.frame{animation:none}}
+.frame .in{position:absolute;inset:1.5px;border-radius:14.5px;background:#08060a;overflow:hidden}
+/* faint inner heat-bloom hugging the border so the edge reads as glowing, not a hard line */
+.frame .in::after{content:'';position:absolute;inset:0;border-radius:14.5px;pointer-events:none;
+  box-shadow:inset 0 0 34px rgba(255,110,40,.14), inset 0 0 90px rgba(255,60,80,.05)}
 #fx{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:14px;pointer-events:auto}
 .ui{position:fixed;inset:0;z-index:3;pointer-events:none;padding:clamp(30px,5vw,60px);display:flex;flex-direction:column;justify-content:space-between}
 .top{display:flex;align-items:center;justify-content:space-between}
