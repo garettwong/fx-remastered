@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NEBULA — A Mind, Mapped</title>
+<meta name="description" content="NEBULA. A portfolio drawn as a living constellation of nodes. Drag to explore.">
+<meta name="theme-color" content="#060a08">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#dcf3e4;--muted:rgba(220,243,228,.55);--accent:#6ee787;--disp:'Space Grotesk',sans-serif;--mono:'Space Mono',monospace}
+html,body{height:100%}
+body{background:#060a08;color:var(--ink);font-family:var(--disp);overflow:hidden;-webkit-font-smoothing:antialiased}
+#gl{position:fixed;inset:0;z-index:0;display:block;cursor:grab}#gl.grab{cursor:grabbing}
+.ui{position:fixed;inset:0;z-index:2;pointer-events:none;padding:clamp(18px,3vw,34px) clamp(20px,4vw,48px);display:flex;flex-direction:column;justify-content:space-between}
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+.brand{font-weight:700;font-size:20px;letter-spacing:.14em}
+.brand .d{color:var(--accent)}
+.meta{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right;line-height:1.7}
+.lead{max-width:440px}
+.lead h1{font-weight:600;font-size:clamp(24px,3vw,38px);letter-spacing:-.01em;line-height:1.05}
+.lead p{margin-top:12px;color:var(--muted);font-size:14px;line-height:1.6}
+.chips{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;pointer-events:auto}
+.chip{font-family:var(--mono);font-size:11px;color:var(--ink);border:1px solid rgba(220,243,228,.2);border-radius:100px;padding:6px 12px;cursor:pointer;transition:.2s}
+.chip:hover{border-color:var(--accent)}.chip.on{background:var(--accent);color:#062012;border-color:var(--accent)}
+.hint{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.1em}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div class="ui">
+  <div class="top"><div class="brand">NEBULA<span class="d">.</span></div><div class="meta">A MIND, MAPPED<br>34 NODES · LIVE<br>DRAG TO EXPLORE</div></div>
+  <div>
+    <div class="lead"><h1>A portfolio, drawn as a constellation.</h1><p>Every skill, project and link is a star. Pull the sky around, hover a node to light its connections.</p>
+    <div class="chips" id="chips"></div></div>
+    <div class="hint" style="margin-top:18px">◍ drag to pan · hover a node</div>
+  </div>
+</div>
+<script>
+const cv=document.getElementById('gl'), ctx=cv.getContext('2d'); let W,H,DPR;
+function resize(){ DPR=Math.min(devicePixelRatio||1,2); W=cv.width=innerWidth*DPR; H=cv.height=innerHeight*DPR; cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px'; }
+addEventListener('resize',resize); resize();
+/* graph data */
+const GROUPS={Skills:['Design','Code','Motion','3D','Photo','Type','Sound','Writing'],
+  Work:['Aurora','Vessel','Mirage','Pier','Contour','Ember','Drift','Halo'],
+  Notes:['Essays','Reading','Sketches','Archive'],
+  Links:['GitHub','X','Are.na','Contact','Email']};
+const COL={Skills:'#6ee787',Work:'#5fd0ff',Notes:'#c9a0ff',Links:'#ffcf6e'};
+const nodes=[], edges=[];
+nodes.push({label:'NEBULA',x:0,y:0,r:15,group:'core',col:'#ffffff',ph:0});
+let gi=0; const gk=Object.keys(GROUPS);
+gk.forEach((g,k)=>{ const a=(k/gk.length)*6.283-0.6, R=200; const hub={label:g,x:Math.cos(a)*R,y:Math.sin(a)*R,r:10,group:g,col:COL[g],ph:Math.random()*6.28}; const hi=nodes.length; nodes.push(hub); edges.push([0,hi]);
+  GROUPS[g].forEach((L,j)=>{ const aa=a+(j-(GROUPS[g].length-1)/2)*0.4, RR=R+120+Math.random()*70; const ni=nodes.length;
+    nodes.push({label:L,x:Math.cos(aa)*RR,y:Math.sin(aa)*RR,r:5+Math.random()*3,group:g,col:COL[g],ph:Math.random()*6.28}); edges.push([hi,ni]);
+    if(j>0 && Math.random()<0.4) edges.push([ni,ni-1]); }); });
+/* cross links */
+for(let i=0;i<6;i++){ const a=1+((Math.random()*nodes.length)|0), b=1+((Math.random()*nodes.length)|0); if(a!==b) edges.push([a,b]); }
+/* interaction */
+let ox=0,oy=0, drag=false, lx=0,ly=0, mx=-9999,my=-9999, hoverI=-1, filter='All';
+cv.addEventListener('pointerdown',e=>{ drag=true; lx=e.clientX; ly=e.clientY; cv.classList.add('grab'); });
+addEventListener('pointermove',e=>{ mx=e.clientX*DPR; my=e.clientY*DPR; if(drag){ ox+=(e.clientX-lx)*DPR; oy+=(e.clientY-ly)*DPR; lx=e.clientX; ly=e.clientY; } },{passive:true});
+addEventListener('pointerup',()=>{ drag=false; cv.classList.remove('grab'); });
+const chips=document.getElementById('chips'); ['All',...gk].forEach((g,i)=>{ const b=document.createElement('button'); b.className='chip'+(i===0?' on':''); b.textContent=g; b.onclick=()=>{ filter=g; [...chips.children].forEach(x=>x.classList.toggle('on',x===b)); }; chips.appendChild(b); });
+let t=0;
+function sx(n){ return W/2+ox+n.x*DPR; } function sy(n){ return H/2+oy+n.y*DPR; }
+function frame(){ requestAnimationFrame(frame); t+=0.01;
+  ctx.fillStyle='#060a08'; ctx.fillRect(0,0,W,H);
+  // drift
+  nodes.forEach(n=>{ n.dx=Math.sin(t+n.ph)*6*DPR; n.dy=Math.cos(t*0.9+n.ph)*6*DPR; });
+  // hover pick
+  hoverI=-1; let best=22*DPR;
+  nodes.forEach((n,i)=>{ const d=Math.hypot(sx(n)+n.dx-mx, sy(n)+n.dy-my); if(d<best){best=d;hoverI=i;} });
+  const active=i=> filter==='All'|| nodes[i].group===filter || nodes[i].group==='core' || (nodes[i].group===filter);
+  // edges
+  ctx.lineWidth=1*DPR;
+  edges.forEach(e=>{ const a=nodes[e[0]],b=nodes[e[1]]; const hot=(hoverI===e[0]||hoverI===e[1]);
+    const dim = (filter!=='All' && a.group!==filter && b.group!==filter && a.group!=='core' && b.group!=='core');
+    ctx.strokeStyle=hot?'rgba(150,240,180,0.55)':(dim?'rgba(120,160,140,0.05)':'rgba(120,200,150,0.14)');
+    ctx.beginPath(); ctx.moveTo(sx(a)+a.dx,sy(a)+a.dy); ctx.lineTo(sx(b)+b.dx,sy(b)+b.dy); ctx.stroke(); });
+  // nodes
+  ctx.globalCompositeOperation='lighter';
+  nodes.forEach((n,i)=>{ const x=sx(n)+n.dx,y=sy(n)+n.dy; const hot=(i===hoverI);
+    const dim=(filter!=='All' && n.group!==filter && n.group!=='core');
+    const r=(n.r+(hot?4:0))*DPR, glow=r*(hot?5:3.2);
+    const g=ctx.createRadialGradient(x,y,0,x,y,glow); const al=dim?0.1:(hot?0.6:0.32);
+    g.addColorStop(0,n.col+''); ctx.globalAlpha=al; g.addColorStop(0,hexA(n.col,0.7)); g.addColorStop(1,hexA(n.col,0));
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,glow,0,6.283); ctx.fill(); ctx.globalAlpha=1;
+    ctx.fillStyle=dim?hexA(n.col,0.25):n.col; ctx.beginPath(); ctx.arc(x,y,r,0,6.283); ctx.fill(); });
+  ctx.globalCompositeOperation='source-over';
+  // labels
+  ctx.font=(12*DPR)+'px Space Grotesk, sans-serif'; ctx.textBaseline='middle';
+  nodes.forEach((n,i)=>{ const x=sx(n)+n.dx,y=sy(n)+n.dy; const hot=(i===hoverI||n.group==='core'||n.r>=10);
+    const dim=(filter!=='All' && n.group!==filter && n.group!=='core');
+    if(!hot && !dim && n.r<6 && i!==hoverI) { ctx.globalAlpha=0.5; } else ctx.globalAlpha=dim?0.2:1;
+    ctx.fillStyle= i===hoverI? '#ffffff' : hexA('#dcf3e4',0.9);
+    ctx.font=((n.group==='core'?16:n.r>=10?13:11)*DPR)+'px Space Grotesk, sans-serif';
+    ctx.fillText(n.label, x+(n.r+6)*DPR, y); ctx.globalAlpha=1; });
+}
+function hexA(h,a){ const n=parseInt(h.slice(1),16); return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')'; }
+requestAnimationFrame(frame);
+window.__nebula=()=>({nodes:nodes.length, edges:edges.length, canvas:[cv.width,cv.height], ctx:!!ctx});
+</script>
+</body>
+</html>
