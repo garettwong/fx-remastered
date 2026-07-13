@@ -1,40 +1,72 @@
-/* CURRENT — a stream of image planes flowing along a 3D spline (matched to the @DavidJason1820 ref).
-   Three.js r128, billboarded photos travelling a CatmullRom curve, driven by scroll + drift. */
+/* CURRENT — a photography studio whose work streams along a custom 3D path
+   (matched to @DavidJason1820: Three.js + GSAP, camera FLIES ALONG a spline, a dotted line
+   traces the path, image cards sit on the curve and swell as they approach, fade into the distance). r128. */
 (function(){
 const canvas=document.getElementById('gl');
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
 renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.75));
-renderer.setClearColor(0xf6f5f2,1);
-const scene=new THREE.Scene();
-const cam=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,0.1,100); cam.position.set(0,0,9);
+const BG=0xf4f2ee; renderer.setClearColor(BG,1);
+const scene=new THREE.Scene(); scene.fog=new THREE.Fog(BG,10,52);   // distant cards melt into cream = airy depth
+const cam=new THREE.PerspectiveCamera(52,innerWidth/innerHeight,0.1,120);
+
+/* the custom path — an S-curve receding away from the viewer */
+const V=(x,y,z)=>new THREE.Vector3(x,y,z);
 const curve=new THREE.CatmullRomCurve3([
-  new THREE.Vector3(-7,-2,-9), new THREE.Vector3(-3,2,-3), new THREE.Vector3(1,-1,2),
-  new THREE.Vector3(4,2,6), new THREE.Vector3(1,3,3), new THREE.Vector3(-2,1,-1),
-  new THREE.Vector3(-5,-2,-5)
-], true, 'catmullrom', 0.5);
-const IMGS=['s1','s2','s3','s4','s5','s6'];
-const texs=IMGS.map(n=>{ const t=new THREE.TextureLoader().load('img/'+n+'.jpg'); t.minFilter=THREE.LinearFilter; t.generateMipmaps=false; return t; });
-const NUM=44, planes=[];
-for(let i=0;i<NUM;i++){ const m=new THREE.Mesh(new THREE.PlaneGeometry(1.5,1.9),
-    new THREE.MeshBasicMaterial({map:texs[i%texs.length],transparent:true,depthWrite:false}));
-  m.userData.u=i/NUM; scene.add(m); planes.push(m); }
-let off=0, tOff=0;
-addEventListener('scroll',()=>{ const max=Math.max(1,document.documentElement.scrollHeight-innerHeight); tOff=(scrollY/max); },{passive:true});
+  V(0,0.2,8), V(1.8,1.1,2), V(-1.4,-0.9,-4), V(-2.8,1.3,-11),
+  V(1.2,-0.6,-18), V(2.9,1.6,-25), V(-0.8,-1.1,-32), V(-2.4,0.9,-39),
+  V(0.6,0.2,-46), V(1.6,1.2,-53)
+], false, 'catmullrom', 0.5);
+
+/* dotted path line — sample the curve, draw small round dots */
+function dotTex(){ const c=document.createElement('canvas'); c.width=c.height=32; const g=c.getContext('2d');
+  const rg=g.createRadialGradient(16,16,0,16,16,16); rg.addColorStop(0,'rgba(120,110,95,.9)'); rg.addColorStop(.5,'rgba(120,110,95,.4)'); rg.addColorStop(1,'rgba(120,110,95,0)');
+  g.fillStyle=rg; g.fillRect(0,0,32,32); return new THREE.CanvasTexture(c); }
+const DOTS=600, dpos=new Float32Array(DOTS*3), tmp=new THREE.Vector3();
+for(let i=0;i<DOTS;i++){ curve.getPointAt(i/(DOTS-1),tmp); dpos[i*3]=tmp.x; dpos[i*3+1]=tmp.y; dpos[i*3+2]=tmp.z; }
+const dgeo=new THREE.BufferGeometry(); dgeo.setAttribute('position',new THREE.BufferAttribute(dpos,3));
+scene.add(new THREE.Points(dgeo,new THREE.PointsMaterial({size:0.12,map:dotTex(),transparent:true,depthWrite:false,sizeAttenuation:true,color:0x8a8172})));
+
+/* image cards placed along the path */
+const IMGS=['c1','c2','c3','c4','c5','c6','c7','c8'];
+const loader=new THREE.TextureLoader();
+const texs=IMGS.map(n=>{ const t=loader.load('img/'+n+'.jpg'); t.minFilter=THREE.LinearFilter; t.generateMipmaps=false; t.colorSpace&&(t.colorSpace=THREE.SRGBColorSpace); return t; });
+const NUM=15, cards=[]; const U0=0.05, U1=0.97;
+for(let i=0;i<NUM;i++){ const u=U0+(U1-U0)*(i/(NUM-1));
+  const m=new THREE.Mesh(new THREE.PlaneGeometry(1.7,2.15),
+    new THREE.MeshBasicMaterial({map:texs[i%texs.length],transparent:true,depthWrite:false,depthTest:true}));
+  curve.getPointAt(u,tmp);
+  const n=(i*2654435761%1000)/1000;                          // deterministic per-card perpendicular offset
+  m.position.set(tmp.x+(n-0.5)*1.6, tmp.y+(((i*40503)%1000)/1000-0.5)*1.1, tmp.z);
+  m.userData={u}; scene.add(m); cards.push(m);
+}
+
+/* scroll → progress along the path (eased) + idle drift */
+let p=0, tp=0;
+addEventListener('scroll',()=>{ const max=Math.max(1,document.documentElement.scrollHeight-innerHeight); tp=scrollY/max; },{passive:true});
 function resize(){ renderer.setSize(innerWidth,innerHeight); cam.aspect=innerWidth/innerHeight; cam.updateProjectionMatrix(); }
 addEventListener('resize',resize); resize();
 try{ renderer.compile(scene,cam); }catch(e){}
-const p3=new THREE.Vector3();
+
+const embedded=(window.self!==window.top)||/[?&]demo/.test(location.search);
+const pill=document.getElementById('pill');
+const camPos=new THREE.Vector3(), look=new THREE.Vector3();
 function frame(){ requestAnimationFrame(frame);
-  off += (tOff-off)*0.06 + 0.0005;                        // eased scroll + drift
-  planes.forEach((m,i)=>{ let u=(m.userData.u + off)%1; if(u<0)u+=1;
-    curve.getPointAt(u,p3); m.position.copy(p3);
-    m.quaternion.copy(cam.quaternion);                    // billboard
-    const s=0.55+0.55*Math.sin(u*Math.PI*2*0+u*3.14);     // gentle size variation along path
-    m.scale.setScalar(0.7+0.4*Math.abs(Math.sin(u*6.28+off*6.28)));
-    m.renderOrder = Math.round((5-m.position.z)*100);
+  p += (tp-p)*0.06; if(embedded){ p+=0.0009; if(p>1)p=0; }        // self-demo auto-travel in the hub card
+  const camU=Math.max(0,Math.min(0.9, p*0.9));
+  curve.getPointAt(camU,camPos); camPos.z+=3.2;                    // sit slightly behind the path point
+  cam.position.lerp(camPos,0.12);
+  curve.getPointAt(Math.min(1,camU+0.05),look); cam.lookAt(look);
+  let nearest=0, nd=1e9;
+  cards.forEach((m,i)=>{ m.quaternion.copy(cam.quaternion);        // billboard
+    const dz=m.position.distanceTo(cam.position); m.renderOrder=Math.round(1000-dz*10);
+    const ahead=m.userData.u-camU;
+    if(ahead>-0.02 && ahead<nd){ nd=ahead; nearest=i; }
   });
+  if(pill) pill.textContent=String(nearest+1).padStart(2,'0')+' / '+NUM;
   renderer.render(scene,cam);
 }
 frame();
-window.__current=()=>({three:THREE.REVISION,planes:planes.length,webgl:!!renderer.getContext()});
+window.__current=()=>({three:THREE.REVISION,cards:cards.length,dots:DOTS,
+  loaded:texs.filter(t=>t.image&&t.image.width>0).length,webgl:!!renderer.getContext(),
+  hasPath:!!scene.children.find(o=>o.type==='Points')});
 })();

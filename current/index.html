@@ -15,12 +15,15 @@ html,body{height:100%}
 body{background:#f6f5f2;color:var(--ink);font-family:var(--body);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 #gl{position:fixed;inset:0;z-index:0;display:block}
 .spacer{height:400vh}
-.ui{position:fixed;inset:0;z-index:2;pointer-events:none;padding:clamp(22px,3vw,40px) clamp(20px,5vw,56px);display:flex;flex-direction:column;justify-content:space-between;mix-blend-mode:multiply}
+.ui{position:fixed;inset:0;z-index:2;pointer-events:none;padding:clamp(22px,3vw,40px) clamp(20px,5vw,56px);display:flex;flex-direction:column;justify-content:space-between}
+.brand,.nl,.lead,.hint{mix-blend-mode:multiply}
 .top{display:flex;align-items:center;justify-content:space-between}
 .brand{font-family:var(--disp);font-weight:400;font-size:22px;letter-spacing:.22em}
 .nl{display:flex;gap:28px}.nl a{color:var(--muted);text-decoration:none;font-size:14px;pointer-events:auto}
 .lead{max-width:44ch}.lead h1{font-family:var(--disp);font-weight:300;font-size:clamp(30px,4.4vw,58px);line-height:1;letter-spacing:-.01em}
 .lead p{margin-top:14px;color:var(--muted);font-size:14px;line-height:1.6}
+.foot{display:flex;flex-direction:column;align-items:center;gap:12px}
+.pill{pointer-events:auto;font-family:var(--body);font-size:12px;letter-spacing:.14em;color:var(--ink);background:rgba(255,255,255,.7);backdrop-filter:blur(6px);border:1px solid rgba(0,0,0,.08);border-radius:999px;padding:7px 16px}
 .hint{font-family:var(--disp);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:center}
 @media(max-width:640px){.nl{display:none}}
 </style>
@@ -30,9 +33,9 @@ body{background:#f6f5f2;color:var(--ink);font-family:var(--body);font-weight:300
 <div class="ui">
   <div class="top"><div class="brand">CURRENT</div><div class="nl"><a href="#">Work</a><a href="#">Studio</a><a href="#">Contact</a></div></div>
   <div class="lead"><h1>Every frame,<br>in the current.</h1><p>A photography studio. Our work doesn't sit in a grid, it streams past you along a single line. Scroll to move down the current.</p></div>
-  <div class="hint">Scroll to flow ↓</div>
+  <div class="foot"><div class="pill" id="pill">01 / 15</div><div class="hint">Scroll to travel the path ↓</div></div>
 </div>
-<div class="spacer"></div>
+<div class="spacer" style="height:560vh"></div>
 <script src="lib/three.min.js"></script>
 <script src="app.js"></script>
 </body>
