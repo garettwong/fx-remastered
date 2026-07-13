@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BEAM — Design That Makes People Smile</title>
+<meta name="description" content="BEAM, a brand & design studio. We make people beam.">
+<meta name="theme-color" content="#f4f1ea">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--paper:#f4f1ea;--ink:#16130f;--muted:#6d675d;--line:#e2ddd2;--coral:#ff5436;--disp:'Archivo',sans-serif;--body:'Inter',sans-serif}
+html,body{overflow-x:hidden}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-weight:300;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+nav{display:flex;align-items:center;justify-content:space-between;height:80px}
+.brand{display:flex;align-items:center;gap:12px;font-family:var(--disp);font-weight:800;font-size:22px}
+.face{width:34px;height:34px}
+.nl{display:flex;gap:28px}.nl a{color:var(--ink);opacity:.7;text-decoration:none;font-size:14px}.nl a:hover{opacity:1}
+.pill{font-family:var(--disp);font-weight:700;font-size:13px;color:#fff;background:var(--ink);border-radius:100px;padding:11px 20px;text-decoration:none}
+.hero{padding:36px 0 0}
+.htop{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.eyebrow{font-family:var(--disp);font-weight:600;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);margin-bottom:18px}
+h1{font-family:var(--disp);font-weight:900;font-size:clamp(44px,8vw,116px);line-height:.9;letter-spacing:-.03em}
+.hr{max-width:34ch;color:var(--muted);font-size:15px;line-height:1.6}
+.row{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+.btn{font-family:var(--disp);font-weight:600;font-size:14px;text-decoration:none;padding:13px 24px;border-radius:100px}
+.btn.solid{background:var(--coral);color:#fff}.btn.ghost{border:1px solid var(--line);color:var(--ink)}
+.bars{margin-top:44px;height:min(40vh,340px);border-radius:16px;overflow:hidden;background:#fff}
+#bars{width:100%;height:100%;display:block}
+.stats{display:flex;gap:clamp(30px,6vw,80px);margin-top:40px;flex-wrap:wrap}
+.stat .v{font-family:var(--disp);font-weight:800;font-size:clamp(26px,3vw,40px)}.stat .l{font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+.dark{background:var(--ink);color:var(--paper);border-radius:20px;margin:clamp(60px,10vh,120px) 0;padding:clamp(50px,9vw,110px) clamp(24px,5vw,64px);text-align:center}
+.dark h2{font-family:var(--disp);font-weight:800;font-size:clamp(28px,4.6vw,58px);line-height:1;letter-spacing:-.02em}
+.dark .btn.solid{margin-top:26px}
+footer{border-top:1px solid var(--line);padding:36px 0 54px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:13px}
+@media(max-width:640px){.nl{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav><div class="brand"><svg class="face" id="face" viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" fill="#ff5436"/><circle id="eL" cx="14" cy="17" r="3.2" fill="#fff"/><circle id="eR" cx="26" cy="17" r="3.2" fill="#fff"/><path d="M12 24 q8 8 16 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/></svg>BEAM</div>
+    <div class="nl"><a href="#">Work</a><a href="#">Studio</a><a href="#">Journal</a></div><a class="pill" href="#">Start a project</a></nav>
+  <header class="hero">
+    <div class="htop">
+      <div><div class="eyebrow">Brand &amp; design studio</div><h1>Design that<br>makes people<br>beam.</h1></div>
+      <p class="hr">We turn overlooked products into brands people actually remember. Identity, interface and motion, crafted end to end.</p>
+    </div>
+    <div class="bars"><canvas id="bars"></canvas></div>
+    <div class="stats"><div class="stat"><div class="v">60+</div><div class="l">Brands shipped</div></div><div class="stat"><div class="v">9</div><div class="l">Awards</div></div><div class="stat"><div class="v">8 yrs</div><div class="l">In the studio</div></div></div>
+  </header>
+  <section class="dark"><h2>Let's make something<br>worth smiling about.</h2><a class="btn solid" href="#">Start a project</a></section>
+</div>
+<footer class="wrap"><div class="brand" style="font-size:16px">BEAM</div><div>A brand &amp; digital studio.</div><div>hello@beam.studio</div><div>© 2026</div></footer>
+<script>
+/* cursor-watching smiley */
+const eL=document.getElementById('eL'),eR=document.getElementById('eR'),face=document.getElementById('face');
+addEventListener('pointermove',e=>{ const r=face.getBoundingClientRect(); if(!r.width)return; const dx=Math.max(-2,Math.min(2,(e.clientX-(r.left+r.width/2))/60)), dy=Math.max(-2,Math.min(2,(e.clientY-(r.top+r.height/2))/60));
+  eL.setAttribute('cx',14+dx); eL.setAttribute('cy',17+dy); eR.setAttribute('cx',26+dx); eR.setAttribute('cy',17+dy); },{passive:true});
+/* smile bars — an equalizer whose base heights form a smile curve, animated + cursor-reactive */
+const cv=document.getElementById('bars'), ctx=cv.getContext('2d'); let W,H,DPR,mxN=-1;
+function resize(){ DPR=Math.min(devicePixelRatio||1,2); W=cv.width=cv.clientWidth*DPR; H=cv.height=cv.clientHeight*DPR; }
+addEventListener('resize',resize); addEventListener('load',resize); resize();
+cv.addEventListener('pointermove',e=>{ const r=cv.getBoundingClientRect(); mxN=(e.clientX-r.left)/r.width; },{passive:true});
+cv.addEventListener('pointerleave',()=>mxN=-1);
+const N=64; let t=0;
+function frame(){ requestAnimationFrame(frame); if(!W){resize();} t+=0.04;
+  ctx.clearRect(0,0,W,H);
+  const gap=W/N, bw=gap*0.55;
+  for(let i=0;i<N;i++){ const x=i/(N-1);
+    const smile=Math.pow((x-0.5)*2,2);                  // 0 centre, 1 edges -> smile (U)
+    let hn=0.28+0.6*smile + 0.09*Math.sin(t+i*0.5);      // base smile + wave
+    if(mxN>=0){ const d=Math.abs(x-mxN); hn+=Math.max(0,0.35*(1-d/0.18)); }  // cursor lift
+    hn=Math.min(1,hn);
+    const bh=hn*H*0.9, bx=i*gap+(gap-bw)/2, by=H-bh;
+    const g=ctx.createLinearGradient(0,by,0,H); g.addColorStop(0,'#ff6a4d'); g.addColorStop(1,'#ff4326');
+    ctx.fillStyle=g; const r=bw/2;
+    ctx.beginPath(); ctx.moveTo(bx,H); ctx.lineTo(bx,by+r); ctx.arcTo(bx,by,bx+r,by,r); ctx.arcTo(bx+bw,by,bx+bw,by+r,r); ctx.lineTo(bx+bw,H); ctx.closePath(); ctx.fill();
+  }
+}
+requestAnimationFrame(frame);
+window.__beam=()=>({bars:N, canvas:[cv.width,cv.height], ctx:!!ctx});
+</script>
+</body>
+</html>
