@@ -4,84 +4,150 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SPROUT — Learn Creative Skills, Free</title>
-<meta name="description" content="SPROUT. Learn creative skills for free. A meadow full of butterflies.">
+<meta name="description" content="SPROUT. Learn creative skills for free. A meadow alive with butterflies.">
 <meta name="theme-color" content="#8fd0f0">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--ink:#20361f;--muted:#4c6349;--disp:'Fraunces',serif;--body:'Inter',sans-serif;--green:#3faa4a;--yellow:#ffe14d}
+:root{--ink:#20361f;--muted:#4c6349;--disp:'Fraunces',serif;--body:'Inter',sans-serif;--green:#2f9e3f;--yellow:#ffe14d}
 html,body{height:100%}
-body{background:#8fd0f0;color:#fff;font-family:var(--body);font-weight:400;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{background:#8fd0f0;color:#fff;font-family:var(--body);font-weight:400;overflow-x:hidden;overflow-y:hidden;-webkit-font-smoothing:antialiased}
 .bg{position:fixed;inset:0;z-index:0}.bg img{width:100%;height:100%;object-fit:cover}
-.bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(140,205,240,.35),rgba(140,205,240,0) 30%)}
+.bg::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 12%,rgba(150,205,240,.32),rgba(150,205,240,0) 40%)}
 #bf{position:fixed;inset:0;z-index:2;pointer-events:none}
 .wrap{position:relative;z-index:3;max-width:1100px;margin:0 auto;padding:0 clamp(20px,5vw,48px);text-align:center;min-height:100vh;display:flex;flex-direction:column}
 nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0;color:#fff}
 .brand{display:flex;align-items:center;gap:9px;font-family:var(--disp);font-weight:600;font-size:22px}
-.brand .f{width:22px;height:22px;border-radius:50%;background:var(--yellow);box-shadow:0 0 0 4px rgba(255,225,77,.35)}
+.brand .f{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff2a8,var(--yellow) 60%,#f2b71e);box-shadow:0 0 0 5px rgba(255,225,77,.3),0 0 22px rgba(255,210,60,.5)}
 .nl{display:flex;gap:24px}.nl a{color:#fff;opacity:.95;text-decoration:none;font-size:14px}
-.navcta{background:#fff;color:var(--ink);border-radius:100px;padding:9px 18px;text-decoration:none;font-weight:600;font-size:13px}
-.hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 0 60px}
-.badge{display:inline-block;font-family:var(--disp);font-weight:600;font-size:clamp(20px,3vw,32px);color:var(--ink);background:var(--yellow);border-radius:12px;padding:2px 16px;transform:rotate(-3deg);box-shadow:0 8px 20px -6px rgba(0,0,0,.25)}
-h1{font-family:var(--disp);font-weight:600;font-size:clamp(40px,7.5vw,104px);line-height:.98;letter-spacing:-.01em;margin-top:10px;text-shadow:0 6px 30px rgba(20,60,90,.28)}
+.navcta{background:#fff;color:var(--ink);border-radius:100px;padding:9px 18px;text-decoration:none;font-weight:600;font-size:13px;transition:transform .3s}.navcta:hover{transform:translateY(-2px)}
+.hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0 50px}
+/* reveal */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.in .rv{opacity:1;transform:none}
+.in .rv.d1{transition-delay:.05s}.in .rv.d2{transition-delay:.18s}.in .rv.d3{transition-delay:.32s}.in .rv.d4{transition-delay:.46s}.in .rv.d5{transition-delay:.6s}
+.badge{display:inline-block;font-family:var(--disp);font-weight:600;font-size:clamp(20px,3vw,32px);color:var(--ink);background:var(--yellow);border-radius:12px;padding:2px 18px;transform:rotate(-3deg);box-shadow:0 10px 22px -8px rgba(80,60,0,.4)}
+.badge.rv{transform:translateY(24px) rotate(-3deg)}.in .badge.rv{transform:rotate(-3deg)}
+h1{font-family:var(--disp);font-weight:600;font-size:clamp(42px,7.8vw,108px);line-height:.96;letter-spacing:-.01em;margin-top:8px;text-shadow:0 6px 34px rgba(20,60,90,.3)}
 h1 .g{color:var(--green);font-style:italic}
-.sub{margin-top:20px;max-width:42ch;color:#fff;opacity:.95;font-size:clamp(15px,1.5vw,18px);text-shadow:0 2px 12px rgba(20,60,90,.3)}
-/* fanned deck */
-.deck{position:relative;height:200px;margin:34px auto 0;width:min(360px,80vw)}
-.deck .card{position:absolute;left:50%;top:0;width:118px;height:158px;margin-left:-59px;border-radius:14px;box-shadow:0 16px 34px -14px rgba(0,0,0,.45);border:4px solid #fff;overflow:hidden;transition:transform .5s cubic-bezier(.34,1.5,.5,1);display:flex;align-items:flex-end;justify-content:center;font-size:34px;padding-bottom:12px}
-.tag{position:absolute;background:#fff;color:var(--ink);font-family:var(--disp);font-weight:600;font-size:12px;border-radius:100px;padding:4px 11px;box-shadow:0 6px 16px -6px rgba(0,0,0,.3)}
-.tag.a{left:2%;top:6%}.tag.b{right:0;top:30%}
-.cta{margin-top:34px}
-.start{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;font-family:var(--disp);font-weight:600;font-size:17px;border-radius:100px;padding:15px 34px;text-decoration:none;box-shadow:0 14px 30px -12px rgba(0,0,0,.45);transition:transform .3s}
-.start:hover{transform:translateY(-2px)}
-.free{margin-top:14px;color:#fff;opacity:.9;font-size:13px}
-@media(max-width:640px){.nl{display:none}}
+.sub{margin-top:20px;max-width:44ch;color:#fff;opacity:.96;font-size:clamp(15px,1.5vw,18px);line-height:1.55;text-shadow:0 2px 14px rgba(20,60,90,.35)}
+/* deck */
+.deckwrap{margin-top:36px;height:230px;position:relative;width:100%;display:flex;justify-content:center}
+.deck{position:relative;width:min(420px,86vw);height:200px}
+.deck .card{position:absolute;left:50%;top:0;width:126px;height:168px;margin-left:-63px;border-radius:16px;box-shadow:0 20px 40px -16px rgba(0,0,0,.5);border:4px solid #fff;overflow:hidden;cursor:pointer;transition:transform .55s cubic-bezier(.34,1.4,.5,1),box-shadow .4s;display:flex;align-items:center;justify-content:center;font-size:40px}
+.deck .card::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.32),rgba(255,255,255,0) 42%)}
+.deck .card:hover{box-shadow:0 30px 54px -18px rgba(0,0,0,.6)}
+.tag{position:absolute;z-index:40;background:#fff;color:var(--ink);font-family:var(--disp);font-weight:600;font-size:12.5px;border-radius:100px;padding:5px 13px;box-shadow:0 8px 20px -6px rgba(0,0,0,.35);white-space:nowrap}
+.tag.a{left:-2%;top:-30px;transform:rotate(-4deg)}.tag.b{right:-2%;bottom:-24px;transform:rotate(3deg)}
+.cta{margin-top:44px}
+.start{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;font-family:var(--disp);font-weight:600;font-size:17px;border-radius:100px;padding:15px 36px;text-decoration:none;box-shadow:0 16px 32px -12px rgba(0,0,0,.5);transition:transform .3s,background .3s}
+.start:hover{transform:translateY(-3px);background:#2f9e3f}
+.free{margin-top:14px;color:#fff;opacity:.92;font-size:13px;text-shadow:0 2px 10px rgba(20,60,90,.4)}
+@media(max-width:640px){.nl{display:none}.deck .card{width:104px;height:140px;margin-left:-52px}}
 </style>
 </head>
 <body>
 <div class="bg"><img src="img/meadow.jpg" alt=""></div>
 <canvas id="bf"></canvas>
-<div class="wrap">
+<div class="wrap" id="wrap">
   <nav><div class="brand"><span class="f"></span>SPROUT</div><div class="nl"><a href="#">Curriculum</a><a href="#">Examples</a><a href="#">Community</a><a href="#">FAQ</a></div><a class="navcta" href="#">Start free</a></nav>
   <div class="hero">
-    <span class="badge">Learn</span>
-    <h1>Creative skills,<br><span class="g">for free.</span></h1>
-    <p class="sub">Master design, illustration and AI tools step by step, from first sketch to real portfolio. Completely free, beginner friendly.</p>
-    <div class="deck" id="deck">
-      <span class="tag a">Beginner friendly</span><span class="tag b">Real portfolio</span>
+    <span class="badge rv d1">Learn</span>
+    <h1><span class="rv d2" style="display:block">Creative skills,</span><span class="g rv d3" style="display:block">for free.</span></h1>
+    <p class="sub rv d4">Master design, illustration and AI tools step by step, from first sketch to real portfolio. Completely free, beginner friendly.</p>
+    <div class="deckwrap rv d5"><div class="deck" id="deck">
+      <span class="tag a">Beginner friendly</span><span class="tag b">Real portfolio case</span>
       <div class="card" style="background:linear-gradient(160deg,#ffb347,#ff7a59)">🎨</div>
-      <div class="card" style="background:linear-gradient(160deg,#6ee7b7,#3faa4a)">🌿</div>
-      <div class="card" style="background:linear-gradient(160deg,#a78bfa,#7c3aed)">✨</div>
-      <div class="card" style="background:linear-gradient(160deg,#38bdf8,#2563eb)">💧</div>
-      <div class="card" style="background:linear-gradient(160deg,#1f2937,#0b1220)">🐱</div>
-    </div>
-    <div class="cta"><a class="start" href="#">Start free course →</a><div class="free">100% free · no design experience required</div></div>
+      <div class="card" style="background:linear-gradient(160deg,#6ee7b7,#2f9e3f)">🌿</div>
+      <div class="card" style="background:linear-gradient(160deg,#c4b5fd,#7c3aed)">✨</div>
+      <div class="card" style="background:linear-gradient(160deg,#7dd3fc,#2563eb)">💧</div>
+      <div class="card" style="background:linear-gradient(160deg,#334155,#0b1220)">🐱</div>
+    </div></div>
+    <div class="cta rv d5"><a class="start" href="#">Start free course →</a><div class="free">100% free · no design experience required</div></div>
   </div>
 </div>
 <script>
-/* fan the deck */
-const cards=[...document.querySelectorAll('.deck .card')], nC=cards.length;
-cards.forEach((c,i)=>{ const t=(i-(nC-1)/2); c.style.transform='translateX('+(t*54)+'px) translateY('+(Math.abs(t)*14)+'px) rotate('+(t*9)+'deg)'; c.style.zIndex=10-Math.abs(t); });
-/* butterflies */
+/* headline reveal on load */
+requestAnimationFrame(()=>requestAnimationFrame(()=>document.getElementById('wrap').classList.add('in')));
+setTimeout(()=>document.getElementById('wrap').classList.add('in'),120);
+
+/* card deck: spread on deck hover, lift the hovered card, tags stay outside */
+const deck=document.getElementById('deck'), cards=[...deck.querySelectorAll('.card')], n=cards.length;
+let hovered=-1, spread=false;
+function layout(){ cards.forEach((c,i)=>{ const t=i-(n-1)/2;
+  if(i===hovered){ c.style.transform='translateX('+(t*82)+'px) translateY(-48px) rotate(0deg) scale(1.09)'; c.style.zIndex=30; }
+  else { const gap=spread?82:56, rot=spread?12:9; c.style.transform='translateX('+(t*gap)+'px) translateY('+(Math.abs(t)*15)+'px) rotate('+(t*rot)+'deg)'; c.style.zIndex=10-Math.abs(t); } }); }
+deck.addEventListener('mouseenter',()=>{spread=true;layout();});
+deck.addEventListener('mouseleave',()=>{spread=false;hovered=-1;layout();});
+cards.forEach((c,i)=>{ c.addEventListener('mouseenter',()=>{hovered=i;layout();}); c.addEventListener('mouseleave',()=>{hovered=-1;layout();}); });
+layout();
+
+/* ---------- butterflies ---------- */
 const cv=document.getElementById('bf'), ctx=cv.getContext('2d'); let W,H,DPR;
 function resize(){ DPR=Math.min(devicePixelRatio||1,2); W=cv.width=innerWidth*DPR; H=cv.height=innerHeight*DPR; cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px'; }
 addEventListener('resize',resize); resize();
-const COLS=['#ffd54a','#ff9d3c','#ffe27a','#ffb347','#fff0a8'];
-const B=Array.from({length:12},()=>({x:Math.random()*W,y:Math.random()*H*0.7,vx:(0.4+Math.random())*DPR*(Math.random()<.5?1:-1),vy:(Math.random()-0.5)*0.5*DPR,s:(9+Math.random()*8)*DPR,fl:Math.random()*6.28,col:COLS[(Math.random()*COLS.length)|0],ph:Math.random()*6.28}));
+const mouse={x:-9999,y:-9999,active:false};
+addEventListener('pointermove',e=>{ mouse.x=e.clientX*DPR; mouse.y=e.clientY*DPR; mouse.active=true; },{passive:true});
+const TYPES=[
+ {c1:'#ffb347',c2:'#ff7a1e',edge:'#4a1f06',spot:'#fff3d0',dot:'#ffffff'},   // monarch orange
+ {c1:'#ffe15a',c2:'#ffbe1e',edge:'#5a4200',spot:'#fff8cf',dot:'#3a2a00'},   // yellow swallowtail
+ {c1:'#6fb8ff',c2:'#3a6bff',edge:'#0a1c4a',spot:'#e6f2ff',dot:'#ffffff'},   // blue morpho
+ {c1:'#ff8fb3',c2:'#ff4f8b',edge:'#4a0a24',spot:'#ffe6ef',dot:'#ffffff'}    // pink
+];
+function mkB(){ const T=TYPES[(Math.random()*TYPES.length)|0];
+  return {x:Math.random()*W,y:Math.random()*H*0.75,vx:(Math.random()-0.5)*1.4*DPR,vy:(Math.random()-0.5)*1.0*DPR,
+    ang:0,flap:Math.random()*6.28,fs:0.22+Math.random()*0.12,s:(16+Math.random()*12)*DPR,T,
+    tx:Math.random()*W,ty:Math.random()*H*0.7,retarget:0}; }
+const B=Array.from({length:innerWidth<720?7:13},mkB);
+function wing(g,S){ // one side's fore + hind wing centred at body, +x outward
+  const fw=new Path2D(); fw.moveTo(S*0.02,-S*0.06);
+  fw.bezierCurveTo(S*0.35,-S*1.02, S*1.2,-S*0.86, S*1.06,-S*0.16);
+  fw.bezierCurveTo(S*1.0,S*0.06, S*0.5,S*0.04, S*0.02,-S*0.06); g.__fw=fw;
+  const hw=new Path2D(); hw.moveTo(S*0.02,S*0.02);
+  hw.bezierCurveTo(S*0.34,S*0.42, S*0.92,S*0.86, S*0.82,S*0.3);
+  hw.bezierCurveTo(S*0.72,S*0.06, S*0.32,S*0.02, S*0.02,S*0.02); g.__hw=hw;
+}
+function draw(b){ const g=ctx; g.save(); g.translate(b.x,b.y); g.rotate(b.ang);
+  const open=0.22+0.78*Math.abs(Math.sin(b.flap)); const S=b.s;
+  g.shadowColor='rgba(20,40,10,.25)'; g.shadowBlur=6*DPR; g.shadowOffsetY=4*DPR;
+  for(const side of [1,-1]){ g.save(); g.scale(side*open,1);
+    const grad=g.createLinearGradient(0,-S,S*1.1,S*0.2); grad.addColorStop(0,b.T.c1); grad.addColorStop(1,b.T.c2);
+    wing(g,S);
+    g.fillStyle=grad; g.fill(g.__fw); g.fillStyle=b.T.c2; g.fill(g.__hw);
+    g.lineWidth=Math.max(1,S*0.05); g.strokeStyle=b.T.edge; g.stroke(g.__fw); g.stroke(g.__hw);
+    g.shadowColor='transparent';
+    g.fillStyle=b.T.spot; g.beginPath(); g.arc(S*0.78,-S*0.52,S*0.11,0,6.28); g.fill();
+    g.fillStyle=b.T.dot; g.beginPath(); g.arc(S*0.62,S*0.5,S*0.07,0,6.28); g.fill();
+    g.beginPath(); g.arc(S*0.85,S*0.18,S*0.05,0,6.28); g.fill();
+    g.restore(); }
+  g.shadowColor='transparent';
+  g.fillStyle='#2a1c10'; g.beginPath(); g.ellipse(0,0,S*0.09,S*0.52,0,0,6.28); g.fill();
+  g.strokeStyle='#2a1c10'; g.lineWidth=S*0.035; g.lineCap='round';
+  g.beginPath(); g.moveTo(0,-S*0.46); g.quadraticCurveTo(-S*0.22,-S*0.8,-S*0.3,-S*0.72); g.stroke();
+  g.beginPath(); g.moveTo(0,-S*0.46); g.quadraticCurveTo(S*0.22,-S*0.8,S*0.3,-S*0.72); g.stroke();
+  g.restore();
+}
 let t=0;
-function fly(){ requestAnimationFrame(fly); t+=0.05; ctx.clearRect(0,0,W,H);
-  for(const b of B){ b.x+=b.vx; b.y+=b.vy+Math.sin(t+b.ph)*0.4*DPR; b.fl+=0.4;
-    if(b.x<-30)b.x=W+30; if(b.x>W+30)b.x=-30; if(b.y<0){b.y=0;b.vy*=-1;} if(b.y>H*0.85){b.y=H*0.85;b.vy*=-1;}
-    const wg=Math.abs(Math.sin(b.fl))*0.85+0.15; ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(Math.atan2(b.vy,b.vx)*0.3);
-    ctx.fillStyle=b.col; ctx.globalAlpha=0.92;
-    [-1,1].forEach(sd=>{ ctx.save(); ctx.scale(sd*wg,1);
-      ctx.beginPath(); ctx.ellipse(b.s*0.5,-b.s*0.4,b.s*0.55,b.s*0.42,0,0,6.28); ctx.fill();
-      ctx.beginPath(); ctx.ellipse(b.s*0.45,b.s*0.4,b.s*0.42,b.s*0.34,0,0,6.28); ctx.fill(); ctx.restore(); });
-    ctx.fillStyle='#3a2a10'; ctx.fillRect(-b.s*0.05,-b.s*0.5,b.s*0.1,b.s); ctx.restore(); ctx.globalAlpha=1; }
+function fly(){ requestAnimationFrame(fly); t+=1; ctx.clearRect(0,0,W,H);
+  for(const b of B){
+    if(--b.retarget<0){ b.tx=Math.random()*W; b.ty=(0.08+Math.random()*0.7)*H; b.retarget=120+Math.random()*160; }
+    let ax=(b.tx-b.x)*0.0009, ay=(b.ty-b.y)*0.0009;
+    // cursor flee
+    const dx=b.x-mouse.x, dy=b.y-mouse.y, d2=dx*dx+dy*dy, R=150*DPR;
+    if(mouse.active&&d2<R*R){ const d=Math.sqrt(d2)||1, f=(1-d/R)*0.9; ax+=dx/d*f; ay+=dy/d*f; b.flap+=0.25; }
+    b.vx=(b.vx+ax)*0.96 + Math.sin(t*0.03+b.x*0.01)*0.02*DPR;
+    b.vy=(b.vy+ay)*0.96 + Math.cos(t*0.026+b.y*0.01)*0.02*DPR;
+    const sp=Math.hypot(b.vx,b.vy); if(sp>2.6*DPR){ b.vx*=2.6*DPR/sp; b.vy*=2.6*DPR/sp; }
+    b.x+=b.vx; b.y+=b.vy;
+    if(b.x<-40)b.x=W+40; if(b.x>W+40)b.x=-40; if(b.y<-40)b.y=H*0.8; if(b.y>H*0.92){b.y=H*0.92;b.vy=-Math.abs(b.vy);}
+    let target=Math.atan2(b.vy,b.vx)+Math.PI/2; let da=((target-b.ang+Math.PI*3)%(Math.PI*2))-Math.PI; b.ang+=da*0.12;
+    b.flap+=b.fs*(0.7+sp*0.25);
+    draw(b);
+  }
 }
 fly();
-window.__sprout=()=>({butterflies:B.length, cards:cards.length, canvas:[cv.width,cv.height], ctx:!!ctx});
+window.__sprout=()=>({butterflies:B.length, cards:cards.length, revealed:document.getElementById('wrap').classList.contains('in'), canvas:[cv.width,cv.height]});
 </script>
 </body>
 </html>
