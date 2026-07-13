@@ -13,7 +13,7 @@
 :root{--ink:#20361f;--muted:#4c6349;--disp:'Fraunces',serif;--body:'Inter',sans-serif;--green:#2f9e3f;--yellow:#ffe14d}
 html,body{height:100%}
 body{background:#8fd0f0;color:#fff;font-family:var(--body);font-weight:400;overflow-x:hidden;overflow-y:hidden;-webkit-font-smoothing:antialiased}
-.bg{position:fixed;inset:0;z-index:0}.bg img{width:100%;height:100%;object-fit:cover}
+.bg{position:fixed;inset:0;z-index:0}.bg img,.bg video{width:100%;height:100%;object-fit:cover;display:block}
 .bg::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 12%,rgba(150,205,240,.32),rgba(150,205,240,0) 40%)}
 #bf{position:fixed;inset:0;z-index:2;pointer-events:none}
 .wrap{position:relative;z-index:3;max-width:1100px;margin:0 auto;padding:0 clamp(20px,5vw,48px);text-align:center;min-height:100vh;display:flex;flex-direction:column}
@@ -49,7 +49,7 @@ h1 .g{color:var(--green);font-style:italic}
 </style>
 </head>
 <body>
-<div class="bg"><img src="img/meadow.jpg" alt=""></div>
+<div class="bg"><video autoplay muted loop playsinline poster="img/meadow.jpg"><source src="vid/meadow.mp4" type="video/mp4"></video></div>
 <canvas id="bf"></canvas>
 <div class="wrap" id="wrap">
   <nav><div class="brand"><span class="f"></span>SPROUT</div><div class="nl"><a href="#">Curriculum</a><a href="#">Examples</a><a href="#">Community</a><a href="#">FAQ</a></div><a class="navcta" href="#">Start free</a></nav>
@@ -69,6 +69,10 @@ h1 .g{color:var(--green);font-style:italic}
   </div>
 </div>
 <script>
+/* subtle background video — force-play (autoplay-policy safe) + tap fallback */
+function playBg(){ const v=document.querySelector('.bg video'); if(v){ v.muted=true; const p=v.play(); if(p&&p.catch)p.catch(()=>{}); } }
+addEventListener('load',playBg); ['pointerdown','touchstart','scroll'].forEach(e=>addEventListener(e,playBg,{once:true,passive:true}));
+
 /* headline reveal on load */
 requestAnimationFrame(()=>requestAnimationFrame(()=>document.getElementById('wrap').classList.add('in')));
 setTimeout(()=>document.getElementById('wrap').classList.add('in'),120);
