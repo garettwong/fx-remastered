@@ -23,13 +23,13 @@ nav a{color:#fff;text-decoration:none;opacity:.9}
 nav .r{font-size:12px;letter-spacing:.14em}
 @media(max-width:720px){nav .nl{display:none}}
 
-/* ---------- HERO: fractured seam ---------- */
+/* ---------- HERO: torn-paper tonal rupture (static, visible on load) ---------- */
 .hero{position:relative;height:100vh;min-height:560px;overflow:hidden}
-.stage{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:min(40vw,410px);aspect-ratio:3/4;z-index:3}
-.half{position:absolute;inset:0;background-position:center;background-size:cover;background-repeat:no-repeat;will-change:transform;backface-visibility:hidden}
-.half.l{clip-path:inset(0 50% 0 0)}
-.half.r{clip-path:inset(0 0 0 50%);filter:grayscale(1) contrast(1.05) brightness(.99)}
-.seam{position:absolute;top:-3%;bottom:-3%;left:50%;width:2px;background:var(--red);transform:translateX(-1px);z-index:4;box-shadow:0 0 12px rgba(226,35,26,.5)}
+.stage{position:absolute;left:50%;top:53%;transform:translate(-50%,-50%);width:min(46vw,520px);aspect-ratio:3/4.15;z-index:3;background:var(--paper)}
+.half{position:absolute;inset:0;overflow:hidden;will-change:transform;backface-visibility:hidden}
+.half video,.half img{width:100%;height:100%;object-fit:cover;object-position:center 20%}
+.half.l{filter:drop-shadow(4px 0 7px rgba(0,0,0,.16))}                 /* warm 'glam' half */
+.half.r{filter:grayscale(1) contrast(1.05) brightness(.98) drop-shadow(-4px 0 7px rgba(0,0,0,.16))}  /* grey 'grunge' half */
 .tag{position:absolute;left:8px;bottom:10px;z-index:5;font-family:var(--disp);font-size:15px;letter-spacing:.04em;display:flex;gap:6px;align-items:center}
 .tag b{background:var(--red);color:#fff;padding:2px 7px;font-weight:400}
 .tag span{color:#fff;mix-blend-mode:difference}
@@ -127,9 +127,8 @@ nav .r{font-size:12px;letter-spacing:.14em}
   <div class="hl a" data-split>Glamour,</div>
   <div class="hl b" data-split>fractured.</div>
   <div class="stage" id="stage">
-    <div class="half l"></div>
-    <div class="half r"></div>
-    <div class="seam"></div>
+    <div class="half l"><video class="hv" autoplay muted loop playsinline poster="img/ru_hero.jpg"><source src="vid/ru_hero.mp4" type="video/mp4"></video></div>
+    <div class="half r"><video class="hv" autoplay muted loop playsinline poster="img/ru_hero.jpg"><source src="vid/ru_hero.mp4" type="video/mp4"></video></div>
     <div class="tag"><b>NEW</b><span>SEASON</span></div>
   </div>
   <div class="scrollhint">Scroll ↓</div>
@@ -202,8 +201,14 @@ const LIPS="data:image/svg+xml,"+encodeURIComponent(
  "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 62'><path fill='black' d='M50 24 C40 14 24 12 12 20 C4 25 2 28 1 30 C10 30 6 34 14 40 C26 50 42 52 50 44 C58 52 74 50 86 40 C94 34 90 30 99 30 C98 28 96 25 88 20 C76 12 60 14 50 24 Z'/></svg>");
 document.documentElement.style.setProperty('--lips','url(\"'+LIPS+'\")');
 
-/* hero split image on both halves */
-document.querySelectorAll('.half').forEach(h=>h.style.backgroundImage='url(img/ru_hero.jpg)');
+/* hero: torn-paper vertical rupture — jagged COMPLEMENTARY clip on the two halves, ~3% white gap = the tear */
+(function(){ let s=48271; const rnd=()=>{s=(s*9301+49297)%233280;return s/233280;};
+  const N=18, P=[]; for(let i=0;i<=N;i++) P.push({y:+(i/N*100).toFixed(1), x:50+(rnd()-0.5)*7});
+  const L=P.map(p=>`${(p.x-1.5).toFixed(1)}% ${p.y}%`).join(', ');
+  const R=P.map(p=>`${(p.x+1.5).toFixed(1)}% ${p.y}%`).join(', ');
+  document.querySelector('.half.l').style.clipPath=`polygon(0% 0%, ${L}, 0% 100%)`;
+  document.querySelector('.half.r').style.clipPath=`polygon(100% 0%, ${R}, 100% 100%)`;
+})();
 
 /* build full-colour category rail (pinned horizontal — NO greyscale, NO highlight) */
 const CATS=[['New Season','ru_hero'],['Tailoring','ru_suit'],['Outerwear','ru_coat'],['Gowns','ru_blue'],
@@ -236,21 +241,18 @@ let railMode='none';
 if(window.gsap){
   gsap.registerPlugin(ScrollTrigger);
 
-  /* HERO — the RIP happens ON LOAD: two halves start aligned, then fracture along the seam */
-  gsap.set('.half.l',{yPercent:0,xPercent:0}); gsap.set('.half.r',{yPercent:0,xPercent:0});
-  const intro=gsap.timeline({delay:.15});
-  intro.from(heroChars,{yPercent:120,opacity:0,duration:.9,ease:'power3.out',stagger:.02},0)
-       .from('.eyebrow,.tag,.scrollhint',{opacity:0,y:14,duration:.7,ease:'power2.out',stagger:.06},.2)
-       .fromTo('.seam',{scaleY:0,opacity:0},{scaleY:1,opacity:1,duration:.5,ease:'power2.out'},.35)
-       .fromTo('.half.l',{yPercent:0},{yPercent:-6,duration:.9,ease:'power4.out'},.5)   // left rides up
-       .fromTo('.half.r',{yPercent:0},{yPercent:6, duration:.9,ease:'power4.out'},.5);  // right drops — fracture opens
+  /* HERO — the tear OPENS ON LOAD (visible immediately while you're ON the hero, NOT on scroll-out) */
+  const intro=gsap.timeline({delay:.12});
+  intro.from('.half.l',{x:14,duration:1.1,ease:'power4.out'},0)      // halves start closed, then rip apart → torn white seam appears
+       .from('.half.r',{x:-14,duration:1.1,ease:'power4.out'},0)
+       .from(heroChars,{yPercent:120,opacity:0,duration:.9,ease:'power3.out',stagger:.02},.15)
+       .from('.eyebrow,.tag,.scrollhint',{opacity:0,y:14,duration:.7,ease:'power2.out',stagger:.06},.35);
 
-  /* on scroll, widen the fracture + drift halves apart as you leave the hero */
+  /* on scroll the whole hero gently recedes (the tear itself does NOT depend on scroll) */
   if(!reduce){
-    gsap.to('.half.l',{yPercent:-14,xPercent:-4,ease:'none',scrollTrigger:{trigger:'#top',start:'top top',end:'bottom top',scrub:.5}});
-    gsap.to('.half.r',{yPercent:14, xPercent:4, ease:'none',scrollTrigger:{trigger:'#top',start:'top top',end:'bottom top',scrub:.5}});
-    gsap.to('.hl.a',{xPercent:-8,ease:'none',scrollTrigger:{trigger:'#top',start:'top top',end:'bottom top',scrub:.5}});
-    gsap.to('.hl.b',{xPercent:8, ease:'none',scrollTrigger:{trigger:'#top',start:'top top',end:'bottom top',scrub:.5}});
+    gsap.to('.hl.a',{xPercent:-6,ease:'none',scrollTrigger:{trigger:'#top',start:'top top',end:'bottom top',scrub:.5}});
+    gsap.to('.hl.b',{xPercent:6, ease:'none',scrollTrigger:{trigger:'#top',start:'top top',end:'bottom top',scrub:.5}});
+    gsap.to('#stage',{yPercent:-8,scale:.96,ease:'none',scrollTrigger:{trigger:'#top',start:'top top',end:'bottom top',scrub:.5}});
   }
 
   /* reveals */
@@ -285,7 +287,7 @@ if(window.gsap){
 /* embedded self-demo: loop the fracture + marquee the rail so the hub card is alive */
 if(embedded && window.gsap && !reduce){
   gsap.timeline({repeat:-1,yoyo:true,delay:2,defaults:{duration:2.6,ease:'sine.inOut'}})
-    .to('.half.l',{yPercent:-12},0).to('.half.r',{yPercent:12},0);
+    .to('.half.l',{x:-7},0).to('.half.r',{x:7},0);
   const step=()=>{ const d=track.scrollWidth-window.innerWidth+80; let x=parseFloat(getComputedStyle(track).transform.split(',')[4]||0)||0;
     x-=0.7; if(x<-d) x=0; track.style.transform='translateX('+x+'px)'; requestAnimationFrame(step); };
   requestAnimationFrame(step);
