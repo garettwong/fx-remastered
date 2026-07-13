@@ -35,7 +35,8 @@ h1 .g{color:var(--green);font-style:italic}
 /* deck */
 .deckwrap{margin-top:36px;height:230px;position:relative;width:100%;display:flex;justify-content:center}
 .deck{position:relative;width:min(420px,86vw);height:200px}
-.deck .card{position:absolute;left:50%;top:0;width:126px;height:168px;margin-left:-63px;border-radius:16px;box-shadow:0 20px 40px -16px rgba(0,0,0,.5);border:4px solid #fff;overflow:hidden;cursor:pointer;transition:transform .55s cubic-bezier(.34,1.4,.5,1),box-shadow .4s;display:flex;align-items:center;justify-content:center;font-size:40px}
+.deck .card{position:absolute;left:50%;top:0;width:126px;height:168px;margin-left:-63px;border-radius:16px;box-shadow:0 20px 40px -16px rgba(0,0,0,.5);border:4px solid #fff;overflow:hidden;cursor:pointer;transition:transform .55s cubic-bezier(.34,1.4,.5,1),box-shadow .4s;background:#e8e4da}
+.deck .card img{width:100%;height:100%;object-fit:cover;display:block}
 .deck .card::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.32),rgba(255,255,255,0) 42%)}
 .deck .card:hover{box-shadow:0 30px 54px -18px rgba(0,0,0,.6)}
 .tag{position:absolute;z-index:40;background:#fff;color:var(--ink);font-family:var(--disp);font-weight:600;font-size:12.5px;border-radius:100px;padding:5px 13px;box-shadow:0 8px 20px -6px rgba(0,0,0,.35);white-space:nowrap}
@@ -58,11 +59,11 @@ h1 .g{color:var(--green);font-style:italic}
     <p class="sub rv d4">Master design, illustration and AI tools step by step, from first sketch to real portfolio. Completely free, beginner friendly.</p>
     <div class="deckwrap rv d5"><div class="deck" id="deck">
       <span class="tag a">Beginner friendly</span><span class="tag b">Real portfolio case</span>
-      <div class="card" style="background:linear-gradient(160deg,#ffb347,#ff7a59)">🎨</div>
-      <div class="card" style="background:linear-gradient(160deg,#6ee7b7,#2f9e3f)">🌿</div>
-      <div class="card" style="background:linear-gradient(160deg,#c4b5fd,#7c3aed)">✨</div>
-      <div class="card" style="background:linear-gradient(160deg,#7dd3fc,#2563eb)">💧</div>
-      <div class="card" style="background:linear-gradient(160deg,#334155,#0b1220)">🐱</div>
+      <div class="card"><img src="img/c1.jpg" alt=""></div>
+      <div class="card"><img src="img/c2.jpg" alt=""></div>
+      <div class="card"><img src="img/c3.jpg" alt=""></div>
+      <div class="card"><img src="img/c4.jpg" alt=""></div>
+      <div class="card"><img src="img/c5.jpg" alt=""></div>
     </div></div>
     <div class="cta rv d5"><a class="start" href="#">Start free course →</a><div class="free">100% free · no design experience required</div></div>
   </div>
@@ -133,12 +134,13 @@ function fly(){ requestAnimationFrame(fly); t+=1; ctx.clearRect(0,0,W,H);
   for(const b of B){
     if(--b.retarget<0){ b.tx=Math.random()*W; b.ty=(0.08+Math.random()*0.7)*H; b.retarget=120+Math.random()*160; }
     let ax=(b.tx-b.x)*0.0009, ay=(b.ty-b.y)*0.0009;
-    // cursor flee
-    const dx=b.x-mouse.x, dy=b.y-mouse.y, d2=dx*dx+dy*dy, R=150*DPR;
-    if(mouse.active&&d2<R*R){ const d=Math.sqrt(d2)||1, f=(1-d/R)*0.9; ax+=dx/d*f; ay+=dy/d*f; b.flap+=0.25; }
-    b.vx=(b.vx+ax)*0.96 + Math.sin(t*0.03+b.x*0.01)*0.02*DPR;
-    b.vy=(b.vy+ay)*0.96 + Math.cos(t*0.026+b.y*0.01)*0.02*DPR;
-    const sp=Math.hypot(b.vx,b.vy); if(sp>2.6*DPR){ b.vx*=2.6*DPR/sp; b.vy*=2.6*DPR/sp; }
+    // cursor flee — a strong direct velocity kick away, so it clearly bolts
+    const dx=b.x-mouse.x, dy=b.y-mouse.y, d2=dx*dx+dy*dy, R=200*DPR; let fleeing=false;
+    if(mouse.active&&d2<R*R){ const d=Math.sqrt(d2)||1, f=(1-d/R); fleeing=true;
+      b.vx+=dx/d*f*f*4.2*DPR; b.vy+=dy/d*f*f*4.2*DPR; b.flap+=0.65; b.retarget=60; }
+    b.vx=(b.vx+ax)*0.95 + Math.sin(t*0.03+b.x*0.01)*0.02*DPR;
+    b.vy=(b.vy+ay)*0.95 + Math.cos(t*0.026+b.y*0.01)*0.02*DPR;
+    const cap=(fleeing?5.8:2.6)*DPR, sp=Math.hypot(b.vx,b.vy); if(sp>cap){ b.vx*=cap/sp; b.vy*=cap/sp; }
     b.x+=b.vx; b.y+=b.vy;
     if(b.x<-40)b.x=W+40; if(b.x>W+40)b.x=-40; if(b.y<-40)b.y=H*0.8; if(b.y>H*0.92){b.y=H*0.92;b.vy=-Math.abs(b.vy);}
     let target=Math.atan2(b.vy,b.vx)+Math.PI/2; let da=((target-b.ang+Math.PI*3)%(Math.PI*2))-Math.PI; b.ang+=da*0.12;
