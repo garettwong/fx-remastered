@@ -50,8 +50,8 @@ addEventListener('pointerdown',e=>{ const m=pick(e.clientX,e.clientY);
   if(focused){ setFocus(m && m!==focused ? m : null); }   // click another → switch, click same/empty → close
   else if(m){ setFocus(m); } });
 addEventListener('keydown',e=>{ if(e.key==='Escape'&&focused) setFocus(null); });
-addEventListener('pointermove',e=>{ if(focused){ canvas.style.cursor='zoom-out'; return; }
-  canvas.style.cursor = pick(e.clientX,e.clientY)?'zoom-in':'default'; },{passive:true});
+addEventListener('pointermove',e=>{ if(focused){ canvas.style.cursor='pointer'; return; }
+  canvas.style.cursor = pick(e.clientX,e.clientY)?'pointer':'default'; },{passive:true});
 
 function resize(){ renderer.setSize(innerWidth,innerHeight); cam.aspect=innerWidth/innerHeight; cam.updateProjectionMatrix(); }
 addEventListener('resize',resize); resize();
