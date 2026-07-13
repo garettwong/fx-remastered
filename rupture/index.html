@@ -196,6 +196,11 @@ nav .r{font-size:12px;letter-spacing:.14em}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
+/* force-play all clips (iOS/autoplay-policy safe) + tap fallback */
+function playAll(){ document.querySelectorAll('video').forEach(v=>{ v.muted=true; const p=v.play(); if(p&&p.catch) p.catch(()=>{}); }); }
+addEventListener('load',playAll); addEventListener('DOMContentLoaded',playAll);
+['pointerdown','touchstart','scroll'].forEach(e=>addEventListener(e,playAll,{once:true,passive:true}));
+
 /* lips silhouette used as the campaign reveal mask */
 const LIPS="data:image/svg+xml,"+encodeURIComponent(
  "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 62'><path fill='black' d='M50 24 C40 14 24 12 12 20 C4 25 2 28 1 30 C10 30 6 34 14 40 C26 50 42 52 50 44 C58 52 74 50 86 40 C94 34 90 30 99 30 C98 28 96 25 88 20 C76 12 60 14 50 24 Z'/></svg>");
