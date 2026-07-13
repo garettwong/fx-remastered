@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EMBER — Where Ideas Catch Fire</title>
+<meta name="description" content="EMBER, a creative studio. A wordmark made of living embers. Disturb it.">
+<meta name="theme-color" content="#08060a">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#f2ede6;--muted:rgba(242,237,230,.6);--disp:'Space Grotesk',sans-serif;--body:'Inter',sans-serif}
+html,body{height:100%}
+body{background:#08060a;color:var(--ink);font-family:var(--body);font-weight:300;overflow:hidden;-webkit-font-smoothing:antialiased}
+.frame{position:fixed;inset:clamp(10px,1.6vw,22px);z-index:1;border-radius:16px;padding:2px;
+  background:linear-gradient(130deg,#ff2d6b,#7a1030 20%,#0b0b12 40%,#0b0b12 60%,#1a5a6a 80%,#2fd6d6);pointer-events:none}
+.frame .in{position:absolute;inset:2px;border-radius:14px;background:#08060a}
+#fx{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:14px;pointer-events:auto}
+.ui{position:fixed;inset:0;z-index:3;pointer-events:none;padding:clamp(30px,5vw,60px);display:flex;flex-direction:column;justify-content:space-between}
+.top{display:flex;align-items:center;justify-content:space-between}
+.brand{font-family:var(--disp);font-weight:700;font-size:18px;letter-spacing:.2em}
+.nl{display:flex;gap:24px}.nl a{color:var(--muted);text-decoration:none;font-size:13px;pointer-events:auto}
+.bot{max-width:44ch}
+.bot .e{font-family:var(--disp);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#ff7a3c;margin-bottom:12px}
+.bot h1{font-family:var(--disp);font-weight:600;font-size:clamp(22px,2.6vw,34px);line-height:1.1}
+.bot p{margin-top:12px;color:var(--muted);font-size:14px;line-height:1.6}
+.hint{font-family:var(--disp);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:right}
+@media(max-width:640px){.nl{display:none}}
+</style>
+</head>
+<body>
+<div class="frame"><div class="in"><canvas id="fx"></canvas></div></div>
+<div class="ui">
+  <div class="top"><div class="brand">EMBER</div><div class="nl"><a href="#">Studio</a><a href="#">Work</a><a href="#">Playful Ground</a></div></div>
+  <div class="top" style="align-items:flex-end">
+    <div class="bot"><div class="e">Creative studio</div><h1>Where ideas<br>catch fire.</h1><p>The mark below is a few thousand living embers holding a shape. Sweep your cursor through and watch it scatter, then gather again.</p></div>
+    <div class="hint">Disturb the embers</div>
+  </div>
+</div>
+<script>
+const cv=document.getElementById('fx'), ctx=cv.getContext('2d'); let W,H,DPR;
+const mouse={x:-9999,y:-9999};
+let parts=[];
+function build(){ DPR=Math.min(devicePixelRatio||1,2); W=cv.width=cv.clientWidth*DPR; H=cv.height=cv.clientHeight*DPR;
+  const oc=document.createElement('canvas'); oc.width=W; oc.height=H; const o=oc.getContext('2d');
+  const fs=Math.min(W*0.24, H*0.5); o.fillStyle='#fff'; o.font='700 '+fs+'px Space Grotesk, sans-serif'; o.textAlign='center'; o.textBaseline='middle';
+  o.fillText('EMBER', W/2, H*0.5);
+  const d=o.getImageData(0,0,W,H).data; const step=Math.max(3,Math.round(4*DPR)); const targets=[];
+  for(let y=0;y<H;y+=step)for(let x=0;x<W;x+=step){ if(d[(y*W+x)*4+3]>128) targets.push([x,y]); }
+  parts=targets.map(t=>({x:Math.random()*W,y:Math.random()*H,tx:t[0],ty:t[1],h:20+Math.random()*30,ph:Math.random()*6.28,sp:0.05+Math.random()*0.05}));
+}
+function resize(){ build(); } addEventListener('resize',resize);
+cv.addEventListener('pointermove',e=>{ const r=cv.getBoundingClientRect(); mouse.x=(e.clientX-r.left)*DPR; mouse.y=(e.clientY-r.top)*DPR; },{passive:true});
+cv.addEventListener('pointerleave',()=>{mouse.x=mouse.y=-9999;});
+addEventListener('load',build); build();
+let t=0;
+function frame(){ requestAnimationFrame(frame); if(!parts.length)build(); t+=0.05;
+  ctx.fillStyle='rgba(8,6,10,0.22)'; ctx.fillRect(0,0,W,H); ctx.globalCompositeOperation='lighter';
+  for(const p of parts){ let dx=p.tx-p.x, dy=p.ty-p.y;
+    const mdx=p.x-mouse.x, mdy=p.y-mouse.y, md2=mdx*mdx+mdy*mdy, R=90*DPR;
+    if(md2<R*R){ const md=Math.sqrt(md2)||1, f=(1-md/R)*7; p.x+=mdx/md*f; p.y+=mdy/md*f; }
+    p.x+=dx*p.sp+Math.sin(t+p.ph)*0.4*DPR; p.y+=dy*p.sp+Math.cos(t*1.1+p.ph)*0.4*DPR - 0.2*DPR;
+    const fl=0.55+0.45*Math.sin(t*3+p.ph); const r=1.6*DPR;
+    const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r*3);
+    g.addColorStop(0,'hsla('+p.h+',100%,'+(60+fl*15)+'%,'+(0.6*fl)+')'); g.addColorStop(1,'hsla('+p.h+',100%,50%,0)');
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,r*3,0,6.28); ctx.fill();
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+frame();
+window.__ember=()=>({particles:parts.length, canvas:[cv.width,cv.height], ctx:!!ctx});
+</script>
+</body>
+</html>
