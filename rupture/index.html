@@ -39,8 +39,8 @@ button,a{font:inherit}
 .hero-half video{width:100%;height:100%;object-fit:cover;object-position:center 10%}
 .hero-half.left{clip-path:polygon(0 0,48.8% 0,47.4% 4%,49.1% 8%,46.9% 13%,49.3% 18%,47.2% 23%,48.7% 29%,46.5% 34%,49% 40%,47.1% 46%,48.9% 52%,46.7% 58%,49.2% 64%,47% 70%,48.6% 76%,46.8% 82%,49.1% 88%,47.3% 94%,48.5% 100%,0 100%)}
 .hero-half.right{clip-path:polygon(53% 0,100% 0,100% 100%,52.6% 100%,54% 95%,51.9% 89%,54.2% 83%,52.1% 77%,54.4% 71%,52.2% 65%,54.1% 59%,51.8% 53%,54.3% 47%,52% 41%,54.2% 35%,52.1% 29%,54.4% 23%,52.2% 17%,54% 11%,52% 5%);filter:grayscale(.94) contrast(1.08) brightness(.92);transform:translateY(-1.2%)}
-.hero-seam{position:absolute;top:-3%;bottom:-3%;left:50%;width:clamp(62px,5.4vw,86px);transform:translateX(-50%);z-index:3;pointer-events:none;filter:drop-shadow(-7px 2px 7px rgba(35,28,22,.28)) drop-shadow(5px 1px 3px rgba(255,255,255,.48))}
-.hero-seam img{width:100%;height:100%;object-fit:fill}
+.hero-seam{position:absolute;top:-3%;bottom:-3%;left:50%;width:clamp(52px,4.2vw,70px);transform:translateX(-50%);z-index:3;pointer-events:none;filter:drop-shadow(-6px 2px 6px rgba(35,28,22,.34)) drop-shadow(4px 1px 3px rgba(255,255,255,.44))}
+.hero-seam img{position:absolute;left:50%;top:50%;width:calc(100svh + 130px);height:clamp(52px,4.2vw,70px);max-width:none;object-fit:fill;transform:translate(-50%,-50%) rotate(90deg)}
 .hero-copy{position:absolute;right:4.2%;top:50%;width:min(33vw,580px);transform:translateY(-50%);z-index:5;text-align:left}
 .hero-copy h1{font-family:var(--display);font-size:clamp(42px,6vw,116px);line-height:.79;letter-spacing:-.025em;text-transform:uppercase}
 .hero-copy h1 span{display:block;white-space:nowrap}
@@ -54,9 +54,9 @@ button,a{font:inherit}
 .arrivals{position:relative;background:var(--paper)}
 .arrivals-pin{position:relative;height:100svh;min-height:620px;overflow:hidden;padding-top:76px}
 .pin-head{position:relative;z-index:10;display:flex;align-items:flex-end;justify-content:space-between;padding:0 clamp(24px,4vw,60px) 22px}
-.pin-head h2{font-family:var(--display);font-size:clamp(42px,6.5vw,118px);line-height:.82;text-transform:uppercase;letter-spacing:-.02em}
+.pin-head h2{font-family:var(--display);font-size:clamp(42px,5.2vw,96px);line-height:.86;text-transform:uppercase;letter-spacing:-.018em}
 .pin-head p{max-width:28ch;font-size:11px;line-height:1.5;color:var(--muted);text-align:right}
-.arrivals-window{position:absolute;left:0;right:0;bottom:28px;top:27%;overflow:hidden}
+.arrivals-window{position:absolute;left:0;right:0;bottom:28px;top:32%;overflow:hidden}
 .arrivals-track{height:100%;display:flex;gap:16px;width:max-content;padding:0 5vw;will-change:transform}
 .product-card{position:relative;flex:0 0 clamp(270px,28vw,470px);height:100%;overflow:hidden;background:#ddd5c9}
 .product-card.wide{flex-basis:clamp(310px,34vw,570px)}
@@ -101,8 +101,8 @@ button,a{font:inherit}
 /* Turntable editorial */
 .turntable{position:relative;min-height:100svh;background:var(--paper);display:grid;grid-template-columns:.82fr 1.18fr;align-items:stretch;overflow:hidden}
 .turn-copy{display:flex;flex-direction:column;justify-content:center;padding:10vh 6vw;position:relative;z-index:4}
-.turn-copy h2{font-family:var(--display);font-size:clamp(58px,8vw,148px);line-height:.78;text-transform:uppercase}
-.turn-copy h2 em{display:block;color:var(--red);font-family:var(--serif);font-weight:420;text-transform:none}
+.turn-copy h2{font-family:var(--display);font-size:clamp(54px,6.4vw,118px);line-height:.88;text-transform:uppercase}
+.turn-copy h2 em{display:block;color:var(--red);font-family:var(--serif);font-weight:420;text-transform:none;margin-top:.05em}
 .turn-copy p{margin-top:28px;max-width:40ch;font-size:13px;line-height:1.65;color:var(--muted)}
 .turn-media{position:relative;min-height:100svh;background:#dfd7ca;overflow:hidden}
 .turn-media video{width:100%;height:100%;object-fit:cover;object-position:center 8%}
@@ -113,30 +113,27 @@ button,a{font:inherit}
 
 /* Crouching model and painted words */
 .crouch{position:relative;height:100svh;min-height:620px;overflow:hidden;background:#f5f1e9}
-.crouch-lines{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;pointer-events:none}
-.painted{font-family:var(--display);font-size:clamp(80px,15vw,280px);line-height:.75;text-transform:uppercase;color:var(--red);white-space:nowrap;letter-spacing:-.04em;transform:rotate(-5deg);clip-path:inset(0 100% 0 0);filter:url(#paintRough)}
+.crouch-lines{position:absolute;inset:12vh 0 0;z-index:7;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.painted{font-family:var(--display);font-size:clamp(72px,11vw,210px);line-height:.82;text-transform:uppercase;color:var(--red);white-space:nowrap;letter-spacing:-.025em;transform:rotate(-4deg);clip-path:inset(0 100% 0 0);filter:url(#paintRough);text-shadow:0 3px 0 rgba(255,255,255,.18)}
 .crouch-video{position:absolute;left:52%;top:50%;height:88%;width:min(42vw,590px);transform:translate(-50%,-48%);z-index:3;overflow:hidden}
 .crouch-video video{width:100%;height:100%;object-fit:cover;object-position:center 5%;mix-blend-mode:multiply}
 .crouch-copy{position:absolute;z-index:5;left:4vw;right:4vw;top:10%;display:flex;justify-content:space-between;align-items:flex-start}
-.crouch-copy h2{font-family:var(--display);font-size:clamp(48px,6vw,108px);line-height:.8;text-transform:uppercase}
+.crouch-copy h2{font-family:var(--display);font-size:clamp(46px,4.8vw,86px);line-height:.87;text-transform:uppercase;letter-spacing:-.012em}
 .crouch-copy .right{text-align:right;max-width:24ch;font-size:11px;line-height:1.55;color:var(--muted)}
 .freedom{position:absolute;right:4vw;bottom:5vh;z-index:5;font-family:var(--display);font-size:clamp(48px,7vw,130px);line-height:.8;text-transform:uppercase}
 .freedom small{display:block;color:var(--red);font-size:.12em;letter-spacing:.16em;text-align:right;margin-bottom:10px}
 
-/* Lips mask film */
+/* One continuous film: kiss reveal into torn-paper takeover */
 .vision-intro{position:relative;min-height:62vh;display:grid;place-items:center;text-align:center;padding:100px 24px;background:var(--paper)}
-.vision-intro h2{font-family:var(--display);font-size:clamp(56px,9vw,170px);line-height:.78;text-transform:uppercase}
-.vision-intro h2 em{color:var(--red);font-family:var(--serif);font-weight:400;text-transform:none}
+.vision-intro h2{font-family:var(--display);font-size:clamp(54px,6.6vw,122px);line-height:.88;text-transform:uppercase}
+.vision-intro h2 em{display:block;color:var(--red);font-family:var(--serif);font-weight:400;text-transform:none;margin-top:.03em}
 .vision-intro p{max-width:60ch;margin:26px auto 0;color:var(--muted);font-size:12px;line-height:1.65}
-.mask-section{position:relative;background:var(--paper)}
-.mask-pin{position:relative;height:100svh;min-height:600px;overflow:hidden;background:var(--paper)}
-.mask-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 28%;-webkit-mask-image:var(--lips-mask);mask-image:var(--lips-mask);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:18% auto;mask-size:18% auto;will-change:-webkit-mask-size,mask-size}
+.film-story{position:relative;background:var(--dark)}
+.film-pin{position:relative;height:100svh;min-height:620px;overflow:hidden;background:var(--paper)}
+.mask-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 28%;filter:brightness(.78) saturate(.86);-webkit-mask-image:var(--lips-mask);mask-image:var(--lips-mask);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:18% auto;mask-size:18% auto;will-change:-webkit-mask-size,mask-size}
 .mask-label{position:absolute;left:50%;top:50%;z-index:4;transform:translate(-50%,-50%);font-family:var(--display);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#fff;mix-blend-mode:difference;pointer-events:none}
 
-/* Torn-paper takeover */
-.tear-section{position:relative;background:var(--dark)}
-.tear-pin{position:relative;height:100svh;min-height:620px;overflow:hidden;background:var(--dark)}
-.tear-film{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 28%;filter:brightness(.72) saturate(.82)}
+/* Torn-paper takeover inside the same pinned film */
 .paper-sheet{position:absolute;left:-2%;right:-2%;top:0;height:112%;z-index:4;background:#aaa29b;color:#22201f;transform:none;box-shadow:0 -30px 70px rgba(0,0,0,.55);will-change:transform}
 .deckle{position:absolute;left:0;right:0;top:-82px;height:100px;filter:drop-shadow(0 -8px 12px rgba(0,0,0,.42));line-height:0}
 .deckle svg{width:100%;height:100%}
@@ -155,14 +152,7 @@ button,a{font:inherit}
 .loop-hero video{justify-self:center;height:92vh;max-width:48vw;object-fit:cover;object-position:center 8%;filter:contrast(1.02)}
 .loop-hero h2{font-family:var(--display);font-size:clamp(58px,8vw,155px);line-height:.78;text-transform:uppercase}
 .loop-hero h2 span{display:block;color:var(--red);font-family:var(--serif);font-style:italic;text-transform:none;font-weight:400}
-.curl-sheet{position:absolute;inset:-9%;z-index:8;transform:rotate(-5.5deg) scale(1.13);transform-style:preserve-3d;pointer-events:none}
-.curl-page{position:absolute;inset:-9%;z-index:8;overflow:hidden;transform-origin:100% 50%;transform:rotate(-5.5deg) scale(1.13);will-change:transform,border-radius,box-shadow;backface-visibility:hidden;background:#aaa29b}
-.curl-page img{width:100%;height:100%;object-fit:cover;filter:saturate(.86)}
-.curl-page::after{content:"";position:absolute;z-index:2;top:-8%;bottom:-8%;right:-8%;width:28%;border-radius:50%;background:linear-gradient(90deg,transparent,rgba(0,0,0,.3) 24%,rgba(249,244,235,.92) 49%,rgba(159,150,141,.7) 66%,transparent);filter:drop-shadow(-22px 0 24px rgba(0,0,0,.38));pointer-events:none}
-.curl-strip{position:absolute;top:0;bottom:0;overflow:hidden;transform-origin:left center;transform-style:preserve-3d;backface-visibility:hidden;will-change:transform,opacity;background:#aaa29b}
-.curl-strip img{position:absolute;top:0;height:100%;width:calc(100vw * 1.18);max-width:none;object-fit:cover;object-position:center;filter:saturate(.82)}
-.curl-strip::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.7),transparent 24%,transparent 70%,rgba(0,0,0,.26));mix-blend-mode:soft-light}
-.curl-fold{position:absolute;z-index:9;top:-18%;bottom:-18%;left:50%;width:23vw;min-width:240px;border-radius:50%;pointer-events:none;transform:rotate(-5.5deg);background:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.34) 16%,rgba(246,241,232,.96) 42%,rgba(171,163,153,.92) 61%,transparent 100%);filter:drop-shadow(-18px 0 24px rgba(0,0,0,.3));opacity:0}
+.curl-canvas{position:absolute;inset:0;z-index:8;width:100%;height:100%;pointer-events:none;will-change:contents}
 .curl-caption{position:absolute;right:3vw;bottom:3vh;z-index:10;font-family:var(--display);font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:#fff;mix-blend-mode:difference}
 
 @media(max-width:900px){
@@ -173,16 +163,16 @@ button,a{font:inherit}
 }
 @media(max-width:640px){
   .hero{min-height:700px}.hero-kicker{top:9%;left:20px;font-size:27px}.hero-model{left:50%;top:17%;bottom:0;width:78vw;height:83%}.hero-copy{right:20px;top:19%;width:44vw;transform:none;text-align:right}.hero-copy h1{font-size:9.7vw}.drop-stamp{bottom:9%;font-size:13vw}.hero-meta{left:20px;right:20px}
-  .pin-head{padding-inline:18px}.arrivals-window{top:24%}.product-card,.product-card.wide{flex-basis:74vw}.kiss-badge{width:72px}
+  .pin-head{padding-inline:18px}.pin-head h2{font-size:12vw}.arrivals-window{top:30%}.product-card,.product-card.wide{flex-basis:74vw}.kiss-badge{width:72px}
   .campaign-copy{left:20px}.campaign-copy h2{font-size:18vw}
   .categories-title{left:20px}.categories-hint{display:none}.category-card,.flip-shell{flex-basis:68vw}
-  .turntable{grid-template-columns:1fr;min-height:150svh}.turn-copy{min-height:55svh;padding:90px 24px 40px}.turn-media{min-height:95svh}.turn-copy h2{font-size:17vw}
-  .crouch-video{left:50%;width:88vw;height:78%;top:55%}.crouch-copy{left:20px;right:20px}.crouch-copy .right{display:none}.painted{font-size:20vw}.freedom{right:20px;font-size:15vw}
-  .vision-intro{min-height:70svh}.vision-intro h2{font-size:17vw}
+  .turntable{grid-template-columns:1fr;min-height:150svh}.turn-copy{min-height:55svh;padding:90px 24px 40px}.turn-media{min-height:95svh}.turn-copy h2{font-size:14vw}
+  .crouch-video{left:50%;width:88vw;height:78%;top:55%}.crouch-copy{left:20px;right:20px}.crouch-copy .right{display:none}.crouch-copy h2{font-size:12vw}.crouch-lines{inset:16vh 0 0}.painted{font-size:17vw}.freedom{right:20px;font-size:13vw}
+  .vision-intro{min-height:70svh}.vision-intro h2{font-size:14vw}
   .paper-content{grid-template-columns:1fr;padding:8vh 24px}.paper-title{font-size:24vw;align-self:start}.paper-model{position:absolute;right:-6%;bottom:0;width:62%;height:75%;opacity:.9}.paper-join{left:24px;right:24px}
   .loop-hero{grid-template-columns:1fr;padding:60px 24px}.loop-hero video{position:absolute;right:-12%;bottom:0;height:83%;max-width:78vw;opacity:.92}.loop-hero h2{position:relative;z-index:2;font-size:17vw}
 }
-@media(prefers-reduced-motion:reduce){.kiss-badge{animation:none}.curl-sheet,.curl-page{display:none}.mask-video{-webkit-mask:none;mask:none}}
+@media(prefers-reduced-motion:reduce){.kiss-badge{animation:none}.curl-canvas{display:none}.mask-video{-webkit-mask:none;mask:none}}
 </style>
 </head>
 <body>
@@ -197,7 +187,7 @@ button,a{font:inherit}
   <div class="hero-model" aria-label="Moving model in the Rupture collection">
     <div class="hero-half left"><video class="autoplay" autoplay muted loop playsinline preload="auto" poster="img/ru_hero.jpg"><source src="vid/ru_hero.mp4" type="video/mp4"></video></div>
     <div class="hero-half right"><video class="autoplay" autoplay muted loop playsinline preload="auto" poster="img/ru_hero.jpg"><source src="vid/ru_hero.mp4" type="video/mp4"></video></div>
-    <div class="hero-seam" aria-hidden="true"><img src="img/torn-seam.svg" alt=""></div>
+    <div class="hero-seam" aria-hidden="true"><img src="img/paper-rip-strip.png" alt=""></div>
     <div class="drop-stamp"><b>NEW</b> DROP</div>
   </div>
   <div class="hero-copy"><h1 class="fit-group"><span>Glamour,</span><span class="accent">fractured.</span></h1></div>
@@ -254,11 +244,9 @@ button,a{font:inherit}
 
 <section class="vision-intro"><div><div class="eyebrow">05 / Rupture film</div><h2>A vision<em>in motion.</em></h2><p>A kiss becomes a screen. The collection opens from a mark into a room, then tears the room apart again.</p></div></section>
 
-<section class="mask-section" id="film"><div class="mask-pin"><video class="mask-video autoplay" id="maskVideo" autoplay muted loop playsinline preload="metadata" poster="img/ru_couple.jpg"><source src="vid2/couple.mp4" type="video/mp4"></video><div class="mask-label">Enter the film</div></div></section>
+<section class="film-story" id="film"><div class="film-pin mask-pin tear-pin"><video class="mask-video autoplay" id="maskVideo" autoplay muted loop playsinline preload="metadata" poster="img/ru_couple.jpg"><source src="vid2/couple.mp4" type="video/mp4"></video><div class="mask-label">Enter the film</div><div class="paper-sheet" id="paperSheet"><div class="deckle" aria-hidden="true"><svg viewBox="0 0 1600 110" preserveAspectRatio="none"><defs><filter id="deckleLip" x="-3%" y="-35%" width="106%" height="170%"><feTurbulence type="fractalNoise" baseFrequency=".018 .23" numOctaves="3" seed="47" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="deckleMain" x="-3%" y="-35%" width="106%" height="170%"><feTurbulence type="fractalNoise" baseFrequency=".014 .19" numOctaves="4" seed="23" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G"/></filter></defs><path d="M-50 67 C20 57 48 75 112 60 C170 47 205 74 265 61 C324 49 358 71 420 57 C482 45 520 73 579 60 C641 47 676 75 738 58 C800 44 836 72 898 60 C958 49 997 74 1058 56 C1119 44 1159 72 1219 59 C1281 47 1318 74 1380 57 C1442 45 1480 73 1650 59 L1650 145 L-50 145 Z" fill="#f4eee5" filter="url(#deckleLip)"/><path d="M-50 75 C27 65 54 82 118 68 C178 57 211 83 272 69 C332 58 367 80 428 67 C489 55 526 82 587 69 C648 57 684 83 746 66 C808 54 844 80 906 68 C967 57 1004 82 1066 65 C1127 53 1165 81 1227 67 C1288 56 1325 82 1387 65 C1449 54 1487 82 1650 67 L1650 145 L-50 145 Z" fill="#aaa29b" filter="url(#deckleMain)"/><path d="M-50 67 C20 57 48 75 112 60 C170 47 205 74 265 61 C324 49 358 71 420 57 C482 45 520 73 579 60 C641 47 676 75 738 58 C800 44 836 72 898 60 C958 49 997 74 1058 56 C1119 44 1159 72 1219 59 C1281 47 1318 74 1380 57 C1442 45 1480 73 1650 59" fill="none" stroke="#fffaf0" stroke-width="2.4" opacity=".72" filter="url(#deckleLip)"/></svg></div><div class="paper-content"><div class="paper-title">Rupture<span>Join the atelier / move differently</span></div><div class="paper-model"><img src="img/ru_red.jpg" alt="Rupture model in the closing editorial"></div></div><div class="paper-join"><span>Berlin / Kyiv / 2026</span><button type="button">Subscribe</button><span>Instagram / Journal</span></div></div></div></section>
 
-<section class="tear-section"><div class="tear-pin"><video class="tear-film autoplay" autoplay muted loop playsinline preload="metadata" poster="img/ru_couple.jpg"><source src="vid2/couple.mp4" type="video/mp4"></video><div class="paper-sheet" id="paperSheet"><div class="deckle" aria-hidden="true"><svg viewBox="0 0 1600 110" preserveAspectRatio="none"><defs><filter id="deckleLip" x="-3%" y="-35%" width="106%" height="170%"><feTurbulence type="fractalNoise" baseFrequency=".018 .23" numOctaves="3" seed="47" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="deckleMain" x="-3%" y="-35%" width="106%" height="170%"><feTurbulence type="fractalNoise" baseFrequency=".014 .19" numOctaves="4" seed="23" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G"/></filter></defs><path d="M-50 67 C20 57 48 75 112 60 C170 47 205 74 265 61 C324 49 358 71 420 57 C482 45 520 73 579 60 C641 47 676 75 738 58 C800 44 836 72 898 60 C958 49 997 74 1058 56 C1119 44 1159 72 1219 59 C1281 47 1318 74 1380 57 C1442 45 1480 73 1650 59 L1650 145 L-50 145 Z" fill="#f4eee5" filter="url(#deckleLip)"/><path d="M-50 75 C27 65 54 82 118 68 C178 57 211 83 272 69 C332 58 367 80 428 67 C489 55 526 82 587 69 C648 57 684 83 746 66 C808 54 844 80 906 68 C967 57 1004 82 1066 65 C1127 53 1165 81 1227 67 C1288 56 1325 82 1387 65 C1449 54 1487 82 1650 67 L1650 145 L-50 145 Z" fill="#aaa29b" filter="url(#deckleMain)"/><path d="M-50 67 C20 57 48 75 112 60 C170 47 205 74 265 61 C324 49 358 71 420 57 C482 45 520 73 579 60 C641 47 676 75 738 58 C800 44 836 72 898 60 C958 49 997 74 1058 56 C1119 44 1159 72 1219 59 C1281 47 1318 74 1380 57 C1442 45 1480 73 1650 59" fill="none" stroke="#fffaf0" stroke-width="2.4" opacity=".72" filter="url(#deckleLip)"/></svg></div><div class="paper-content"><div class="paper-title">Rupture<span>Join the atelier / move differently</span></div><div class="paper-model"><img src="img/ru_red.jpg" alt="Rupture model in the closing editorial"></div></div><div class="paper-join"><span>Berlin / Kyiv / 2026</span><button type="button">Subscribe</button><span>Instagram / Journal</span></div></div></div></section>
-
-<section class="curl-section" id="loop"><div class="curl-pin"><div class="loop-hero"><video class="autoplay" autoplay muted loop playsinline preload="metadata" poster="img/ru_hero.jpg"><source src="vid/ru_hero.mp4" type="video/mp4"></video><h2>Begin the<span>fracture again.</span></h2></div><div class="curl-page" id="curlPage" aria-hidden="true"><img src="img/footer-scene.jpg" alt=""></div><div class="curl-caption">The previous page rolls back into the beginning</div></div></section>
+<section class="curl-section" id="loop"><div class="curl-pin"><div class="loop-hero"><video class="autoplay" autoplay muted loop playsinline preload="metadata" poster="img/ru_hero.jpg"><source src="vid/ru_hero.mp4" type="video/mp4"></video><h2>Begin the<span>fracture again.</span></h2></div><canvas class="curl-canvas" id="curlCanvas" aria-hidden="true"></canvas><div class="curl-caption">The torn page rolls back into the beginning</div></div></section>
 
 <script src="../studio-terra/lib/gsap.min.js"></script>
 <script src="../studio-terra/lib/ScrollTrigger.min.js"></script>
@@ -281,8 +269,77 @@ function fitText(){
 }
 addEventListener('resize',fitText);addEventListener('load',fitText);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitText);
 
-const state={version:36,arrivals:0,categories:0,mask:0,tear:0,curl:0};
-let arrivalsTween,categoryTimeline,maskTween,tearTween,curlTimeline;
+/* The closing page is raster-masked by the generated paper rip, then redrawn as a curved strip mesh. */
+const curlCanvas=document.getElementById('curlCanvas');
+const curlContext=curlCanvas.getContext('2d',{alpha:true});
+const curlSource=document.createElement('canvas');
+const curlSourceContext=curlSource.getContext('2d',{alpha:true});
+const curlMask=document.createElement('canvas');
+const curlMaskContext=curlMask.getContext('2d',{alpha:true});
+const curlTexture=new Image();curlTexture.decoding='async';curlTexture.src='img/footer-scene.jpg';
+const curlRip=new Image();curlRip.decoding='async';curlRip.src='img/paper-rip-strip.png';
+const curlDriver={progress:0};
+let curlReady=false,curlFrame=0;
+
+function coverImage(ctx,img,w,h){
+  const scale=Math.max(w/img.naturalWidth,h/img.naturalHeight),sw=w/scale,sh=h/scale;
+  const sx=(img.naturalWidth-sw)/2,sy=(img.naturalHeight-sh)/2;
+  ctx.drawImage(img,sx,sy,sw,sh,0,0,w,h);
+}
+function rebuildCurlTexture(){
+  if(!curlTexture.complete||!curlRip.complete||!curlTexture.naturalWidth||!curlRip.naturalWidth)return;
+  const w=Math.max(1,innerWidth),h=Math.max(1,innerHeight),dpr=Math.min(devicePixelRatio||1,1.5);
+  curlCanvas.width=Math.round(w*dpr);curlCanvas.height=Math.round(h*dpr);curlContext.setTransform(dpr,0,0,dpr,0,0);curlContext.imageSmoothingEnabled=true;curlContext.imageSmoothingQuality='high';
+  curlSource.width=curlMask.width=w;curlSource.height=curlMask.height=h;
+  curlSourceContext.clearRect(0,0,w,h);coverImage(curlSourceContext,curlTexture,w,h);
+  curlMaskContext.clearRect(0,0,w,h);curlMaskContext.fillStyle='#fff';
+  const edge=Math.max(38,h*.055),ripH=Math.max(110,h*.17),ripY=-ripH*.34;
+  curlMaskContext.fillRect(0,edge,w,h-edge*2);
+  curlMaskContext.drawImage(curlRip,0,ripY,w,ripH);
+  curlMaskContext.save();curlMaskContext.translate(0,h);curlMaskContext.scale(1,-1);curlMaskContext.drawImage(curlRip,0,ripY,w,ripH);curlMaskContext.restore();
+  curlSourceContext.globalCompositeOperation='destination-in';curlSourceContext.drawImage(curlMask,0,0);curlSourceContext.globalCompositeOperation='source-over';
+  curlReady=true;requestCurlDraw(curlDriver.progress);
+}
+function drawCurl(progress){
+  if(!curlReady)return;
+  const p=Math.max(0,Math.min(1,progress)),w=innerWidth,h=innerHeight;
+  curlCanvas.dataset.progress=p.toFixed(4);curlContext.clearRect(0,0,w,h);
+  const fade=p>.94?Math.max(0,(1-p)/.06):1;if(fade<=0)return;
+  const fold=w*(1.07-1.27*p),radius=Math.max(34,w*(.055+.034*Math.sin(p*Math.PI))),tilt=-h*.045/w;
+
+  if(fold<w+radius&&fold>-radius*1.5){
+    const shadow=curlContext.createLinearGradient(fold-radius*1.5,0,fold+radius*1.8,0);
+    shadow.addColorStop(0,'rgba(0,0,0,0)');shadow.addColorStop(.38,'rgba(0,0,0,.22)');shadow.addColorStop(.58,'rgba(0,0,0,.08)');shadow.addColorStop(1,'rgba(0,0,0,0)');
+    curlContext.fillStyle=shadow;curlContext.fillRect(fold-radius*1.5,0,radius*3.3,h);
+  }
+
+  curlContext.save();curlContext.globalAlpha=fade;
+  const flat=Math.max(0,Math.min(w,fold));
+  if(flat>0){curlContext.save();curlContext.transform(1,tilt,0,1,0,-tilt*w*.5);curlContext.drawImage(curlSource,0,0,flat,h,0,0,flat,h);curlContext.restore();}
+
+  const step=Math.max(2,Math.ceil(w/640)),start=Math.max(0,fold);
+  for(let sx=w-step;sx>=start;sx-=step){
+    const theta=(sx-fold)/radius;if(theta<0||theta>Math.PI)continue;
+    const sin=Math.sin(theta),cos=Math.cos(theta),dx=fold+sin*radius;
+    const stripW=Math.max(1.5,step*Math.max(.08,Math.abs(cos))+2.4),scaleY=1+sin*.052;
+    const dy=(dx-w*.5)*tilt-(scaleY-1)*h*.5;
+    curlContext.save();curlContext.globalAlpha=fade*(cos<0?.76:1);
+    curlContext.drawImage(curlSource,sx,0,Math.min(step,w-sx),h,dx,dy,stripW,h*scaleY);
+    curlContext.restore();
+  }
+  curlContext.restore();
+
+  curlContext.save();curlContext.globalCompositeOperation='source-atop';
+  const light=curlContext.createLinearGradient(fold-radius*.12,0,fold+radius*1.16,0);
+  light.addColorStop(0,'rgba(18,15,13,.08)');light.addColorStop(.24,'rgba(255,252,245,.16)');light.addColorStop(.48,'rgba(255,253,247,.58)');light.addColorStop(.7,'rgba(38,32,28,.34)');light.addColorStop(.9,'rgba(245,238,228,.18)');light.addColorStop(1,'rgba(17,14,12,.12)');
+  curlContext.fillStyle=light;curlContext.fillRect(fold-radius*.15,-h*.1,radius*1.38,h*1.2);curlContext.restore();
+}
+function requestCurlDraw(progress){curlDriver.progress=progress;if(curlFrame)return;curlFrame=requestAnimationFrame(()=>{curlFrame=0;drawCurl(curlDriver.progress);});}
+Promise.all([curlTexture.decode?.()||Promise.resolve(),curlRip.decode?.()||Promise.resolve()]).then(rebuildCurlTexture).catch(()=>{});
+addEventListener('resize',()=>{clearTimeout(window.__curlResize);window.__curlResize=setTimeout(rebuildCurlTexture,120)});
+
+const state={version:37,arrivals:0,categories:0,mask:0,tear:0,curl:0};
+let arrivalsTween,categoryTimeline,filmTimeline,maskTween,tearTween,curlTimeline;
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 if(window.gsap&&window.ScrollTrigger&&!reduce){
   gsap.registerPlugin(ScrollTrigger);
@@ -306,13 +363,13 @@ if(window.gsap&&window.ScrollTrigger&&!reduce){
   gsap.to('#paintedWords',{clipPath:'inset(0 0% 0 0)',xPercent:-4,ease:'none',scrollTrigger:{trigger:'.crouch',start:'top 70%',end:'top 18%',scrub:true}});
   gsap.fromTo('.crouch-video',{yPercent:10},{yPercent:-4,ease:'none',scrollTrigger:{trigger:'.crouch',start:'top bottom',end:'bottom top',scrub:true}});
 
-  maskTween=gsap.to('#maskVideo',{webkitMaskSize:'650% auto',maskSize:'650% auto',ease:'none',scrollTrigger:{trigger:'.mask-pin',start:'top top',end:'+=1800',pin:true,scrub:.7,onUpdate:s=>state.mask=s.progress}});
-  gsap.to('.mask-label',{opacity:0,ease:'none',scrollTrigger:{trigger:'.mask-pin',start:'top top',end:'+=500',scrub:true}});
+  filmTimeline=gsap.timeline({scrollTrigger:{trigger:'.film-pin',start:'top top',end:'+=3400',pin:true,scrub:.72,onUpdate:s=>{state.mask=Math.min(1,s.progress/.52);state.tear=Math.max(0,Math.min(1,(s.progress-.52)/.48));}}});
+  maskTween=filmTimeline.to('#maskVideo',{webkitMaskSize:'650% auto',maskSize:'650% auto',duration:.52,ease:'none'},0);
+  filmTimeline.to('.mask-label',{opacity:0,duration:.12,ease:'none'},0);
+  tearTween=filmTimeline.fromTo('#paperSheet',{yPercent:105},{yPercent:0,duration:.48,ease:'none',immediateRender:true},.52);
 
-  tearTween=gsap.fromTo('#paperSheet',{yPercent:105},{yPercent:0,ease:'none',immediateRender:true,scrollTrigger:{trigger:'.tear-pin',start:'top top',end:'+=1600',pin:true,scrub:.72,onUpdate:s=>state.tear=s.progress}});
-
-  curlTimeline=gsap.timeline({scrollTrigger:{trigger:'.curl-pin',start:'top top',end:'+=1900',pin:true,scrub:.72,onUpdate:s=>state.curl=s.progress}});
-  curlTimeline.fromTo('#curlPage',{xPercent:0,yPercent:0,rotationY:0,rotationZ:-5.5,borderRadius:'0 0 0 0',boxShadow:'0 0 0 rgba(0,0,0,0)'},{xPercent:-116,yPercent:-7,rotationY:-38,rotationZ:-11,borderRadius:'0 48% 48% 0 / 0 28% 28% 0',boxShadow:'46px 20px 70px rgba(0,0,0,.42)',duration:.84,ease:'power1.inOut'},0);
+  curlTimeline=gsap.timeline({scrollTrigger:{trigger:'.curl-pin',start:'top top',end:'+=2100',pin:true,scrub:.72,onUpdate:s=>state.curl=s.progress}});
+  curlTimeline.to(curlDriver,{progress:1,duration:1,ease:'none',onUpdate:()=>requestCurlDraw(curlDriver.progress)},0);
   curlTimeline.to('.curl-caption',{opacity:0,duration:.15},.5);
   ScrollTrigger.addEventListener('refresh',fitText);
 }else{
@@ -327,15 +384,18 @@ window.__rupture=()=>{
     version:state.version,gsap:!!window.gsap,scrollTriggers:window.ScrollTrigger?ScrollTrigger.getAll().length:0,
     progress:{...state},videos:{total:videos.length,playing:videos.filter(v=>!v.paused&&v.currentTime>0).length,times:videos.slice(0,8).map(v=>+v.currentTime.toFixed(2))},
     flips:[matrixRotation(document.getElementById('flipA')),matrixRotation(document.getElementById('flipB'))],maskSize:getComputedStyle(document.getElementById('maskVideo')).webkitMaskSize,
-    paperTransform:getComputedStyle(document.getElementById('paperSheet')).transform,curlTransform:getComputedStyle(document.getElementById('curlPage')).transform,
+    paperTransform:getComputedStyle(document.getElementById('paperSheet')).transform,curlTransform:`roll(${curlCanvas.dataset.progress||'0'})`,
     overflow:document.documentElement.scrollWidth-innerWidth,fitTargets
   };
 };
 window.__rupturePose=(name,progress=.5)=>{
-  const map={arrivals:arrivalsTween,categories:categoryTimeline,mask:maskTween,tear:tearTween,curl:curlTimeline};
-  const target=map[name];if(!target)return null;target.progress(Math.max(0,Math.min(1,progress)));return window.__rupture();
+  const p=Math.max(0,Math.min(1,progress));
+  if(name==='mask'&&filmTimeline)filmTimeline.progress(p*.52);
+  else if(name==='tear'&&filmTimeline)filmTimeline.progress(.52+p*.48);
+  else{const map={arrivals:arrivalsTween,categories:categoryTimeline,curl:curlTimeline};const target=map[name];if(!target)return null;target.progress(p);}
+  return window.__rupture();
 };
-console.log('RUPTURE build v36');
+console.log('RUPTURE build v37');
 </script>
 </body>
 </html>
