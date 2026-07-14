@@ -113,12 +113,15 @@ button,a{font:inherit}
 
 /* Crouching model and painted words */
 .crouch{position:relative;height:100svh;min-height:620px;overflow:hidden;background:#f5f1e9}
-.crouch-lines{position:absolute;inset:12vh 0 0;z-index:7;display:flex;align-items:center;justify-content:center;pointer-events:none}
-.painted{font-family:var(--display);font-size:clamp(72px,11vw,210px);line-height:.82;text-transform:uppercase;color:var(--red);white-space:nowrap;letter-spacing:-.025em;transform:rotate(-4deg);clip-path:inset(0 100% 0 0);filter:url(#paintRough);text-shadow:0 3px 0 rgba(255,255,255,.18)}
+.crouch-lines{position:absolute;inset:25vh 0 0;z-index:7;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.painted{display:flex;align-items:baseline;gap:.22em;font-family:var(--display);font-size:clamp(72px,11vw,210px);line-height:.82;text-transform:uppercase;color:var(--red);white-space:nowrap;letter-spacing:.006em;transform:rotate(-4deg);text-shadow:0 3px 0 rgba(255,255,255,.18);perspective:900px}
+.painted .roll-word{display:inline-flex;align-items:baseline}
+.painted .roll-char{display:inline-block;opacity:0;transform:translateY(70%) rotateX(-105deg);transform-origin:50% 100%;will-change:transform,opacity}
 .crouch-video{position:absolute;left:52%;top:50%;height:88%;width:min(42vw,590px);transform:translate(-50%,-48%);z-index:3;overflow:hidden}
 .crouch-video video{width:100%;height:100%;object-fit:cover;object-position:center 5%;mix-blend-mode:multiply}
 .crouch-copy{position:absolute;z-index:5;left:4vw;right:4vw;top:10%;display:flex;justify-content:space-between;align-items:flex-start}
-.crouch-copy h2{font-family:var(--display);font-size:clamp(46px,4.8vw,86px);line-height:.87;text-transform:uppercase;letter-spacing:-.012em}
+.crouch-copy .eyebrow{margin-bottom:clamp(15px,2.2vh,26px)}
+.crouch-copy h2{font-family:var(--display);font-size:clamp(46px,4.8vw,86px);line-height:1.01;text-transform:uppercase;letter-spacing:.006em}
 .crouch-copy .right{text-align:right;max-width:24ch;font-size:11px;line-height:1.55;color:var(--muted)}
 .freedom{position:absolute;right:4vw;bottom:5vh;z-index:5;font-family:var(--display);font-size:clamp(48px,7vw,130px);line-height:.8;text-transform:uppercase}
 .freedom small{display:block;color:var(--red);font-size:.12em;letter-spacing:.16em;text-align:right;margin-bottom:10px}
@@ -167,7 +170,7 @@ button,a{font:inherit}
   .campaign-copy{left:20px}.campaign-copy h2{font-size:18vw}
   .categories-title{left:20px}.categories-hint{display:none}.category-card,.flip-shell{flex-basis:68vw}
   .turntable{grid-template-columns:1fr;min-height:150svh}.turn-copy{min-height:55svh;padding:90px 24px 40px}.turn-media{min-height:95svh}.turn-copy h2{font-size:14vw}
-  .crouch-video{left:50%;width:88vw;height:78%;top:55%}.crouch-copy{left:20px;right:20px}.crouch-copy .right{display:none}.crouch-copy h2{font-size:12vw}.crouch-lines{inset:16vh 0 0}.painted{font-size:17vw}.freedom{right:20px;font-size:13vw}
+  .crouch-video{left:50%;width:88vw;height:78%;top:55%}.crouch-copy{left:20px;right:20px}.crouch-copy .right{display:none}.crouch-copy h2{font-size:12vw;line-height:1.02}.crouch-lines{inset:24vh 0 0}.painted{font-size:17vw;gap:.2em}.freedom{right:20px;font-size:13vw}
   .vision-intro{min-height:70svh}.vision-intro h2{font-size:14vw}
   .paper-content{grid-template-columns:1fr;padding:8vh 24px}.paper-title{font-size:24vw;align-self:start}.paper-model{position:absolute;right:-6%;bottom:0;width:62%;height:75%;opacity:.9}.paper-join{left:24px;right:24px}
   .loop-hero{grid-template-columns:1fr;padding:60px 24px}.loop-hero video{position:absolute;right:-12%;bottom:0;height:83%;max-width:78vw;opacity:.92}.loop-hero h2{position:relative;z-index:2;font-size:17vw}
@@ -237,7 +240,7 @@ button,a{font:inherit}
 <section class="crouch" id="studio">
   <svg width="0" height="0" aria-hidden="true"><filter id="paintRough"><feTurbulence type="fractalNoise" baseFrequency=".014 .12" numOctaves="3" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7"/></filter></svg>
   <div class="crouch-copy"><div><div class="eyebrow">04 / Who we are</div><h2>Space,<br>reformed.</h2></div><div class="right">We design clothing for bodies that refuse to stay inside a clean outline.</div></div>
-  <div class="crouch-lines"><div class="painted" id="paintedWords">Bold fashion</div></div>
+  <div class="crouch-lines"><div class="painted" id="paintedWords" aria-label="Bold fashion"><span class="roll-word" aria-hidden="true"><span class="roll-char">B</span><span class="roll-char">O</span><span class="roll-char">L</span><span class="roll-char">D</span></span><span class="roll-word" aria-hidden="true"><span class="roll-char">F</span><span class="roll-char">A</span><span class="roll-char">S</span><span class="roll-char">H</span><span class="roll-char">I</span><span class="roll-char">O</span><span class="roll-char">N</span></span></div></div>
   <div class="crouch-video"><video class="autoplay" autoplay muted loop playsinline preload="metadata" poster="img/ru_about.jpg"><source src="vid2/crouch.mp4" type="video/mp4"></video></div>
   <div class="freedom"><small>Creative without permission</small>Freedom.</div>
 </section>
@@ -338,8 +341,8 @@ function requestCurlDraw(progress){curlDriver.progress=progress;if(curlFrame)ret
 Promise.all([curlTexture.decode?.()||Promise.resolve(),curlRip.decode?.()||Promise.resolve()]).then(rebuildCurlTexture).catch(()=>{});
 addEventListener('resize',()=>{clearTimeout(window.__curlResize);window.__curlResize=setTimeout(rebuildCurlTexture,120)});
 
-const state={version:38,arrivals:0,categories:0,mask:0,tear:0,curl:0};
-let arrivalsTween,categoryTimeline,filmTimeline,maskTween,tearTween,curlTimeline;
+const state={version:39,arrivals:0,categories:0,bold:0,mask:0,tear:0,curl:0};
+let arrivalsTween,categoryTimeline,paintedTimeline,filmTimeline,maskTween,tearTween,curlTimeline;
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 if(window.gsap&&window.ScrollTrigger&&!reduce){
   gsap.registerPlugin(ScrollTrigger);
@@ -360,7 +363,8 @@ if(window.gsap&&window.ScrollTrigger&&!reduce){
   gsap.fromTo('.turn-media',{clipPath:'inset(0 0 0 100%)'},{clipPath:'inset(0 0 0 0%)',ease:'none',scrollTrigger:{trigger:'.turntable',start:'top 78%',end:'top 18%',scrub:true}});
   gsap.to('.turn-orbit',{rotationZ:360,ease:'none',scrollTrigger:{trigger:'.turntable',start:'top bottom',end:'bottom top',scrub:true}});
 
-  gsap.to('#paintedWords',{clipPath:'inset(0 0% 0 0)',xPercent:-4,ease:'none',scrollTrigger:{trigger:'.crouch',start:'top 70%',end:'top 18%',scrub:true}});
+  paintedTimeline=gsap.timeline({scrollTrigger:{trigger:'.crouch',start:'top 26%',end:'bottom 48%',scrub:.55,onUpdate:s=>state.bold=s.progress}});
+  paintedTimeline.to('#paintedWords .roll-char',{opacity:1,yPercent:0,rotationX:0,duration:.15,stagger:.07,ease:'none'},0);
   gsap.fromTo('.crouch-video',{yPercent:10},{yPercent:-4,ease:'none',scrollTrigger:{trigger:'.crouch',start:'top bottom',end:'bottom top',scrub:true}});
 
   filmTimeline=gsap.timeline({scrollTrigger:{trigger:'.film-pin',start:'top top',end:'+=3400',pin:true,scrub:.72,onUpdate:s=>{state.mask=Math.min(1,s.progress/.52);state.tear=Math.max(0,Math.min(1,(s.progress-.52)/.48));}}});
@@ -373,7 +377,7 @@ if(window.gsap&&window.ScrollTrigger&&!reduce){
   curlTimeline.to('.curl-caption',{opacity:0,duration:.15},.5);
   ScrollTrigger.addEventListener('refresh',fitText);
 }else{
-  document.querySelectorAll('.painted').forEach(el=>el.style.clipPath='none');
+  document.querySelectorAll('.roll-char').forEach(el=>{el.style.opacity='1';el.style.transform='none'});
   document.getElementById('paperSheet').style.transform='translateY(0)';
 }
 
@@ -392,10 +396,10 @@ window.__rupturePose=(name,progress=.5)=>{
   const p=Math.max(0,Math.min(1,progress));
   if(name==='mask'&&filmTimeline)filmTimeline.progress(p*.52);
   else if(name==='tear'&&filmTimeline)filmTimeline.progress(.52+p*.48);
-  else{const map={arrivals:arrivalsTween,categories:categoryTimeline,curl:curlTimeline};const target=map[name];if(!target)return null;target.progress(p);}
+  else{const map={arrivals:arrivalsTween,categories:categoryTimeline,bold:paintedTimeline,curl:curlTimeline};const target=map[name];if(!target)return null;target.progress(p);}
   return window.__rupture();
 };
-console.log('RUPTURE build v38');
+console.log('RUPTURE build v39');
 </script>
 </body>
 </html>
