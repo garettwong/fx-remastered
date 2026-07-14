@@ -120,8 +120,8 @@ button,a{font:inherit}
 .crouch{position:relative;height:100svh;min-height:620px;overflow:hidden;background:#f5f1e9}
 .crouch-lines{position:absolute;inset:25vh 0 0;z-index:7;display:flex;align-items:center;justify-content:center;pointer-events:none}
 .painted{display:flex;align-items:baseline;gap:.22em;font-family:var(--display);font-size:clamp(72px,11vw,210px);line-height:.82;text-transform:uppercase;color:var(--red);white-space:nowrap;letter-spacing:.006em;transform:rotate(-4deg);text-shadow:0 3px 0 rgba(255,255,255,.18);perspective:900px}
-.painted .roll-word{display:inline-flex;align-items:baseline}
-.painted .roll-char{display:inline-block;opacity:0;transform:translate3d(0,70%,0) rotateX(-105deg);transform-origin:50% 100%;transform-style:preserve-3d;backface-visibility:hidden;will-change:transform,opacity}
+.painted .roll-word{display:inline-flex;align-items:baseline;opacity:0;transform:translate3d(0,78%,0) rotateX(-105deg);transform-origin:50% 100%;transform-style:preserve-3d;backface-visibility:hidden;will-change:transform,opacity}
+.painted .roll-char{display:inline-block}
 .crouch-video{position:absolute;left:52%;top:50%;height:88%;width:min(42vw,590px);transform:translate(-50%,-48%);z-index:3;overflow:hidden}
 .crouch-video video{width:100%;height:100%;object-fit:cover;object-position:center 5%;mix-blend-mode:multiply}
 .crouch-copy{position:absolute;z-index:5;left:4vw;right:4vw;top:10%;display:flex;justify-content:space-between;align-items:flex-start}
@@ -354,7 +354,7 @@ function requestCurlDraw(progress){curlDriver.progress=progress;if(curlFrame)ret
 Promise.all([curlTexture.decode?.()||Promise.resolve(),curlRip.decode?.()||Promise.resolve()]).then(rebuildCurlTexture).catch(()=>{});
 addEventListener('resize',()=>{clearTimeout(window.__curlResize);window.__curlResize=setTimeout(rebuildCurlTexture,120)});
 
-const state={version:42,arrivals:0,categories:0,bold:0,mask:0,tear:0,curl:0};
+const state={version:43,arrivals:0,categories:0,bold:0,mask:0,tear:0,curl:0};
 let smoothScroll=null,arrivalsTween,categoryTimeline,paintedTimeline,filmTimeline,maskTween,tearTween,curlTimeline;
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 if(window.gsap&&window.ScrollTrigger&&!reduce){
@@ -382,8 +382,8 @@ if(window.gsap&&window.ScrollTrigger&&!reduce){
   gsap.fromTo('.turn-media',{clipPath:'inset(0 0 0 100%)'},{clipPath:'inset(0 0 0 0%)',ease:'none',scrollTrigger:{trigger:'.turntable',start:'top 78%',end:'top 18%',scrub:true}});
   gsap.to('.turn-orbit',{rotationZ:360,ease:'none',scrollTrigger:{trigger:'.turntable',start:'top bottom',end:'bottom top',scrub:true}});
 
-  paintedTimeline=gsap.timeline({scrollTrigger:{trigger:'.crouch',start:'top 26%',end:'bottom 48%',scrub:true,onUpdate:s=>state.bold=s.progress}});
-  paintedTimeline.to('#paintedWords .roll-char',{opacity:1,yPercent:0,rotationX:0,force3D:true,duration:.1,stagger:{each:.11,from:'start'},ease:'none'},0);
+  paintedTimeline=gsap.timeline({scrollTrigger:{trigger:'.crouch',start:'top 10%',end:'bottom 48%',scrub:true,onUpdate:s=>state.bold=s.progress}});
+  paintedTimeline.to('#paintedWords .roll-word',{opacity:1,yPercent:0,rotationX:0,force3D:true,duration:.42,stagger:{each:.46,from:'start'},ease:'none'},0);
   gsap.fromTo('.crouch-video',{yPercent:10},{yPercent:-4,ease:'none',scrollTrigger:{trigger:'.crouch',start:'top bottom',end:'bottom top',scrub:true}});
 
   filmTimeline=gsap.timeline({scrollTrigger:{trigger:'.film-pin',start:'top top',end:'+=3400',pin:true,scrub:.72,onUpdate:s=>{state.mask=Math.min(1,s.progress/.52);state.tear=Math.max(0,Math.min(1,(s.progress-.52)/.48));}}});
@@ -396,7 +396,7 @@ if(window.gsap&&window.ScrollTrigger&&!reduce){
   curlTimeline.to('.curl-caption',{opacity:0,duration:.15},.5);
   ScrollTrigger.addEventListener('refresh',fitText);
 }else{
-  document.querySelectorAll('.roll-char').forEach(el=>{el.style.opacity='1';el.style.transform='none'});
+  document.querySelectorAll('.roll-word').forEach(el=>{el.style.opacity='1';el.style.transform='none'});
   document.getElementById('paperSheet').style.transform='translateY(0)';
 }
 
@@ -418,7 +418,7 @@ window.__rupturePose=(name,progress=.5)=>{
   else{const map={arrivals:arrivalsTween,categories:categoryTimeline,bold:paintedTimeline,curl:curlTimeline};const target=map[name];if(!target)return null;target.progress(p);}
   return window.__rupture();
 };
-console.log('RUPTURE build v42');
+console.log('RUPTURE build v43');
 </script>
 </body>
 </html>
