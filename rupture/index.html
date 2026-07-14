@@ -30,10 +30,13 @@ nav .r{font-size:12px;letter-spacing:.14em}
 .half video,.half img{width:100%;height:100%;object-fit:cover;object-position:center 16%}
 .half.l{clip-path:polygon(0 0,50% 0,50% 100%,0 100%)}
 .half.r{clip-path:polygon(50% 0,100% 0,100% 100%,50% 100%);filter:grayscale(1) contrast(1.05) brightness(.98)}
-.seam{position:absolute;top:-2%;bottom:-2%;left:50%;width:1.5px;background:var(--red);transform:translateX(-.75px);z-index:4}
-.tag{position:absolute;left:8px;bottom:10px;z-index:5;font-family:var(--disp);font-size:15px;letter-spacing:.04em;display:flex;gap:6px;align-items:center}
-.tag b{background:var(--red);color:#fff;padding:2px 7px;font-weight:400}
-.tag span{color:#fff;mix-blend-mode:difference}
+/* the RIP: a jagged white torn-paper seam splitting the two halves (the ref's signature) */
+.tearseam{position:absolute;top:-2%;bottom:-2%;left:50%;width:26px;transform:translateX(-50%);z-index:4;filter:drop-shadow(1px 0 3px rgba(0,0,0,.35)) drop-shadow(-1px 0 2px rgba(0,0,0,.22))}
+.tearseam svg{width:100%;height:100%;display:block}
+.newdrop{position:absolute;left:50%;bottom:7%;transform:translateX(-50%);z-index:6;font-family:var(--disp);font-size:clamp(38px,4.4vw,80px);line-height:1;display:flex;gap:.16em;white-space:nowrap}
+.newdrop .n1{color:#fff;background:var(--red);padding:.02em .14em}
+.newdrop .n2{color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.4)}
+.seecol{position:absolute;left:50%;bottom:3%;transform:translateX(-50%);z-index:6;font-family:var(--disp);font-size:11px;letter-spacing:.22em;color:#fff;mix-blend-mode:difference;text-transform:uppercase}
 .htext{position:relative;z-index:5;text-align:left;max-width:36vw;flex:0 1 auto;order:2;pointer-events:none}
 .hl{font-family:var(--serif);font-weight:330;line-height:.84;letter-spacing:-.02em;font-size:clamp(36px,5.2vw,90px);display:block}
 .hl.b{font-style:italic;color:var(--red);font-weight:360}
@@ -165,8 +168,12 @@ nav .r{font-size:12px;letter-spacing:.14em}
   <div class="stage" id="stage">
     <div class="half l"><video class="hv" muted loop playsinline poster="img/ru_hero.jpg"><source src="vid/ru_hero.mp4" type="video/mp4"></video></div>
     <div class="half r"><video class="hv" muted loop playsinline poster="img/ru_hero.jpg"><source src="vid/ru_hero.mp4" type="video/mp4"></video></div>
-    <div class="seam"></div>
-    <div class="tag"><b>NEW</b><span>SEASON</span></div>
+    <div class="tearseam"><svg viewBox="0 0 26 800" preserveAspectRatio="none"><defs>
+      <filter id="seamT" x="-160%" y="-4%" width="420%" height="108%"><feTurbulence type="fractalNoise" baseFrequency="0.9 0.018" numOctaves="4" seed="7"/><feDisplacementMap in="SourceGraphic" in2="n" scale="15" xChannelSelector="R" yChannelSelector="G"/></filter></defs>
+      <rect x="9" y="-12" width="8" height="824" fill="#f7f3ea" filter="url(#seamT)"/>
+    </svg></div>
+    <div class="newdrop"><span class="n1">NEW</span><span class="n2">DROP</span></div>
+    <div class="seecol">[ See collection ]</div>
   </div>
   <div class="scrollhint">Scroll ↓</div>
 </header>
@@ -243,7 +250,7 @@ nav .r{font-size:12px;letter-spacing:.14em}
       <div class="lab">Join the atelier</div>
       <div class="subrow"><input placeholder="you@email.com" aria-label="email"><button class="discount">DISCOUNT</button></div>
     </div>
-    <div class="wrap fmeta"><div>© 2026 RUPTURE — a concept house</div><div>Designed in Berlin · Made in Kyiv</div><div>Instagram · TikTok · Journal</div></div>
+    <div class="wrap fmeta"><div>© 2026 RUPTURE — a concept house · v34</div><div>Designed in Berlin · Made in Kyiv</div><div>Instagram · TikTok · Journal</div></div>
   </div>
 </footer>
 
@@ -280,10 +287,14 @@ function splitChars(el){ const t=el.textContent; el.textContent=''; const line=d
 const heroChars=[...document.querySelectorAll('.hl[data-split]')].flatMap(splitChars);
 
 /* fit BE FASHION to viewport width (re-measures on fonts.ready so it never crops) */
-function fitSpray(){ const s=document.getElementById('spray'); if(!s)return; s.style.fontSize='120px'; const w=s.scrollWidth; if(!w)return;
-  const fs=Math.max(40,Math.min(116, 120*(innerWidth*0.66)/w)); s.style.fontSize=fs+'px'; }   // 66% of viewport + 116 cap = always fits with margin
+function fitSpray(){ const s=document.getElementById('spray'); if(!s)return; const wrap=s.closest('.crouchwrap');
+  s.style.fontSize='100px'; const w=s.scrollWidth; if(!w)return;
+  const avail=Math.min(innerWidth, wrap?wrap.clientWidth:innerWidth)*0.62;                    // 62% of the NARROWER of viewport/wrap
+  s.style.fontSize=Math.max(36,Math.min(96, 100*avail/w))+'px'; }                             // hard 96px cap
 addEventListener('resize',fitSpray); addEventListener('load',fitSpray);
-if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitSpray); fitSpray();
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitSpray);
+[0,400,1200,2600].forEach(t=>setTimeout(fitSpray,t));                                         // re-fit after late font swaps
+console.log('RUPTURE build v34');
 
 /* LAZY video play — only clips near the viewport play (avoids decoder exhaustion / blank clips) */
 (function(){ const vids=[...document.querySelectorAll('video')]; vids.forEach(v=>v.muted=true);
