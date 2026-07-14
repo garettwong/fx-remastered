@@ -354,7 +354,7 @@ function requestCurlDraw(progress){curlDriver.progress=progress;if(curlFrame)ret
 Promise.all([curlTexture.decode?.()||Promise.resolve(),curlRip.decode?.()||Promise.resolve()]).then(rebuildCurlTexture).catch(()=>{});
 addEventListener('resize',()=>{clearTimeout(window.__curlResize);window.__curlResize=setTimeout(rebuildCurlTexture,120)});
 
-const state={version:41,arrivals:0,categories:0,bold:0,mask:0,tear:0,curl:0};
+const state={version:42,arrivals:0,categories:0,bold:0,mask:0,tear:0,curl:0};
 let smoothScroll=null,arrivalsTween,categoryTimeline,paintedTimeline,filmTimeline,maskTween,tearTween,curlTimeline;
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 if(window.gsap&&window.ScrollTrigger&&!reduce){
@@ -383,7 +383,7 @@ if(window.gsap&&window.ScrollTrigger&&!reduce){
   gsap.to('.turn-orbit',{rotationZ:360,ease:'none',scrollTrigger:{trigger:'.turntable',start:'top bottom',end:'bottom top',scrub:true}});
 
   paintedTimeline=gsap.timeline({scrollTrigger:{trigger:'.crouch',start:'top 26%',end:'bottom 48%',scrub:true,onUpdate:s=>state.bold=s.progress}});
-  paintedTimeline.to('#paintedWords .roll-char',{opacity:1,yPercent:0,rotationX:0,force3D:true,duration:.15,stagger:.07,ease:'none'},0);
+  paintedTimeline.to('#paintedWords .roll-char',{opacity:1,yPercent:0,rotationX:0,force3D:true,duration:.1,stagger:{each:.11,from:'start'},ease:'none'},0);
   gsap.fromTo('.crouch-video',{yPercent:10},{yPercent:-4,ease:'none',scrollTrigger:{trigger:'.crouch',start:'top bottom',end:'bottom top',scrub:true}});
 
   filmTimeline=gsap.timeline({scrollTrigger:{trigger:'.film-pin',start:'top top',end:'+=3400',pin:true,scrub:.72,onUpdate:s=>{state.mask=Math.min(1,s.progress/.52);state.tear=Math.max(0,Math.min(1,(s.progress-.52)/.48));}}});
@@ -418,7 +418,7 @@ window.__rupturePose=(name,progress=.5)=>{
   else{const map={arrivals:arrivalsTween,categories:categoryTimeline,bold:paintedTimeline,curl:curlTimeline};const target=map[name];if(!target)return null;target.progress(p);}
   return window.__rupture();
 };
-console.log('RUPTURE build v41');
+console.log('RUPTURE build v42');
 </script>
 </body>
 </html>
