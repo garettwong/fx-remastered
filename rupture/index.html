@@ -37,10 +37,10 @@ button,a{font:inherit}
 .hero-model{position:absolute;inset:0 auto 0 38%;width:min(35vw,540px);transform:translateX(-50%)}
 .hero-half{position:absolute;inset:0;overflow:hidden}
 .hero-half video{width:100%;height:100%;object-fit:cover;object-position:center 10%}
-.hero-half.left{clip-path:polygon(0 0,51% 0,49% 100%,0 100%)}
-.hero-half.right{clip-path:polygon(51% 0,100% 0,100% 100%,49% 100%);filter:grayscale(.94) contrast(1.08) brightness(.92);transform:translateY(-1.2%)}
-.hero-seam{position:absolute;top:-3%;bottom:-3%;left:50%;width:34px;transform:translateX(-50%);z-index:3;filter:drop-shadow(-2px 0 2px rgba(0,0,0,.2)) drop-shadow(2px 0 1px rgba(255,255,255,.8))}
-.hero-seam svg{width:100%;height:100%}
+.hero-half.left{clip-path:polygon(0 0,48.8% 0,47.4% 4%,49.1% 8%,46.9% 13%,49.3% 18%,47.2% 23%,48.7% 29%,46.5% 34%,49% 40%,47.1% 46%,48.9% 52%,46.7% 58%,49.2% 64%,47% 70%,48.6% 76%,46.8% 82%,49.1% 88%,47.3% 94%,48.5% 100%,0 100%)}
+.hero-half.right{clip-path:polygon(53% 0,100% 0,100% 100%,52.6% 100%,54% 95%,51.9% 89%,54.2% 83%,52.1% 77%,54.4% 71%,52.2% 65%,54.1% 59%,51.8% 53%,54.3% 47%,52% 41%,54.2% 35%,52.1% 29%,54.4% 23%,52.2% 17%,54% 11%,52% 5%);filter:grayscale(.94) contrast(1.08) brightness(.92);transform:translateY(-1.2%)}
+.hero-seam{position:absolute;top:-3%;bottom:-3%;left:50%;width:clamp(62px,5.4vw,86px);transform:translateX(-50%);z-index:3;pointer-events:none;filter:drop-shadow(-7px 2px 7px rgba(35,28,22,.28)) drop-shadow(5px 1px 3px rgba(255,255,255,.48))}
+.hero-seam img{width:100%;height:100%;object-fit:fill}
 .hero-copy{position:absolute;right:4.2%;top:50%;width:min(33vw,580px);transform:translateY(-50%);z-index:5;text-align:left}
 .hero-copy h1{font-family:var(--display);font-size:clamp(42px,6vw,116px);line-height:.79;letter-spacing:-.025em;text-transform:uppercase}
 .hero-copy h1 span{display:block;white-space:nowrap}
@@ -197,7 +197,7 @@ button,a{font:inherit}
   <div class="hero-model" aria-label="Moving model in the Rupture collection">
     <div class="hero-half left"><video class="autoplay" autoplay muted loop playsinline preload="auto" poster="img/ru_hero.jpg"><source src="vid/ru_hero.mp4" type="video/mp4"></video></div>
     <div class="hero-half right"><video class="autoplay" autoplay muted loop playsinline preload="auto" poster="img/ru_hero.jpg"><source src="vid/ru_hero.mp4" type="video/mp4"></video></div>
-    <div class="hero-seam" aria-hidden="true"><svg viewBox="0 0 36 1000" preserveAspectRatio="none"><defs><filter id="heroRip" x="-180%" y="-5%" width="460%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".72 .012" numOctaves="5" seed="19" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="18" xChannelSelector="R" yChannelSelector="G"/></filter></defs><path d="M15 -20H23V1020H15Z" fill="#faf7ef" filter="url(#heroRip)"/></svg></div>
+    <div class="hero-seam" aria-hidden="true"><img src="img/torn-seam.svg" alt=""></div>
     <div class="drop-stamp"><b>NEW</b> DROP</div>
   </div>
   <div class="hero-copy"><h1 class="fit-group"><span>Glamour,</span><span class="accent">fractured.</span></h1></div>
@@ -281,7 +281,7 @@ function fitText(){
 }
 addEventListener('resize',fitText);addEventListener('load',fitText);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitText);
 
-const state={version:35,arrivals:0,categories:0,mask:0,tear:0,curl:0};
+const state={version:36,arrivals:0,categories:0,mask:0,tear:0,curl:0};
 let arrivalsTween,categoryTimeline,maskTween,tearTween,curlTimeline;
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 if(window.gsap&&window.ScrollTrigger&&!reduce){
@@ -335,7 +335,7 @@ window.__rupturePose=(name,progress=.5)=>{
   const map={arrivals:arrivalsTween,categories:categoryTimeline,mask:maskTween,tear:tearTween,curl:curlTimeline};
   const target=map[name];if(!target)return null;target.progress(Math.max(0,Math.min(1,progress)));return window.__rupture();
 };
-console.log('RUPTURE build v35');
+console.log('RUPTURE build v36');
 </script>
 </body>
 </html>
