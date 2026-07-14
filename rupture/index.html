@@ -264,8 +264,15 @@ const LIPS_SVG="data:image/svg+xml,"+encodeURIComponent("<svg xmlns='http://www.
 document.documentElement.style.setProperty('--lips-mask','url("'+LIPS_SVG+'")');
 
 const videos=[...document.querySelectorAll('video')];
-function playVideos(){videos.forEach(v=>{v.muted=true;v.playsInline=true;const p=v.play();if(p&&p.catch)p.catch(()=>{});});}
-addEventListener('load',playVideos);addEventListener('touchstart',playVideos,{passive:true,once:true});setTimeout(playVideos,600);
+const activeVideos=new Set();
+function playVideo(video){video.muted=true;video.playsInline=true;activeVideos.add(video);const p=video.play();if(p&&p.catch)p.catch(()=>{});}
+function pauseVideo(video){activeVideos.delete(video);if(!video.paused)video.pause();}
+if('IntersectionObserver'in window){
+  const videoObserver=new IntersectionObserver(entries=>entries.forEach(entry=>entry.isIntersecting?playVideo(entry.target):pauseVideo(entry.target)),{rootMargin:'80% 0px 80% 0px',threshold:.01});
+  videos.forEach(video=>videoObserver.observe(video));
+}else videos.forEach(playVideo);
+addEventListener('touchstart',()=>activeVideos.forEach(playVideo),{passive:true,once:true});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)videos.forEach(video=>video.pause());else activeVideos.forEach(playVideo)});
 
 function fitText(){
   document.querySelectorAll('.fit-group').forEach(el=>{
@@ -347,7 +354,7 @@ function requestCurlDraw(progress){curlDriver.progress=progress;if(curlFrame)ret
 Promise.all([curlTexture.decode?.()||Promise.resolve(),curlRip.decode?.()||Promise.resolve()]).then(rebuildCurlTexture).catch(()=>{});
 addEventListener('resize',()=>{clearTimeout(window.__curlResize);window.__curlResize=setTimeout(rebuildCurlTexture,120)});
 
-const state={version:40,arrivals:0,categories:0,bold:0,mask:0,tear:0,curl:0};
+const state={version:41,arrivals:0,categories:0,bold:0,mask:0,tear:0,curl:0};
 let smoothScroll=null,arrivalsTween,categoryTimeline,paintedTimeline,filmTimeline,maskTween,tearTween,curlTimeline;
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 if(window.gsap&&window.ScrollTrigger&&!reduce){
@@ -398,7 +405,7 @@ window.__rupture=()=>{
   const fitTargets=[...document.querySelectorAll('.hero-copy,.category-name,.painted')].map(el=>{const r=el.getBoundingClientRect();return{class:el.className,left:+r.left.toFixed(1),right:+r.right.toFixed(1),width:+r.width.toFixed(1)}});
   return{
     version:state.version,gsap:!!window.gsap,scrollTriggers:window.ScrollTrigger?ScrollTrigger.getAll().length:0,
-    progress:{...state},videos:{total:videos.length,playing:videos.filter(v=>!v.paused&&v.currentTime>0).length,times:videos.slice(0,8).map(v=>+v.currentTime.toFixed(2))},
+    progress:{...state},videos:{total:videos.length,active:activeVideos.size,playing:videos.filter(v=>!v.paused&&v.currentTime>0).length,times:videos.slice(0,8).map(v=>+v.currentTime.toFixed(2))},
     flips:[matrixRotation(document.getElementById('flipA')),matrixRotation(document.getElementById('flipB'))],maskSize:getComputedStyle(document.getElementById('maskVideo')).webkitMaskSize,
     paperTransform:getComputedStyle(document.getElementById('paperSheet')).transform,curlTransform:`roll(${curlCanvas.dataset.progress||'0'})`,smooth:{enabled:!!smoothScroll,velocity:smoothScroll?+smoothScroll.velocity.toFixed(3):0},
     overflow:document.documentElement.scrollWidth-innerWidth,fitTargets
@@ -411,7 +418,7 @@ window.__rupturePose=(name,progress=.5)=>{
   else{const map={arrivals:arrivalsTween,categories:categoryTimeline,bold:paintedTimeline,curl:curlTimeline};const target=map[name];if(!target)return null;target.progress(p);}
   return window.__rupture();
 };
-console.log('RUPTURE build v40');
+console.log('RUPTURE build v41');
 </script>
 </body>
 </html>
