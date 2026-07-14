@@ -124,8 +124,8 @@ nav .r{font-size:12px;letter-spacing:.14em}
 .filmstrip{position:relative;height:clamp(220px,36vh,360px);overflow:hidden;background:#0b0b0c}
 .filmstrip video,.filmstrip img{width:100%;height:100%;object-fit:cover;object-position:center 28%;filter:brightness(.8)}
 .paperwrap{position:relative;background:var(--paper);color:var(--ink);margin-top:-1px;padding:clamp(40px,8vh,100px) 0 40px}
-.tornedge{position:absolute;left:0;right:0;top:-58px;height:76px;z-index:2;line-height:0;filter:drop-shadow(0 -10px 12px rgba(0,0,0,.5))}
-.tornedge svg{width:100%;height:76px;display:block}
+.tornedge{position:absolute;left:0;right:0;top:-72px;height:92px;z-index:2;line-height:0;filter:drop-shadow(0 -12px 14px rgba(0,0,0,.55))}
+.tornedge svg{width:100%;height:92px;display:block}
 .mega{position:relative;font-family:var(--disp);font-size:clamp(60px,23vw,340px);line-height:.8;text-transform:uppercase;text-align:center;letter-spacing:.01em;color:var(--ink)}
 .mega .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:.34em;height:.34em;color:#fff;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center}
 .mega .play::after{content:"";border-left:.11em solid #fff;border-top:.07em solid transparent;border-bottom:.07em solid transparent;margin-left:.03em}
@@ -231,9 +231,13 @@ nav .r{font-size:12px;letter-spacing:.14em}
 <footer class="foot" id="studioFoot">
   <div class="filmstrip"><video muted loop playsinline poster="img/ru_couple.jpg"><source src="vid2/couple.mp4" type="video/mp4"></video></div>
   <div class="paperwrap">
-    <div class="tornedge"><svg viewBox="0 0 1440 76" preserveAspectRatio="none"><defs>
-      <filter id="rough" x="-5%" y="-70%" width="110%" height="260%"><feTurbulence type="fractalNoise" baseFrequency="0.009 0.16" numOctaves="5" seed="21" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="28" xChannelSelector="R" yChannelSelector="G"/></filter>
-      </defs><g filter="url(#rough)"><rect x="-30" y="34" width="1500" height="110" fill="#efeae0"/><rect x="-30" y="30" width="1500" height="5" fill="#fffdf7"/></g></svg></div>
+    <div class="tornedge"><svg viewBox="0 0 1440 92" preserveAspectRatio="none"><defs>
+      <filter id="roughW" x="-5%" y="-60%" width="110%" height="240%"><feTurbulence type="fractalNoise" baseFrequency="0.006 0.11" numOctaves="4" seed="31" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="46" xChannelSelector="R" yChannelSelector="G"/></filter>
+      <filter id="rough" x="-5%" y="-60%" width="110%" height="240%"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.09" numOctaves="5" seed="8" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="54" xChannelSelector="R" yChannelSelector="G"/></filter>
+      </defs>
+      <g filter="url(#roughW)"><rect x="-40" y="42" width="1520" height="130" fill="#fffdf6"/></g>
+      <g filter="url(#rough)"><rect x="-40" y="52" width="1520" height="130" fill="#efeae0"/></g>
+    </svg></div>
     <div class="mega">RUPTURE<span class="play"></span></div>
     <div class="join">
       <div class="lab">Join the atelier</div>
